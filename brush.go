@@ -4,10 +4,12 @@
 
 package guix
 
-var WhiteBrush = CreateBrush(White)
-var TransparentBrush = CreateBrush(Transparent)
-var BlackBrush = CreateBrush(Black)
-var DefaultBrush = WhiteBrush
+var (
+	WhiteBrush       = CreateBrush(White)
+	TransparentBrush = CreateBrush(Transparent)
+	BlackBrush       = CreateBrush(Black)
+	DefaultBrush     = WhiteBrush
+)
 
 type Brush struct {
 	Color Color

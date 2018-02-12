@@ -6,9 +6,10 @@ package guix
 
 import (
 	"fmt"
-	"github.com/vcaesar/guix/math"
 	"reflect"
 	"runtime"
+
+	"github.com/vcaesar/guix/math"
 )
 
 func indent(depth int) string {
