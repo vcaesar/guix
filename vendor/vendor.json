@@ -1,0 +1,72 @@
+{
+    "comment": "0.10.0",
+    "ignore": "test",
+    "package": [{
+            "checksumSHA1": "jOHp53XIam0AgWoPYdHNt/LsdiM=",
+            "path": "github.com/go-gl/gl/v2.1/gl",
+            "revision": "39ef8e959f4050148ec5a59816a93b9e65b4528f",
+            "revisionTime": "2017-06-20T20:25:32Z"
+        },
+        {
+            "checksumSHA1": "uZ/o/CYnbaEc1W0jbz/v0vGnXJg=",
+            "path": "github.com/go-gl/glfw",
+            "revision": "55847fe4ded3fbee15191a625f3305a1fad48b67",
+            "revisionTime": "2017-06-07T09:37:11Z"
+        },
+        {
+            "checksumSHA1": "sUqBoNKWGIxxRoC7I8UaC64oVR4=",
+            "path": "github.com/go-gl/glfw/v3.2/glfw",
+            "revision": "55847fe4ded3fbee15191a625f3305a1fad48b67",
+            "revisionTime": "2017-06-07T09:37:11Z"
+        },
+        {
+            "checksumSHA1": "aJ/kX/eCUlrCJBZ26Hwh/RXzAIw=",
+            "path": "github.com/golang/freetype/raster",
+            "revision": "e2365dfdc4a05e4b8299a783240d4a7d5a65d4e4",
+            "revisionTime": "2017-06-09T00:35:04Z"
+        },
+        {
+            "checksumSHA1": "I3u9Uh9thka1gsgch6QEiPkaAr0=",
+            "path": "github.com/golang/freetype/truetype",
+            "revision": "e2365dfdc4a05e4b8299a783240d4a7d5a65d4e4",
+            "revisionTime": "2017-06-09T00:35:04Z"
+        },
+        {
+            "checksumSHA1": "yIkYzW7bzAD81zHyuCNmEj4+oxQ=",
+            "path": "github.com/gopherjs/gopherjs/js",
+            "revision": "2b1d432c8a82c9bff0b0baffaeb3ec6e92974112",
+            "revisionTime": "2017-07-02T15:34:43Z"
+        },
+        {
+            "checksumSHA1": "f8ymbNz7auqUlnN8WEAMUQnjkeM=",
+            "path": "github.com/goxjs/gl",
+            "revision": "af363aeed155600d6cb8096d166e3042399390f8",
+            "revisionTime": "2017-04-18T05:06:31Z"
+        },
+        {
+            "checksumSHA1": "rqUize2+h/Oc/nyEqfRBM7i+9hQ=",
+            "path": "github.com/goxjs/glfw",
+            "revision": "e641a0f2e9652ab43ac57da98a0592ea776dbcf5",
+            "revisionTime": "2017-01-13T20:10:07Z"
+        },
+        {
+            "checksumSHA1": "+U1IB5N4LDS74y4fXjARb4/S4IE=",
+            "path": "golang.org/x/image/font",
+            "revision": "426cfd8eeb6e08ab1932954e09e3c2cb2bc6e36d",
+            "revisionTime": "2017-05-14T06:33:48Z"
+        },
+        {
+            "checksumSHA1": "euzvwlMLxyD0hwc+raoVsDLv6j4=",
+            "path": "golang.org/x/image/math/fixed",
+            "revision": "426cfd8eeb6e08ab1932954e09e3c2cb2bc6e36d",
+            "revisionTime": "2017-05-14T06:33:48Z"
+        },
+        {
+            "checksumSHA1": "MoGb7h/3OeTlEsOvC/y9uqdTgA8=",
+            "path": "honnef.co/go/js/dom",
+            "revision": "f6f2b4f1821b71948b656d29c27dc8de9a32e59b",
+            "revisionTime": "2017-07-25T15:57:53Z"
+        }
+    ],
+    "rootPath": "github.com/google/gxui"
+}

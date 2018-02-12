@@ -1,9 +1,13 @@
 language: go
 go:
-  - 1.4
+  - 1.7.x
+  - 1.8.x
+  - 1.9.x
 before_install:
   - sudo apt-get update
-  - sudo apt-get install -qq libxi-dev libxcursor-dev libxrandr-dev libxinerama-dev mesa-common-dev libgl1-mesa-dev libxxf86vm-dev
+  - sudo apt-get install -qq libxi-dev libxcursor-dev 
+  - sudo apt-get install libxrandr-dev libxinerama-dev 
+  - sudo apt-get install mesa-common-dev libgl1-mesa-dev libxxf86vm-dev
 install:
   - go get golang.org/x/tools/cmd/vet
 script:
