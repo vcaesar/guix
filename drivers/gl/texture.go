@@ -7,8 +7,8 @@ package gl
 import (
 	"image"
 
-	"github.com/google/gxui/math"
 	"github.com/goxjs/gl"
+	"github.com/vcaesar/guix/math"
 )
 
 type texture struct {

@@ -5,9 +5,9 @@
 package mixins
 
 import (
-	"github.com/google/gxui"
-	"github.com/google/gxui/math"
-	"github.com/google/gxui/mixins/base"
+	"github.com/vcaesar/guix"
+	"github.com/vcaesar/guix/math"
+	"github.com/vcaesar/guix/mixins/base"
 )
 
 type BubbleOverlayOuter interface {

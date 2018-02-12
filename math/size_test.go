@@ -4,7 +4,7 @@
 
 package math
 
-import test "github.com/google/gxui/testing"
+import test "github.com/vcaesar/guix/testing"
 import "testing"
 
 func TestSizeEdgeAlignedFitTopEdge(t *testing.T) {

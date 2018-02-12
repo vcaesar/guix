@@ -13,9 +13,9 @@ import (
 	_ "image/png"
 	"os"
 
-	"github.com/google/gxui"
-	"github.com/google/gxui/drivers/gl"
-	"github.com/google/gxui/samples/flags"
+	"github.com/vcaesar/guix"
+	"github.com/vcaesar/guix/drivers/gl"
+	"github.com/vcaesar/guix/samples/flags"
 )
 
 func appMain(driver gxui.Driver) {

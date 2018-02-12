@@ -4,7 +4,7 @@
 
 package gxui
 
-import test "github.com/google/gxui/testing"
+import test "github.com/vcaesar/guix/testing"
 import (
 	"strings"
 	"testing"

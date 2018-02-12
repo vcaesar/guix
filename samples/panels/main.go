@@ -5,9 +5,9 @@
 package main
 
 import (
-	"github.com/google/gxui"
-	"github.com/google/gxui/drivers/gl"
-	"github.com/google/gxui/samples/flags"
+	"github.com/vcaesar/guix"
+	"github.com/vcaesar/guix/drivers/gl"
+	"github.com/vcaesar/guix/samples/flags"
 )
 
 // Create a PanelHolder with a 3 panels

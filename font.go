@@ -5,7 +5,7 @@
 package gxui
 
 import (
-	"github.com/google/gxui/math"
+	"github.com/vcaesar/guix/math"
 )
 
 // A Font represents a TrueType font loaded by the GXUI driver.

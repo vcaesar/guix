@@ -7,9 +7,9 @@ package mixins
 import (
 	"strings"
 
-	"github.com/google/gxui"
-	"github.com/google/gxui/math"
-	"github.com/google/gxui/mixins/parts"
+	"github.com/vcaesar/guix"
+	"github.com/vcaesar/guix/math"
+	"github.com/vcaesar/guix/mixins/parts"
 )
 
 type TextBoxLine interface {
@@ -363,7 +363,7 @@ func (t *TextBox) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 	case gxui.KeyC:
 		if ev.Modifier.Control() {
 			parts := make([]string, t.controller.SelectionCount())
-			for i, _ := range parts {
+			for i := range parts {
 				parts[i] = t.controller.SelectionText(i)
 				if parts[i] == "" {
 					// Copy line instead.

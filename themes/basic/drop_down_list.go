@@ -5,9 +5,9 @@
 package basic
 
 import (
-	"github.com/google/gxui"
-	"github.com/google/gxui/math"
-	"github.com/google/gxui/mixins"
+	"github.com/vcaesar/guix"
+	"github.com/vcaesar/guix/math"
+	"github.com/vcaesar/guix/mixins"
 )
 
 type DropDownList struct {

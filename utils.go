@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"unicode/utf8"
 
-	"github.com/google/gxui/math"
+	"github.com/vcaesar/guix/math"
 )
 
 type ParentPoint struct {
@@ -92,7 +92,7 @@ func TopControlsUnder(p math.Point, c Parent) ControlPointList {
 }
 
 func ControlsUnder(p math.Point, c Parent) ControlPointList {
-	toVisit := []ParentPoint{ParentPoint{c, p}}
+	toVisit := []ParentPoint{{c, p}}
 	l := ControlPointList{}
 	for len(toVisit) > 0 {
 		c = toVisit[0].C

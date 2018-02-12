@@ -7,7 +7,7 @@ package gl
 import (
 	"fmt"
 
-	"github.com/google/gxui/math"
+	"github.com/vcaesar/guix/math"
 )
 
 // 16:16 fixed point ratio of DIPs to pixels

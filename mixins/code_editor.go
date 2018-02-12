@@ -6,8 +6,8 @@ package mixins
 
 import (
 	"fmt"
-	"github.com/google/gxui"
-	"github.com/google/gxui/math"
+	"github.com/vcaesar/guix"
+	"github.com/vcaesar/guix/math"
 	"strings"
 )
 

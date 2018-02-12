@@ -7,11 +7,11 @@ package main
 import (
 	"time"
 
-	"github.com/google/gxui"
-	"github.com/google/gxui/drivers/gl"
-	"github.com/google/gxui/gxfont"
-	"github.com/google/gxui/math"
-	"github.com/google/gxui/samples/flags"
+	"github.com/vcaesar/guix"
+	"github.com/vcaesar/guix/drivers/gl"
+	"github.com/vcaesar/guix/gxfont"
+	"github.com/vcaesar/guix/math"
+	"github.com/vcaesar/guix/samples/flags"
 )
 
 func appMain(driver gxui.Driver) {
@@ -34,7 +34,7 @@ func appMain(driver gxui.Driver) {
 	ticker := time.NewTicker(time.Millisecond * 30)
 	go func() {
 		phase := float32(0)
-		for _ = range ticker.C {
+		for range ticker.C {
 			c := gxui.Color{
 				R: 0.75 + 0.25*math.Cosf((phase+0.000)*math.TwoPi),
 				G: 0.75 + 0.25*math.Cosf((phase+0.333)*math.TwoPi),

@@ -1,8 +1,8 @@
 package basic
 
 import (
-	"github.com/google/gxui"
-	"github.com/google/gxui/mixins"
+	"github.com/vcaesar/guix"
+	"github.com/vcaesar/guix/mixins"
 )
 
 func CreateTableLayout(theme *Theme) gxui.TableLayout {

@@ -7,9 +7,9 @@ package basic
 import (
 	"time"
 
-	"github.com/google/gxui"
-	"github.com/google/gxui/math"
-	"github.com/google/gxui/mixins"
+	"github.com/vcaesar/guix"
+	"github.com/vcaesar/guix/math"
+	"github.com/vcaesar/guix/mixins"
 )
 
 type ProgressBar struct {
@@ -31,7 +31,7 @@ func CreateProgressBar(theme *Theme) gxui.ProgressBar {
 		driver := theme.Driver()
 		b.ticker = time.NewTicker(time.Millisecond * 50)
 		go func() {
-			for _ = range b.ticker.C {
+			for range b.ticker.C {
 				if !driver.Call(b.animationTick) {
 					return
 				}

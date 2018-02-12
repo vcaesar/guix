@@ -7,9 +7,9 @@ package gl
 import (
 	"fmt"
 
-	"github.com/google/gxui"
-	"github.com/google/gxui/math"
 	"github.com/goxjs/gl"
+	"github.com/vcaesar/guix"
+	"github.com/vcaesar/guix/math"
 )
 
 type drawStateStack []drawState

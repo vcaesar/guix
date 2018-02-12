@@ -5,7 +5,7 @@
 package basic
 
 import (
-	"github.com/google/gxui"
+	"github.com/vcaesar/guix"
 )
 
 type Theme struct {

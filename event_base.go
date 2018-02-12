@@ -48,7 +48,7 @@ func (e *EventBase) init(signature interface{}) {
 
 	f := reflect.TypeOf(signature)
 	e.paramTypes = make([]reflect.Type, f.NumIn())
-	for i, _ := range e.paramTypes {
+	for i := range e.paramTypes {
 		e.paramTypes[i] = f.In(i)
 	}
 	e.isVariadic = f.IsVariadic()
@@ -149,7 +149,7 @@ func (e *EventBase) Listen(listener interface{}) EventSubscription {
 	reflectTy := reflect.TypeOf(listener)
 	if reflectTy.Kind() == reflect.Func {
 		paramTypes = make([]reflect.Type, reflectTy.NumIn())
-		for i, _ := range paramTypes {
+		for i := range paramTypes {
 			paramTypes[i] = reflectTy.In(i)
 		}
 		function = reflect.ValueOf(listener)

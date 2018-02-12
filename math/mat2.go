@@ -39,7 +39,7 @@ func (m Mat2) String() string {
 		s[i] = fmt.Sprintf("%.5f", v)
 		l = Max(l, len(s[i]))
 	}
-	for i, _ := range m {
+	for i := range m {
 		for len(s[i]) < l {
 			s[i] = " " + s[i]
 		}
