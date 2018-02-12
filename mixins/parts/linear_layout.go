@@ -11,16 +11,16 @@ import (
 )
 
 type LinearLayoutOuter interface {
-	gxui.Container
+	guix.Container
 	outer.Sized
 }
 
 type LinearLayout struct {
 	outer               LinearLayoutOuter
-	direction           gxui.Direction
-	sizeMode            gxui.SizeMode
-	horizontalAlignment gxui.HorizontalAlignment
-	verticalAlignment   gxui.VerticalAlignment
+	direction           guix.Direction
+	sizeMode            guix.SizeMode
+	horizontalAlignment guix.HorizontalAlignment
+	verticalAlignment   guix.VerticalAlignment
 }
 
 func (l *LinearLayout) Init(outer LinearLayoutOuter) {
@@ -47,47 +47,47 @@ func (l *LinearLayout) LayoutChildren() {
 		// Calculate minor-axis alignment
 		var minor int
 		switch l.direction.Orientation() {
-		case gxui.Horizontal:
+		case guix.Horizontal:
 			switch l.verticalAlignment {
-			case gxui.AlignTop:
+			case guix.AlignTop:
 				minor = cm.T
-			case gxui.AlignMiddle:
+			case guix.AlignMiddle:
 				minor = (s.H - cs.H) / 2
-			case gxui.AlignBottom:
+			case guix.AlignBottom:
 				minor = s.H - cs.H
 			}
-		case gxui.Vertical:
+		case guix.Vertical:
 			switch l.horizontalAlignment {
-			case gxui.AlignLeft:
+			case guix.AlignLeft:
 				minor = cm.L
-			case gxui.AlignCenter:
+			case guix.AlignCenter:
 				minor = (s.W - cs.W) / 2
-			case gxui.AlignRight:
+			case guix.AlignRight:
 				minor = s.W - cs.W
 			}
 		}
 
 		// Peform layout
 		switch l.direction {
-		case gxui.LeftToRight:
+		case guix.LeftToRight:
 			major += cm.L
 			c.Offset = math.Point{X: major, Y: minor}.Add(o)
 			major += cs.W
 			major += cm.R
 			s.W -= cs.W + cm.W()
-		case gxui.RightToLeft:
+		case guix.RightToLeft:
 			major -= cm.R
 			c.Offset = math.Point{X: major - cs.W, Y: minor}.Add(o)
 			major -= cs.W
 			major -= cm.L
 			s.W -= cs.W + cm.W()
-		case gxui.TopToBottom:
+		case guix.TopToBottom:
 			major += cm.T
 			c.Offset = math.Point{X: minor, Y: major}.Add(o)
 			major += cs.H
 			major += cm.B
 			s.H -= cs.H + cm.H()
-		case gxui.BottomToTop:
+		case guix.BottomToTop:
 			major -= cm.B
 			c.Offset = math.Point{X: minor, Y: major - cs.H}.Add(o)
 			major -= cs.H
@@ -122,44 +122,44 @@ func (l *LinearLayout) DesiredSize(min, max math.Size) math.Size {
 	return bounds.Size().Expand(l.outer.Padding()).Clamp(min, max)
 }
 
-func (l *LinearLayout) Direction() gxui.Direction {
+func (l *LinearLayout) Direction() guix.Direction {
 	return l.direction
 }
 
-func (l *LinearLayout) SetDirection(d gxui.Direction) {
+func (l *LinearLayout) SetDirection(d guix.Direction) {
 	if l.direction != d {
 		l.direction = d
 		l.outer.Relayout()
 	}
 }
 
-func (l *LinearLayout) SizeMode() gxui.SizeMode {
+func (l *LinearLayout) SizeMode() guix.SizeMode {
 	return l.sizeMode
 }
 
-func (l *LinearLayout) SetSizeMode(mode gxui.SizeMode) {
+func (l *LinearLayout) SetSizeMode(mode guix.SizeMode) {
 	if l.sizeMode != mode {
 		l.sizeMode = mode
 		l.outer.Relayout()
 	}
 }
 
-func (l *LinearLayout) HorizontalAlignment() gxui.HorizontalAlignment {
+func (l *LinearLayout) HorizontalAlignment() guix.HorizontalAlignment {
 	return l.horizontalAlignment
 }
 
-func (l *LinearLayout) SetHorizontalAlignment(alignment gxui.HorizontalAlignment) {
+func (l *LinearLayout) SetHorizontalAlignment(alignment guix.HorizontalAlignment) {
 	if l.horizontalAlignment != alignment {
 		l.horizontalAlignment = alignment
 		l.outer.Relayout()
 	}
 }
 
-func (l *LinearLayout) VerticalAlignment() gxui.VerticalAlignment {
+func (l *LinearLayout) VerticalAlignment() guix.VerticalAlignment {
 	return l.verticalAlignment
 }
 
-func (l *LinearLayout) SetVerticalAlignment(alignment gxui.VerticalAlignment) {
+func (l *LinearLayout) SetVerticalAlignment(alignment guix.VerticalAlignment) {
 	if l.verticalAlignment != alignment {
 		l.verticalAlignment = alignment
 		l.outer.Relayout()

@@ -9,5 +9,5 @@ import (
 )
 
 type Parenter interface {
-	Parent() gxui.Parent
+	Parent() guix.Parent
 }

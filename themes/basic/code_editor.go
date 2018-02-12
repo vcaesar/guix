@@ -15,20 +15,20 @@ type CodeEditor struct {
 	theme *Theme
 }
 
-func CreateCodeEditor(theme *Theme) gxui.CodeEditor {
+func CreateCodeEditor(theme *Theme) guix.CodeEditor {
 	t := &CodeEditor{}
 	t.theme = theme
 	t.Init(t, theme.Driver(), theme, theme.DefaultMonospaceFont())
 	t.SetTextColor(theme.TextBoxDefaultStyle.FontColor)
 	t.SetMargin(math.Spacing{L: 3, T: 3, R: 3, B: 3})
 	t.SetPadding(math.Spacing{L: 3, T: 3, R: 3, B: 3})
-	t.SetBorderPen(gxui.TransparentPen)
+	t.SetBorderPen(guix.TransparentPen)
 
 	return t
 }
 
 // mixins.CodeEditor overrides
-func (t *CodeEditor) Paint(c gxui.Canvas) {
+func (t *CodeEditor) Paint(c guix.Canvas) {
 	t.CodeEditor.Paint(c)
 
 	if t.HasFocus() {
@@ -37,7 +37,7 @@ func (t *CodeEditor) Paint(c gxui.Canvas) {
 	}
 }
 
-func (t *CodeEditor) CreateSuggestionList() gxui.List {
+func (t *CodeEditor) CreateSuggestionList() guix.List {
 	l := t.theme.CreateList()
 	l.SetBackgroundBrush(t.theme.CodeSuggestionListStyle.Brush)
 	l.SetBorderPen(t.theme.CodeSuggestionListStyle.Pen)

@@ -15,7 +15,7 @@ type BubbleOverlay struct {
 	theme *Theme
 }
 
-func CreateBubbleOverlay(theme *Theme) gxui.BubbleOverlay {
+func CreateBubbleOverlay(theme *Theme) guix.BubbleOverlay {
 	b := &BubbleOverlay{}
 	b.Init(b, theme)
 	b.SetMargin(math.Spacing{L: 3, T: 3, R: 3, B: 3})

@@ -12,29 +12,29 @@ import (
 
 type SplitterLayoutOuter interface {
 	base.ContainerOuter
-	CreateSplitterBar() gxui.Control
+	CreateSplitterBar() guix.Control
 }
 
 type SplitterLayout struct {
 	base.Container
 
 	outer         SplitterLayoutOuter
-	theme         gxui.Theme
-	orientation   gxui.Orientation
+	theme         guix.Theme
+	orientation   guix.Orientation
 	splitterWidth int
-	weights       map[gxui.Control]float32
+	weights       map[guix.Control]float32
 }
 
-func (l *SplitterLayout) Init(outer SplitterLayoutOuter, theme gxui.Theme) {
+func (l *SplitterLayout) Init(outer SplitterLayoutOuter, theme guix.Theme) {
 	l.Container.Init(outer, theme)
 	l.outer = outer
 	l.theme = theme
-	l.weights = make(map[gxui.Control]float32)
+	l.weights = make(map[guix.Control]float32)
 	l.splitterWidth = 4
 	l.SetMouseEventTarget(true)
 
 	// Interface compliance test
-	_ = gxui.SplitterLayout(l)
+	_ = guix.SplitterLayout(l)
 }
 
 func (l *SplitterLayout) LayoutChildren() {
@@ -86,11 +86,11 @@ func (l *SplitterLayout) LayoutChildren() {
 	}
 }
 
-func (l *SplitterLayout) ChildWeight(child gxui.Control) float32 {
+func (l *SplitterLayout) ChildWeight(child guix.Control) float32 {
 	return l.weights[child]
 }
 
-func (l *SplitterLayout) SetChildWeight(child gxui.Control, weight float32) {
+func (l *SplitterLayout) SetChildWeight(child guix.Control, weight float32) {
 	if l.weights[child] != weight {
 		l.weights[child] = weight
 		l.LayoutChildren()
@@ -101,27 +101,27 @@ func (l *SplitterLayout) DesiredSize(min, max math.Size) math.Size {
 	return max
 }
 
-func (l *SplitterLayout) Orientation() gxui.Orientation {
+func (l *SplitterLayout) Orientation() guix.Orientation {
 	return l.orientation
 }
 
-func (l *SplitterLayout) SetOrientation(o gxui.Orientation) {
+func (l *SplitterLayout) SetOrientation(o guix.Orientation) {
 	if l.orientation != o {
 		l.orientation = o
 		l.LayoutChildren()
 	}
 }
 
-func (l *SplitterLayout) CreateSplitterBar() gxui.Control {
+func (l *SplitterLayout) CreateSplitterBar() guix.Control {
 	b := &SplitterBar{}
 	b.Init(b, l.theme)
 	b.OnSplitterDragged(func(wndPnt math.Point) { l.SplitterDragged(b, wndPnt) })
 	return b
 }
 
-func (l *SplitterLayout) SplitterDragged(splitter gxui.Control, wndPnt math.Point) {
+func (l *SplitterLayout) SplitterDragged(splitter guix.Control, wndPnt math.Point) {
 	o := l.orientation
-	p := gxui.WindowToChild(wndPnt, l.outer)
+	p := guix.WindowToChild(wndPnt, l.outer)
 	children := l.Container.Children()
 	splitterIndex := children.IndexOf(splitter)
 	childA, childB := children[splitterIndex-1], children[splitterIndex+1]
@@ -137,7 +137,7 @@ func (l *SplitterLayout) SplitterDragged(splitter gxui.Control, wndPnt math.Poin
 }
 
 // parts.Container overrides
-func (l *SplitterLayout) AddChildAt(index int, control gxui.Control) *gxui.Child {
+func (l *SplitterLayout) AddChildAt(index int, control guix.Control) *guix.Child {
 	l.weights[control] = 1.0
 	if len(l.Container.Children()) > 0 {
 		l.Container.AddChildAt(index, l.outer.CreateSplitterBar())

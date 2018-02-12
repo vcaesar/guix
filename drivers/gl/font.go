@@ -79,28 +79,28 @@ func (f *font) glyphTable(resolution resolution) *glyphTable {
 	return t
 }
 
-func (f *font) align(rect math.Rect, size math.Size, ascent int, h gxui.HorizontalAlignment, v gxui.VerticalAlignment) math.Point {
+func (f *font) align(rect math.Rect, size math.Size, ascent int, h guix.HorizontalAlignment, v guix.VerticalAlignment) math.Point {
 	var origin math.Point
 	switch h {
-	case gxui.AlignLeft:
+	case guix.AlignLeft:
 		origin.X = rect.Min.X
-	case gxui.AlignCenter:
+	case guix.AlignCenter:
 		origin.X = rect.Mid().X - (size.W / 2)
-	case gxui.AlignRight:
+	case guix.AlignRight:
 		origin.X = rect.Max.X - size.W
 	}
 	switch v {
-	case gxui.AlignTop:
+	case guix.AlignTop:
 		origin.Y = rect.Min.Y + ascent
-	case gxui.AlignMiddle:
+	case guix.AlignMiddle:
 		origin.Y = rect.Mid().Y - (size.H / 2) + ascent
-	case gxui.AlignBottom:
+	case guix.AlignBottom:
 		origin.Y = rect.Max.Y - size.H + ascent
 	}
 	return origin
 }
 
-func (f *font) DrawRunes(ctx *context, runes []rune, offsets []math.Point, col gxui.Color, ds *drawState) {
+func (f *font) DrawRunes(ctx *context, runes []rune, offsets []math.Point, col guix.Color, ds *drawState) {
 	if len(runes) != len(offsets) {
 		panic(fmt.Errorf("There must be the same number of runes to offsets. Got %d runes and %d offsets",
 			len(runes), len(offsets)))
@@ -126,7 +126,7 @@ func (f *font) Size() int {
 	return f.size
 }
 
-func (f *font) Measure(fl *gxui.TextBlock) math.Size {
+func (f *font) Measure(fl *guix.TextBlock) math.Size {
 	size := math.Size{W: 0, H: f.glyphMaxSizeDips.H}
 	var offset math.Point
 	for _, r := range fl.Runes {
@@ -141,7 +141,7 @@ func (f *font) Measure(fl *gxui.TextBlock) math.Size {
 	return size
 }
 
-func (f *font) Layout(fl *gxui.TextBlock) (offsets []math.Point) {
+func (f *font) Layout(fl *guix.TextBlock) (offsets []math.Point) {
 	sizeDips := math.Size{}
 	offsets = make([]math.Point, len(fl.Runes))
 	var offset math.Point

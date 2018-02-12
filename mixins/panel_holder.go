@@ -13,7 +13,7 @@ import (
 )
 
 type PanelTab interface {
-	gxui.Control
+	guix.Control
 	SetText(string)
 	SetActive(bool)
 }
@@ -24,14 +24,14 @@ type PanelTabCreater interface {
 
 type PanelHolderOuter interface {
 	base.ContainerNoControlOuter
-	gxui.PanelHolder
+	guix.PanelHolder
 	PanelTabCreater
 }
 
 type PanelEntry struct {
 	Tab                   PanelTab
-	Panel                 gxui.Control
-	MouseDownSubscription gxui.EventSubscription
+	Panel                 guix.Control
+	MouseDownSubscription guix.EventSubscription
 }
 
 type PanelHolder struct {
@@ -39,13 +39,13 @@ type PanelHolder struct {
 
 	outer PanelHolderOuter
 
-	theme     gxui.Theme
-	tabLayout gxui.LinearLayout
+	theme     guix.Theme
+	tabLayout guix.LinearLayout
 	entries   []PanelEntry
 	selected  PanelEntry
 }
 
-func insertIndex(holder gxui.PanelHolder, at math.Point) int {
+func insertIndex(holder guix.PanelHolder, at math.Point) int {
 	count := holder.PanelCount()
 	bestIndex := count
 	bestScore := float32(1e20)
@@ -61,17 +61,17 @@ func insertIndex(holder gxui.PanelHolder, at math.Point) int {
 		size := tab.Size()
 		ml := math.Point{Y: size.H / 2}
 		mr := math.Point{Y: size.H / 2, X: size.W}
-		score(gxui.TransformCoordinate(ml, tab, holder), i)
-		score(gxui.TransformCoordinate(mr, tab, holder), i+1)
+		score(guix.TransformCoordinate(ml, tab, holder), i)
+		score(guix.TransformCoordinate(mr, tab, holder), i+1)
 	}
 	return bestIndex
 }
 
-func beginTabDragging(holder gxui.PanelHolder, panel gxui.Control, name string, window gxui.Window) {
-	var mms, mos gxui.EventSubscription
-	mms = window.OnMouseMove(func(ev gxui.MouseEvent) {
-		for _, c := range gxui.TopControlsUnder(ev.WindowPoint, ev.Window) {
-			if over, ok := c.C.(gxui.PanelHolder); ok {
+func beginTabDragging(holder guix.PanelHolder, panel guix.Control, name string, window guix.Window) {
+	var mms, mos guix.EventSubscription
+	mms = window.OnMouseMove(func(ev guix.MouseEvent) {
+		for _, c := range guix.TopControlsUnder(ev.WindowPoint, ev.Window) {
+			if over, ok := c.C.(guix.PanelHolder); ok {
 				insertAt := insertIndex(over, c.P)
 				if over == holder {
 					if insertAt > over.PanelIndex(panel) {
@@ -85,26 +85,26 @@ func beginTabDragging(holder gxui.PanelHolder, panel gxui.Control, name string, 
 			}
 		}
 	})
-	mos = window.OnMouseUp(func(gxui.MouseEvent) {
+	mos = window.OnMouseUp(func(guix.MouseEvent) {
 		mms.Unlisten()
 		mos.Unlisten()
 	})
 }
 
-func (p *PanelHolder) Init(outer PanelHolderOuter, theme gxui.Theme) {
+func (p *PanelHolder) Init(outer PanelHolderOuter, theme guix.Theme) {
 	p.Container.Init(outer, theme)
 
 	p.outer = outer
 	p.theme = theme
 
 	p.tabLayout = theme.CreateLinearLayout()
-	p.tabLayout.SetDirection(gxui.LeftToRight)
+	p.tabLayout.SetDirection(guix.LeftToRight)
 	p.Container.AddChild(p.tabLayout)
 	p.SetMargin(math.Spacing{L: 1, T: 2, R: 1, B: 1})
 	p.SetMouseEventTarget(true) // For drag-drop targets
 
 	// Interface compliance test
-	_ = gxui.PanelHolder(p)
+	_ = guix.PanelHolder(p)
 }
 
 func (p *PanelHolder) LayoutChildren() {
@@ -129,23 +129,23 @@ func (p *PanelHolder) DesiredSize(min, max math.Size) math.Size {
 	return max
 }
 
-func (p *PanelHolder) SelectedPanel() gxui.Control {
+func (p *PanelHolder) SelectedPanel() guix.Control {
 	return p.selected.Panel
 }
 
-// gxui.PanelHolder compliance
-func (p *PanelHolder) AddPanel(panel gxui.Control, name string) {
+// guix.PanelHolder compliance
+func (p *PanelHolder) AddPanel(panel guix.Control, name string) {
 	p.AddPanelAt(panel, name, len(p.entries))
 }
 
-func (p *PanelHolder) AddPanelAt(panel gxui.Control, name string, index int) {
+func (p *PanelHolder) AddPanelAt(panel guix.Control, name string, index int) {
 	if index < 0 || index > p.PanelCount() {
 		panic(fmt.Errorf("Index %d is out of bounds. Acceptable range: [%d - %d]",
 			index, 0, p.PanelCount()))
 	}
 	tab := p.outer.CreatePanelTab()
 	tab.SetText(name)
-	mds := tab.OnMouseDown(func(ev gxui.MouseEvent) {
+	mds := tab.OnMouseDown(func(ev guix.MouseEvent) {
 		p.Select(p.PanelIndex(panel))
 		beginTabDragging(p.outer, panel, name, ev.Window)
 	})
@@ -164,7 +164,7 @@ func (p *PanelHolder) AddPanelAt(panel gxui.Control, name string, index int) {
 	}
 }
 
-func (p *PanelHolder) RemovePanel(panel gxui.Control) {
+func (p *PanelHolder) RemovePanel(panel guix.Control) {
 	index := p.PanelIndex(panel)
 	if index < 0 {
 		panic("PanelHolder does not contain panel")
@@ -211,7 +211,7 @@ func (p *PanelHolder) PanelCount() int {
 	return len(p.entries)
 }
 
-func (p *PanelHolder) PanelIndex(panel gxui.Control) int {
+func (p *PanelHolder) PanelIndex(panel guix.Control) int {
 	for i, e := range p.entries {
 		if e.Panel == panel {
 			return i
@@ -220,10 +220,10 @@ func (p *PanelHolder) PanelIndex(panel gxui.Control) int {
 	return -1
 }
 
-func (p *PanelHolder) Panel(index int) gxui.Control {
+func (p *PanelHolder) Panel(index int) guix.Control {
 	return p.entries[index].Panel
 }
 
-func (p *PanelHolder) Tab(index int) gxui.Control {
+func (p *PanelHolder) Tab(index int) guix.Control {
 	return p.entries[index].Tab
 }

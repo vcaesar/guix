@@ -8,4 +8,4 @@ import (
 	"github.com/vcaesar/guix"
 )
 
-var Blue30 = gxui.Color{R: 0.0, G: 0.0, B: 0.3, A: 1.0}
+var Blue30 = guix.Color{R: 0.0, G: 0.0, B: 0.3, A: 1.0}

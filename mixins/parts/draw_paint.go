@@ -23,8 +23,8 @@ type DrawPaintOuter interface {
 
 type DrawPaint struct {
 	outer           DrawPaintOuter
-	driver          gxui.Driver
-	canvas          gxui.Canvas
+	driver          guix.Driver
+	canvas          guix.Canvas
 	dirty           bool
 	redrawRequested bool
 }
@@ -35,7 +35,7 @@ func verifyDetach(o DrawPaintOuter) {
 	}
 }
 
-func (d *DrawPaint) Init(outer DrawPaintOuter, theme gxui.Theme) {
+func (d *DrawPaint) Init(outer DrawPaintOuter, theme guix.Theme) {
 	d.outer = outer
 	d.driver = theme.Driver()
 
@@ -54,7 +54,7 @@ func (d *DrawPaint) Redraw() {
 	}
 }
 
-func (d *DrawPaint) Draw() gxui.Canvas {
+func (d *DrawPaint) Draw() guix.Canvas {
 	if !d.outer.Attached() {
 		panic(fmt.Errorf("Attempting to draw a non-attached control %T", d.outer))
 	}

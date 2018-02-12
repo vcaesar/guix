@@ -1,4 +1,4 @@
-package gxui
+package guix
 
 type TableLayout interface {
 	Control

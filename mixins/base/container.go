@@ -11,7 +11,7 @@ import (
 )
 
 type ContainerNoControlOuter interface {
-	gxui.Container
+	guix.Container
 	outer.PaintChilder
 	outer.Painter
 	outer.LayoutChildren
@@ -19,7 +19,7 @@ type ContainerNoControlOuter interface {
 
 type ContainerOuter interface {
 	ContainerNoControlOuter
-	gxui.Control
+	guix.Control
 }
 
 type Container struct {
@@ -34,7 +34,7 @@ type Container struct {
 	parts.Visible
 }
 
-func (c *Container) Init(outer ContainerOuter, theme gxui.Theme) {
+func (c *Container) Init(outer ContainerOuter, theme guix.Theme) {
 	c.Attachable.Init(outer)
 	c.Container.Init(outer)
 	c.DrawPaint.Init(outer, theme)
@@ -46,5 +46,5 @@ func (c *Container) Init(outer ContainerOuter, theme gxui.Theme) {
 	c.Visible.Init(outer)
 
 	// Interface compliance test
-	_ = gxui.Container(c)
+	_ = guix.Container(c)
 }

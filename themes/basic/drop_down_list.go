@@ -15,17 +15,17 @@ type DropDownList struct {
 	theme *Theme
 }
 
-func CreateDropDownList(theme *Theme) gxui.DropDownList {
+func CreateDropDownList(theme *Theme) guix.DropDownList {
 	l := &DropDownList{}
 	l.Init(l, theme)
 	l.OnGainedFocus(l.Redraw)
 	l.OnLostFocus(l.Redraw)
 	l.List().OnAttach(l.Redraw)
 	l.List().OnDetach(l.Redraw)
-	l.OnMouseEnter(func(gxui.MouseEvent) {
+	l.OnMouseEnter(func(guix.MouseEvent) {
 		l.SetBorderPen(theme.DropDownListOverStyle.Pen)
 	})
-	l.OnMouseExit(func(gxui.MouseEvent) {
+	l.OnMouseExit(func(guix.MouseEvent) {
 		l.SetBorderPen(theme.DropDownListDefaultStyle.Pen)
 	})
 	l.SetPadding(math.CreateSpacing(2))
@@ -36,7 +36,7 @@ func CreateDropDownList(theme *Theme) gxui.DropDownList {
 }
 
 // mixin.List overrides
-func (l *DropDownList) Paint(c gxui.Canvas) {
+func (l *DropDownList) Paint(c guix.Canvas) {
 	l.DropDownList.Paint(c)
 	if l.HasFocus() || l.ListShowing() {
 		r := l.Size().Rect().ContractI(1)
@@ -44,6 +44,6 @@ func (l *DropDownList) Paint(c gxui.Canvas) {
 	}
 }
 
-func (l *DropDownList) DrawSelection(c gxui.Canvas, r math.Rect) {
+func (l *DropDownList) DrawSelection(c guix.Canvas, r math.Rect) {
 	c.DrawRoundedRect(r, 2.0, 2.0, 2.0, 2.0, l.theme.HighlightStyle.Pen, l.theme.HighlightStyle.Brush)
 }

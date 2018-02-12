@@ -15,7 +15,7 @@ type Button struct {
 	theme *Theme
 }
 
-func CreateButton(theme *Theme) gxui.Button {
+func CreateButton(theme *Theme) guix.Button {
 	b := &Button{}
 	b.Init(b, theme)
 	b.theme = theme
@@ -23,23 +23,23 @@ func CreateButton(theme *Theme) gxui.Button {
 	b.SetMargin(math.Spacing{L: 3, T: 3, R: 3, B: 3})
 	b.SetBackgroundBrush(b.theme.ButtonDefaultStyle.Brush)
 	b.SetBorderPen(b.theme.ButtonDefaultStyle.Pen)
-	b.OnMouseEnter(func(gxui.MouseEvent) { b.Redraw() })
-	b.OnMouseExit(func(gxui.MouseEvent) { b.Redraw() })
-	b.OnMouseDown(func(gxui.MouseEvent) { b.Redraw() })
-	b.OnMouseUp(func(gxui.MouseEvent) { b.Redraw() })
+	b.OnMouseEnter(func(guix.MouseEvent) { b.Redraw() })
+	b.OnMouseExit(func(guix.MouseEvent) { b.Redraw() })
+	b.OnMouseDown(func(guix.MouseEvent) { b.Redraw() })
+	b.OnMouseUp(func(guix.MouseEvent) { b.Redraw() })
 	b.OnGainedFocus(b.Redraw)
 	b.OnLostFocus(b.Redraw)
 	return b
 }
 
 // Button internal overrides
-func (b *Button) Paint(c gxui.Canvas) {
+func (b *Button) Paint(c guix.Canvas) {
 	pen := b.Button.BorderPen()
 	brush := b.Button.BackgroundBrush()
 	fontColor := b.theme.ButtonDefaultStyle.FontColor
 
 	switch {
-	case b.IsMouseDown(gxui.MouseButtonLeft) && b.IsMouseOver():
+	case b.IsMouseDown(guix.MouseButtonLeft) && b.IsMouseOver():
 		pen = b.theme.ButtonPressedStyle.Pen
 		brush = b.theme.ButtonPressedStyle.Brush
 		fontColor = b.theme.ButtonPressedStyle.FontColor
@@ -55,11 +55,11 @@ func (b *Button) Paint(c gxui.Canvas) {
 
 	r := b.Size().Rect()
 
-	c.DrawRoundedRect(r, 2, 2, 2, 2, gxui.TransparentPen, brush)
+	c.DrawRoundedRect(r, 2, 2, 2, 2, guix.TransparentPen, brush)
 
 	b.PaintChildren.Paint(c)
 
-	c.DrawRoundedRect(r, 2, 2, 2, 2, pen, gxui.TransparentBrush)
+	c.DrawRoundedRect(r, 2, 2, 2, 2, pen, guix.TransparentBrush)
 
 	if b.IsChecked() {
 		pen = b.theme.HighlightStyle.Pen

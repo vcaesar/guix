@@ -13,7 +13,7 @@ import (
 
 type ProgressBarOuter interface {
 	base.ControlOuter
-	PaintProgress(gxui.Canvas, math.Rect, float32)
+	PaintProgress(guix.Canvas, math.Rect, float32)
 }
 
 type ProgressBar struct {
@@ -25,7 +25,7 @@ type ProgressBar struct {
 	progress, target int
 }
 
-func (b *ProgressBar) Init(outer ProgressBarOuter, theme gxui.Theme) {
+func (b *ProgressBar) Init(outer ProgressBarOuter, theme guix.Theme) {
 	b.outer = outer
 	b.Control.Init(outer, theme)
 	b.BackgroundBorderPainter.Init(outer)
@@ -33,10 +33,10 @@ func (b *ProgressBar) Init(outer ProgressBarOuter, theme gxui.Theme) {
 	b.target = 100
 
 	// Interface compliance test
-	_ = gxui.ProgressBar(b)
+	_ = guix.ProgressBar(b)
 }
 
-func (b *ProgressBar) Paint(c gxui.Canvas) {
+func (b *ProgressBar) Paint(c guix.Canvas) {
 	frac := math.Saturate(float32(b.progress) / float32(b.target))
 	r := b.outer.Size().Rect()
 	b.PaintBackground(c, r)
@@ -44,16 +44,16 @@ func (b *ProgressBar) Paint(c gxui.Canvas) {
 	b.PaintBorder(c, r)
 }
 
-func (b *ProgressBar) PaintProgress(c gxui.Canvas, r math.Rect, frac float32) {
+func (b *ProgressBar) PaintProgress(c guix.Canvas, r math.Rect, frac float32) {
 	r.Max.X = math.Lerp(r.Min.X, r.Max.X, frac)
-	c.DrawRect(r, gxui.CreateBrush(gxui.Gray50))
+	c.DrawRect(r, guix.CreateBrush(guix.Gray50))
 }
 
 func (b *ProgressBar) DesiredSize(min, max math.Size) math.Size {
 	return b.desiredSize.Clamp(min, max)
 }
 
-// gxui.ProgressBar compliance
+// guix.ProgressBar compliance
 func (b *ProgressBar) SetDesiredSize(size math.Size) {
 	b.desiredSize = size
 	b.Relayout()

@@ -9,11 +9,11 @@ import (
 )
 
 type SuggestionAdapter struct {
-	gxui.FilteredListAdapter
+	guix.FilteredListAdapter
 }
 
-func (a *SuggestionAdapter) SetSuggestions(suggestions []gxui.CodeSuggestion) {
-	items := make([]gxui.FilteredListItem, len(suggestions))
+func (a *SuggestionAdapter) SetSuggestions(suggestions []guix.CodeSuggestion) {
+	items := make([]guix.FilteredListItem, len(suggestions))
 	for i, s := range suggestions {
 		items[i].Name = s.Name()
 		items[i].Data = s
@@ -21,6 +21,6 @@ func (a *SuggestionAdapter) SetSuggestions(suggestions []gxui.CodeSuggestion) {
 	a.SetItems(items)
 }
 
-func (a *SuggestionAdapter) Suggestion(item gxui.AdapterItem) gxui.CodeSuggestion {
-	return item.(gxui.FilteredListItem).Data.(gxui.CodeSuggestion)
+func (a *SuggestionAdapter) Suggestion(item guix.AdapterItem) guix.CodeSuggestion {
+	return item.(guix.FilteredListItem).Data.(guix.CodeSuggestion)
 }

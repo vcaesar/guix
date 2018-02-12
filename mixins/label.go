@@ -20,15 +20,15 @@ type Label struct {
 	base.Control
 
 	outer               LabelOuter
-	font                gxui.Font
-	color               gxui.Color
-	horizontalAlignment gxui.HorizontalAlignment
-	verticalAlignment   gxui.VerticalAlignment
+	font                guix.Font
+	color               guix.Color
+	horizontalAlignment guix.HorizontalAlignment
+	verticalAlignment   guix.VerticalAlignment
 	multiline           bool
 	text                string
 }
 
-func (l *Label) Init(outer LabelOuter, theme gxui.Theme, font gxui.Font, color gxui.Color) {
+func (l *Label) Init(outer LabelOuter, theme guix.Theme, font guix.Font, color guix.Color) {
 	if font == nil {
 		panic("Cannot create a label with a nil font")
 	}
@@ -36,10 +36,10 @@ func (l *Label) Init(outer LabelOuter, theme gxui.Theme, font gxui.Font, color g
 	l.outer = outer
 	l.font = font
 	l.color = color
-	l.horizontalAlignment = gxui.AlignLeft
-	l.verticalAlignment = gxui.AlignMiddle
+	l.horizontalAlignment = guix.AlignLeft
+	l.verticalAlignment = guix.AlignMiddle
 	// Interface compliance test
-	_ = gxui.Label(l)
+	_ = guix.Label(l)
 }
 
 func (l *Label) Text() string {
@@ -53,22 +53,22 @@ func (l *Label) SetText(text string) {
 	}
 }
 
-func (l *Label) Font() gxui.Font {
+func (l *Label) Font() guix.Font {
 	return l.font
 }
 
-func (l *Label) SetFont(font gxui.Font) {
+func (l *Label) SetFont(font guix.Font) {
 	if l.font != font {
 		l.font = font
 		l.Relayout()
 	}
 }
 
-func (l *Label) Color() gxui.Color {
+func (l *Label) Color() guix.Color {
 	return l.color
 }
 
-func (l *Label) SetColor(color gxui.Color) {
+func (l *Label) SetColor(color guix.Color) {
 	if l.color != color {
 		l.color = color
 		l.outer.Redraw()
@@ -91,34 +91,34 @@ func (l *Label) DesiredSize(min, max math.Size) math.Size {
 	if !l.multiline {
 		t = strings.Replace(t, "\n", " ", -1)
 	}
-	s := l.font.Measure(&gxui.TextBlock{Runes: []rune(t)})
+	s := l.font.Measure(&guix.TextBlock{Runes: []rune(t)})
 	return s.Clamp(min, max)
 }
 
-func (l *Label) SetHorizontalAlignment(horizontalAlignment gxui.HorizontalAlignment) {
+func (l *Label) SetHorizontalAlignment(horizontalAlignment guix.HorizontalAlignment) {
 	if l.horizontalAlignment != horizontalAlignment {
 		l.horizontalAlignment = horizontalAlignment
 		l.Redraw()
 	}
 }
 
-func (l *Label) HorizontalAlignment() gxui.HorizontalAlignment {
+func (l *Label) HorizontalAlignment() guix.HorizontalAlignment {
 	return l.horizontalAlignment
 }
 
-func (l *Label) SetVerticalAlignment(verticalAlignment gxui.VerticalAlignment) {
+func (l *Label) SetVerticalAlignment(verticalAlignment guix.VerticalAlignment) {
 	if l.verticalAlignment != verticalAlignment {
 		l.verticalAlignment = verticalAlignment
 		l.Redraw()
 	}
 }
 
-func (l *Label) VerticalAlignment() gxui.VerticalAlignment {
+func (l *Label) VerticalAlignment() guix.VerticalAlignment {
 	return l.verticalAlignment
 }
 
 // parts.DrawPaint overrides
-func (l *Label) Paint(c gxui.Canvas) {
+func (l *Label) Paint(c guix.Canvas) {
 	r := l.outer.Size().Rect()
 	t := l.text
 	if !l.multiline {
@@ -126,7 +126,7 @@ func (l *Label) Paint(c gxui.Canvas) {
 	}
 
 	runes := []rune(t)
-	offsets := l.font.Layout(&gxui.TextBlock{
+	offsets := l.font.Layout(&guix.TextBlock{
 		Runes:     runes,
 		AlignRect: r,
 		H:         l.horizontalAlignment,

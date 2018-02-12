@@ -18,16 +18,16 @@ type ScrollBar struct {
 	base.Control
 	outer ScrollBarOuter
 
-	orientation         gxui.Orientation
+	orientation         guix.Orientation
 	thickness           int
 	minBarLength        int
 	scrollPositionFrom  int
 	scrollPositionTo    int
 	scrollLimit         int
-	railBrush, barBrush gxui.Brush
-	railPen, barPen     gxui.Pen
+	railBrush, barBrush guix.Brush
+	railPen, barPen     guix.Pen
 	barRect             math.Rect
-	onScroll            gxui.Event
+	onScroll            guix.Event
 	autoHide            bool
 }
 
@@ -70,7 +70,7 @@ func (s *ScrollBar) updateBarRect() {
 	s.barRect = b
 }
 
-func (s *ScrollBar) Init(outer ScrollBarOuter, theme gxui.Theme) {
+func (s *ScrollBar) Init(outer ScrollBarOuter, theme guix.Theme) {
 	s.Control.Init(outer, theme)
 
 	s.outer = outer
@@ -79,13 +79,13 @@ func (s *ScrollBar) Init(outer ScrollBarOuter, theme gxui.Theme) {
 	s.scrollPositionFrom = 0
 	s.scrollPositionTo = 100
 	s.scrollLimit = 100
-	s.onScroll = gxui.CreateEvent(s.SetScrollPosition)
+	s.onScroll = guix.CreateEvent(s.SetScrollPosition)
 
 	// Interface compliance test
-	_ = gxui.ScrollBar(s)
+	_ = guix.ScrollBar(s)
 }
 
-func (s *ScrollBar) OnScroll(f func(from, to int)) gxui.EventSubscription {
+func (s *ScrollBar) OnScroll(f func(from, to int)) guix.EventSubscription {
 	return s.onScroll.Listen(f)
 }
 
@@ -103,49 +103,49 @@ func (s *ScrollBar) DesiredSize(min, max math.Size) math.Size {
 	}
 }
 
-func (s *ScrollBar) Paint(c gxui.Canvas) {
+func (s *ScrollBar) Paint(c guix.Canvas) {
 	c.DrawRoundedRect(s.outer.Size().Rect(), 3, 3, 3, 3, s.railPen, s.railBrush)
 	c.DrawRoundedRect(s.barRect, 3, 3, 3, 3, s.barPen, s.barBrush)
 }
 
-func (s *ScrollBar) RailBrush() gxui.Brush {
+func (s *ScrollBar) RailBrush() guix.Brush {
 	return s.railBrush
 }
 
-func (s *ScrollBar) SetRailBrush(b gxui.Brush) {
+func (s *ScrollBar) SetRailBrush(b guix.Brush) {
 	if s.railBrush != b {
 		s.railBrush = b
 		s.Redraw()
 	}
 }
 
-func (s *ScrollBar) BarBrush() gxui.Brush {
+func (s *ScrollBar) BarBrush() guix.Brush {
 	return s.barBrush
 }
 
-func (s *ScrollBar) SetBarBrush(b gxui.Brush) {
+func (s *ScrollBar) SetBarBrush(b guix.Brush) {
 	if s.barBrush != b {
 		s.barBrush = b
 		s.Redraw()
 	}
 }
 
-func (s *ScrollBar) RailPen() gxui.Pen {
+func (s *ScrollBar) RailPen() guix.Pen {
 	return s.railPen
 }
 
-func (s *ScrollBar) SetRailPen(b gxui.Pen) {
+func (s *ScrollBar) SetRailPen(b guix.Pen) {
 	if s.railPen != b {
 		s.railPen = b
 		s.Redraw()
 	}
 }
 
-func (s *ScrollBar) BarPen() gxui.Pen {
+func (s *ScrollBar) BarPen() guix.Pen {
 	return s.barPen
 }
 
-func (s *ScrollBar) SetBarPen(b gxui.Pen) {
+func (s *ScrollBar) SetBarPen(b guix.Pen) {
 	if s.barPen != b {
 		s.barPen = b
 		s.Redraw()
@@ -195,11 +195,11 @@ func (s *ScrollBar) IsVisible() bool {
 	return s.Control.IsVisible()
 }
 
-func (s *ScrollBar) Orientation() gxui.Orientation {
+func (s *ScrollBar) Orientation() guix.Orientation {
 	return s.orientation
 }
 
-func (s *ScrollBar) SetOrientation(o gxui.Orientation) {
+func (s *ScrollBar) SetOrientation(o guix.Orientation) {
 	if s.orientation != o {
 		s.orientation = o
 		s.Redraw()
@@ -207,7 +207,7 @@ func (s *ScrollBar) SetOrientation(o gxui.Orientation) {
 }
 
 // InputEventHandler overrides
-func (s *ScrollBar) Click(ev gxui.MouseEvent) (consume bool) {
+func (s *ScrollBar) Click(ev guix.MouseEvent) (consume bool) {
 	if !s.barRect.Contains(ev.Point) {
 		p := s.positionAt(ev.Point)
 		from, to := s.scrollPositionFrom, s.scrollPositionTo
@@ -225,15 +225,15 @@ func (s *ScrollBar) Click(ev gxui.MouseEvent) (consume bool) {
 	return true
 }
 
-func (s *ScrollBar) MouseDown(ev gxui.MouseEvent) {
+func (s *ScrollBar) MouseDown(ev guix.MouseEvent) {
 	if s.barRect.Contains(ev.Point) {
 		initialOffset := ev.Point.Sub(s.barRect.Min)
-		var mms, mus gxui.EventSubscription
-		mms = ev.Window.OnMouseMove(func(we gxui.MouseEvent) {
-			p := gxui.WindowToChild(we.WindowPoint, s.outer)
+		var mms, mus guix.EventSubscription
+		mms = ev.Window.OnMouseMove(func(we guix.MouseEvent) {
+			p := guix.WindowToChild(we.WindowPoint, s.outer)
 			s.SetScrollPosition(s.rangeAt(p.Sub(initialOffset)))
 		})
-		mus = ev.Window.OnMouseUp(func(we gxui.MouseEvent) {
+		mus = ev.Window.OnMouseUp(func(we guix.MouseEvent) {
 			mms.Unlisten()
 			mus.Unlisten()
 		})

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package gxui
+package guix
 
 // Focusable is the optional interface implmented by controls that have the
 // ability to acquire focus. A control with focus will receive keyboard input

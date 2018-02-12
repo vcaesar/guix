@@ -13,7 +13,7 @@ import (
 )
 
 type ContainerOuter interface {
-	gxui.Container
+	guix.Container
 	outer.Attachable
 	outer.IsVisibler
 	outer.LayoutChildren
@@ -23,14 +23,14 @@ type ContainerOuter interface {
 
 type Container struct {
 	outer              ContainerOuter
-	children           gxui.Children
+	children           guix.Children
 	isMouseEventTarget bool
 	relayoutSuspended  bool
 }
 
 func (c *Container) Init(outer ContainerOuter) {
 	c.outer = outer
-	c.children = gxui.Children{}
+	c.children = guix.Children{}
 	outer.OnAttach(func() {
 		for _, v := range c.children {
 			v.Control.Attach()
@@ -64,17 +64,17 @@ func (c *Container) SetRelayoutSuspended(enable bool) {
 	c.relayoutSuspended = true
 }
 
-// gxui.Parent compliance
-func (c *Container) Children() gxui.Children {
+// guix.Parent compliance
+func (c *Container) Children() guix.Children {
 	return c.children
 }
 
-// gxui.Container compliance
-func (c *Container) AddChild(control gxui.Control) *gxui.Child {
+// guix.Container compliance
+func (c *Container) AddChild(control guix.Control) *guix.Child {
 	return c.outer.AddChildAt(len(c.children), control)
 }
 
-func (c *Container) AddChildAt(index int, control gxui.Control) *gxui.Child {
+func (c *Container) AddChildAt(index int, control guix.Control) *guix.Child {
 	if control.Parent() != nil {
 		panic("Child already has a parent")
 	}
@@ -83,7 +83,7 @@ func (c *Container) AddChildAt(index int, control gxui.Control) *gxui.Child {
 			index, 0, len(c.children)))
 	}
 
-	child := &gxui.Child{Control: control}
+	child := &guix.Child{Control: control}
 
 	c.children = append(c.children, nil)
 	copy(c.children[index+1:], c.children[index:])
@@ -99,7 +99,7 @@ func (c *Container) AddChildAt(index int, control gxui.Control) *gxui.Child {
 	return child
 }
 
-func (c *Container) RemoveChild(control gxui.Control) {
+func (c *Container) RemoveChild(control guix.Control) {
 	for i := range c.children {
 		if c.children[i].Control == control {
 			c.outer.RemoveChildAt(i)

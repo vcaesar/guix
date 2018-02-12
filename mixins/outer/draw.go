@@ -9,5 +9,5 @@ import (
 )
 
 type Draw interface {
-	Draw() gxui.Canvas
+	Draw() guix.Canvas
 }

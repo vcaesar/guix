@@ -20,18 +20,18 @@ type BubbleOverlay struct {
 	targetPoint math.Point
 	arrowLength int
 	arrowWidth  int
-	brush       gxui.Brush
-	pen         gxui.Pen
+	brush       guix.Brush
+	pen         guix.Pen
 }
 
-func (o *BubbleOverlay) Init(outer BubbleOverlayOuter, theme gxui.Theme) {
+func (o *BubbleOverlay) Init(outer BubbleOverlayOuter, theme guix.Theme) {
 	o.Container.Init(outer, theme)
 	o.outer = outer
 	o.arrowLength = 20
 	o.arrowWidth = 15
 
 	// Interface compliance test
-	_ = gxui.BubbleOverlay(o)
+	_ = guix.BubbleOverlay(o)
 }
 
 func (o *BubbleOverlay) LayoutChildren() {
@@ -49,7 +49,7 @@ func (o *BubbleOverlay) DesiredSize(min, max math.Size) math.Size {
 	return max
 }
 
-func (o *BubbleOverlay) Show(control gxui.Control, target math.Point) {
+func (o *BubbleOverlay) Show(control guix.Control, target math.Point) {
 	o.Hide()
 	o.outer.AddChild(control)
 	o.targetPoint = target
@@ -59,29 +59,29 @@ func (o *BubbleOverlay) Hide() {
 	o.outer.RemoveAll()
 }
 
-func (o *BubbleOverlay) Brush() gxui.Brush {
+func (o *BubbleOverlay) Brush() guix.Brush {
 	return o.brush
 }
 
-func (o *BubbleOverlay) SetBrush(brush gxui.Brush) {
+func (o *BubbleOverlay) SetBrush(brush guix.Brush) {
 	if o.brush != brush {
 		o.brush = brush
 		o.Redraw()
 	}
 }
 
-func (o *BubbleOverlay) Pen() gxui.Pen {
+func (o *BubbleOverlay) Pen() guix.Pen {
 	return o.pen
 }
 
-func (o *BubbleOverlay) SetPen(pen gxui.Pen) {
+func (o *BubbleOverlay) SetPen(pen guix.Pen) {
 	if o.pen != pen {
 		o.pen = pen
 		o.Redraw()
 	}
 }
 
-func (o *BubbleOverlay) Paint(c gxui.Canvas) {
+func (o *BubbleOverlay) Paint(c guix.Canvas) {
 	if !o.IsVisible() {
 		return
 	}
@@ -89,7 +89,7 @@ func (o *BubbleOverlay) Paint(c gxui.Canvas) {
 		b := child.Bounds().Expand(o.outer.Padding())
 		t := o.targetPoint
 		a := o.arrowWidth / 2
-		var p gxui.Polygon
+		var p guix.Polygon
 
 		switch {
 		case t.X < b.Min.X:
@@ -100,7 +100,7 @@ func (o *BubbleOverlay) Paint(c gxui.Canvas) {
 			    E                 |
 			    D-----------------C
 			*/
-			p = gxui.Polygon{
+			p = guix.Polygon{
 				/*A*/ {Position: b.TL(), RoundedRadius: 5},
 				/*B*/ {Position: b.TR(), RoundedRadius: 5},
 				/*C*/ {Position: b.BR(), RoundedRadius: 5},
@@ -118,7 +118,7 @@ func (o *BubbleOverlay) Paint(c gxui.Canvas) {
 			   |                 E
 			   G-----------------F
 			*/
-			p = gxui.Polygon{
+			p = guix.Polygon{
 				/*A*/ {Position: b.TL(), RoundedRadius: 5},
 				/*B*/ {Position: b.TR(), RoundedRadius: 5},
 				/*C*/ {Position: math.Point{X: b.Max.X, Y: math.Clamp(t.Y-a, b.Min.Y, b.Max.Y-a)}, RoundedRadius: 0},
@@ -137,7 +137,7 @@ func (o *BubbleOverlay) Paint(c gxui.Canvas) {
 			   |                 |
 			   G-----------------F
 			*/
-			p = gxui.Polygon{
+			p = guix.Polygon{
 				/*A*/ {Position: b.TL(), RoundedRadius: 5},
 				/*B*/ {Position: math.Point{X: math.Clamp(t.X-a, b.Min.X, b.Max.X-a), Y: b.Min.Y}, RoundedRadius: 0},
 				/*C*/ {Position: t, RoundedRadius: 0},
@@ -156,7 +156,7 @@ func (o *BubbleOverlay) Paint(c gxui.Canvas) {
 			                \ /
 			                 E
 			*/
-			p = gxui.Polygon{
+			p = guix.Polygon{
 				/*A*/ {Position: b.TL(), RoundedRadius: 5},
 				/*B*/ {Position: b.TR(), RoundedRadius: 5},
 				/*C*/ {Position: b.BR(), RoundedRadius: 5},

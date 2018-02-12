@@ -21,25 +21,25 @@ type Button struct {
 	parts.Focusable
 
 	outer      ButtonOuter
-	theme      gxui.Theme
-	label      gxui.Label
-	buttonType gxui.ButtonType
+	theme      guix.Theme
+	label      guix.Label
+	buttonType guix.ButtonType
 	checked    bool
 }
 
-func (b *Button) Init(outer ButtonOuter, theme gxui.Theme) {
+func (b *Button) Init(outer ButtonOuter, theme guix.Theme) {
 	b.LinearLayout.Init(outer, theme)
 	b.Focusable.Init(outer)
 
-	b.buttonType = gxui.PushButton
+	b.buttonType = guix.PushButton
 	b.theme = theme
 	b.outer = outer
 
 	// Interface compliance test
-	_ = gxui.Button(b)
+	_ = guix.Button(b)
 }
 
-func (b *Button) Label() gxui.Label {
+func (b *Button) Label() guix.Label {
 	return b.label
 }
 
@@ -70,11 +70,11 @@ func (b *Button) SetText(text string) {
 	}
 }
 
-func (b *Button) Type() gxui.ButtonType {
+func (b *Button) Type() guix.ButtonType {
 	return b.buttonType
 }
 
-func (b *Button) SetType(buttonType gxui.ButtonType) {
+func (b *Button) SetType(buttonType guix.ButtonType) {
 	if buttonType != b.buttonType {
 		b.buttonType = buttonType
 		b.outer.Redraw()
@@ -93,9 +93,9 @@ func (b *Button) SetChecked(checked bool) {
 }
 
 // InputEventHandler override
-func (b *Button) Click(ev gxui.MouseEvent) (consume bool) {
-	if ev.Button == gxui.MouseButtonLeft {
-		if b.buttonType == gxui.ToggleButton {
+func (b *Button) Click(ev guix.MouseEvent) (consume bool) {
+	if ev.Button == guix.MouseButtonLeft {
+		if b.buttonType == guix.ToggleButton {
 			b.outer.SetChecked(!b.outer.IsChecked())
 		}
 		b.LinearLayout.Click(ev)
@@ -104,11 +104,11 @@ func (b *Button) Click(ev gxui.MouseEvent) (consume bool) {
 	return b.LinearLayout.Click(ev)
 }
 
-func (b *Button) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
+func (b *Button) KeyPress(ev guix.KeyboardEvent) (consume bool) {
 	consume = b.LinearLayout.KeyPress(ev)
-	if ev.Key == gxui.KeySpace || ev.Key == gxui.KeyEnter {
-		me := gxui.MouseEvent{
-			Button: gxui.MouseButtonLeft,
+	if ev.Key == guix.KeySpace || ev.Key == guix.KeyEnter {
+		me := guix.MouseEvent{
+			Button: guix.MouseButtonLeft,
 		}
 		return b.Click(me)
 	}

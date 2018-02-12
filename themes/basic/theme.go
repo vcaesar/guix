@@ -9,11 +9,11 @@ import (
 )
 
 type Theme struct {
-	DriverInfo               gxui.Driver
-	DefaultFontInfo          gxui.Font
-	DefaultMonospaceFontInfo gxui.Font
+	DriverInfo               guix.Driver
+	DefaultFontInfo          guix.Font
+	DefaultMonospaceFontInfo guix.Font
 
-	WindowBackground gxui.Color
+	WindowBackground guix.Color
 
 	BubbleOverlayStyle        Style
 	ButtonDefaultStyle        Style
@@ -40,91 +40,91 @@ type Theme struct {
 	TextBoxOverStyle          Style
 }
 
-// gxui.Theme compliance
-func (t *Theme) Driver() gxui.Driver {
+// guix.Theme compliance
+func (t *Theme) Driver() guix.Driver {
 	return t.DriverInfo
 }
 
-func (t *Theme) DefaultFont() gxui.Font {
+func (t *Theme) DefaultFont() guix.Font {
 	return t.DefaultFontInfo
 }
 
-func (t *Theme) SetDefaultFont(f gxui.Font) {
+func (t *Theme) SetDefaultFont(f guix.Font) {
 	t.DefaultFontInfo = f
 }
 
-func (t *Theme) DefaultMonospaceFont() gxui.Font {
+func (t *Theme) DefaultMonospaceFont() guix.Font {
 	return t.DefaultMonospaceFontInfo
 }
 
-func (t *Theme) SetDefaultMonospaceFont(f gxui.Font) {
+func (t *Theme) SetDefaultMonospaceFont(f guix.Font) {
 	t.DefaultMonospaceFontInfo = f
 }
 
-func (t *Theme) CreateBubbleOverlay() gxui.BubbleOverlay {
+func (t *Theme) CreateBubbleOverlay() guix.BubbleOverlay {
 	return CreateBubbleOverlay(t)
 }
 
-func (t *Theme) CreateButton() gxui.Button {
+func (t *Theme) CreateButton() guix.Button {
 	return CreateButton(t)
 }
 
-func (t *Theme) CreateCodeEditor() gxui.CodeEditor {
+func (t *Theme) CreateCodeEditor() guix.CodeEditor {
 	return CreateCodeEditor(t)
 }
 
-func (t *Theme) CreateDropDownList() gxui.DropDownList {
+func (t *Theme) CreateDropDownList() guix.DropDownList {
 	return CreateDropDownList(t)
 }
 
-func (t *Theme) CreateImage() gxui.Image {
+func (t *Theme) CreateImage() guix.Image {
 	return CreateImage(t)
 }
 
-func (t *Theme) CreateLabel() gxui.Label {
+func (t *Theme) CreateLabel() guix.Label {
 	return CreateLabel(t)
 }
 
-func (t *Theme) CreateLinearLayout() gxui.LinearLayout {
+func (t *Theme) CreateLinearLayout() guix.LinearLayout {
 	return CreateLinearLayout(t)
 }
 
-func (t *Theme) CreateList() gxui.List {
+func (t *Theme) CreateList() guix.List {
 	return CreateList(t)
 }
 
-func (t *Theme) CreatePanelHolder() gxui.PanelHolder {
+func (t *Theme) CreatePanelHolder() guix.PanelHolder {
 	return CreatePanelHolder(t)
 }
 
-func (t *Theme) CreateProgressBar() gxui.ProgressBar {
+func (t *Theme) CreateProgressBar() guix.ProgressBar {
 	return CreateProgressBar(t)
 }
 
-func (t *Theme) CreateScrollBar() gxui.ScrollBar {
+func (t *Theme) CreateScrollBar() guix.ScrollBar {
 	return CreateScrollBar(t)
 }
 
-func (t *Theme) CreateScrollLayout() gxui.ScrollLayout {
+func (t *Theme) CreateScrollLayout() guix.ScrollLayout {
 	return CreateScrollLayout(t)
 }
 
-func (t *Theme) CreateSplitterLayout() gxui.SplitterLayout {
+func (t *Theme) CreateSplitterLayout() guix.SplitterLayout {
 	return CreateSplitterLayout(t)
 }
 
-func (t *Theme) CreateTableLayout() gxui.TableLayout {
+func (t *Theme) CreateTableLayout() guix.TableLayout {
 	return CreateTableLayout(t)
 }
 
-func (t *Theme) CreateTextBox() gxui.TextBox {
+func (t *Theme) CreateTextBox() guix.TextBox {
 	return CreateTextBox(t)
 }
 
-func (t *Theme) CreateTree() gxui.Tree {
+func (t *Theme) CreateTree() guix.Tree {
 	return CreateTree(t)
 }
 
-func (t *Theme) CreateWindow(width, height int, title string) gxui.Window {
+func (t *Theme) CreateWindow(width, height int, title string) guix.Window {
 	return CreateWindow(t, width, height, title)
 }

@@ -27,18 +27,18 @@ type TableLayout struct {
 
 	outer TableLayoutOuter
 
-	grid    map[gxui.Control]Cell
+	grid    map[guix.Control]Cell
 	rows    int
 	columns int
 }
 
-func (l *TableLayout) Init(outer TableLayoutOuter, theme gxui.Theme) {
+func (l *TableLayout) Init(outer TableLayoutOuter, theme guix.Theme) {
 	l.Container.Init(outer, theme)
 	l.outer = outer
-	l.grid = make(map[gxui.Control]Cell)
+	l.grid = make(map[guix.Control]Cell)
 
 	// Interface compliance test
-	_ = gxui.TableLayout(l)
+	_ = guix.TableLayout(l)
 }
 
 func (l *TableLayout) LayoutChildren() {
@@ -102,7 +102,7 @@ func (l *TableLayout) SetGrid(columns, rows int) {
 	}
 }
 
-func (l *TableLayout) SetChildAt(x, y, w, h int, child gxui.Control) *gxui.Child {
+func (l *TableLayout) SetChildAt(x, y, w, h int, child guix.Control) *guix.Child {
 	if x+w > l.columns || y+h > l.rows {
 		panic("Cell is out of grid")
 	}
@@ -117,7 +117,7 @@ func (l *TableLayout) SetChildAt(x, y, w, h int, child gxui.Control) *gxui.Child
 	return l.Container.AddChild(child)
 }
 
-func (l *TableLayout) RemoveChild(child gxui.Control) {
+func (l *TableLayout) RemoveChild(child guix.Control) {
 	delete(l.grid, child)
 	l.Container.RemoveChild(child)
 }

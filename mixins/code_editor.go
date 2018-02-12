@@ -13,28 +13,28 @@ import (
 
 type CodeEditorOuter interface {
 	TextBoxOuter
-	CreateSuggestionList() gxui.List
+	CreateSuggestionList() guix.List
 }
 
 type CodeEditor struct {
 	TextBox
 	outer              CodeEditorOuter
-	layers             gxui.CodeSyntaxLayers
+	layers             guix.CodeSyntaxLayers
 	suggestionAdapter  *SuggestionAdapter
-	suggestionList     gxui.List
-	suggestionProvider gxui.CodeSuggestionProvider
+	suggestionList     guix.List
+	suggestionProvider guix.CodeSuggestionProvider
 	tabWidth           int
-	theme              gxui.Theme
+	theme              guix.Theme
 }
 
-func (t *CodeEditor) updateSpans(edits []gxui.TextBoxEdit) {
+func (t *CodeEditor) updateSpans(edits []guix.TextBoxEdit) {
 	runeCount := len(t.controller.TextRunes())
 	for _, l := range t.layers {
 		l.UpdateSpans(runeCount, edits)
 	}
 }
 
-func (t *CodeEditor) Init(outer CodeEditorOuter, driver gxui.Driver, theme gxui.Theme, font gxui.Font) {
+func (t *CodeEditor) Init(outer CodeEditorOuter, driver guix.Driver, theme guix.Theme, font guix.Font) {
 	t.outer = outer
 	t.tabWidth = 2
 	t.theme = theme
@@ -47,25 +47,25 @@ func (t *CodeEditor) Init(outer CodeEditorOuter, driver gxui.Driver, theme gxui.
 	t.controller.OnTextChanged(t.updateSpans)
 
 	// Interface compliance test
-	_ = gxui.CodeEditor(t)
+	_ = guix.CodeEditor(t)
 }
 
-func (t *CodeEditor) ItemSize(theme gxui.Theme) math.Size {
+func (t *CodeEditor) ItemSize(theme guix.Theme) math.Size {
 	return math.Size{W: math.MaxSize.W, H: t.font.GlyphMaxSize().H}
 }
 
-func (t *CodeEditor) CreateSuggestionList() gxui.List {
+func (t *CodeEditor) CreateSuggestionList() guix.List {
 	l := t.theme.CreateList()
-	l.SetBackgroundBrush(gxui.DefaultBrush)
-	l.SetBorderPen(gxui.DefaultPen)
+	l.SetBackgroundBrush(guix.DefaultBrush)
+	l.SetBorderPen(guix.DefaultPen)
 	return l
 }
 
-func (t *CodeEditor) SyntaxLayers() gxui.CodeSyntaxLayers {
+func (t *CodeEditor) SyntaxLayers() guix.CodeSyntaxLayers {
 	return t.layers
 }
 
-func (t *CodeEditor) SetSyntaxLayers(layers gxui.CodeSyntaxLayers) {
+func (t *CodeEditor) SetSyntaxLayers(layers guix.CodeSyntaxLayers) {
 	t.layers = layers
 	t.onRedrawLines.Fire()
 }
@@ -78,11 +78,11 @@ func (t *CodeEditor) SetTabWidth(tabWidth int) {
 	t.tabWidth = tabWidth
 }
 
-func (t *CodeEditor) SuggestionProvider() gxui.CodeSuggestionProvider {
+func (t *CodeEditor) SuggestionProvider() guix.CodeSuggestionProvider {
 	return t.suggestionProvider
 }
 
-func (t *CodeEditor) SetSuggestionProvider(provider gxui.CodeSuggestionProvider) {
+func (t *CodeEditor) SetSuggestionProvider(provider guix.CodeSuggestionProvider) {
 	if t.suggestionProvider != provider {
 		t.suggestionProvider = provider
 		if t.IsSuggestionListShowing() {
@@ -124,7 +124,7 @@ func (t *CodeEditor) ShowSuggestionList() {
 	// TODO: What if the last caret is not visible?
 	bounds := t.Size().Rect().Contract(t.Padding())
 	line := t.Line(lineIdx)
-	lineOffset := gxui.ChildToParent(math.ZeroPoint, line, t.outer)
+	lineOffset := guix.ChildToParent(math.ZeroPoint, line, t.outer)
 	target := line.PositionAt(caret).Add(lineOffset)
 	cs := t.suggestionList.DesiredSize(math.ZeroSize, bounds.Size())
 	t.suggestionList.Select(t.suggestionList.Adapter().ItemAt(0))
@@ -139,21 +139,21 @@ func (t *CodeEditor) HideSuggestionList() {
 }
 
 func (t *CodeEditor) Line(idx int) TextBoxLine {
-	return gxui.FindControl(t.ItemControl(idx).(gxui.Parent), func(c gxui.Control) bool {
+	return guix.FindControl(t.ItemControl(idx).(guix.Parent), func(c guix.Control) bool {
 		_, b := c.(TextBoxLine)
 		return b
 	}).(TextBoxLine)
 }
 
 // mixins.List overrides
-func (t *CodeEditor) Click(ev gxui.MouseEvent) (consume bool) {
+func (t *CodeEditor) Click(ev guix.MouseEvent) (consume bool) {
 	t.HideSuggestionList()
 	return t.TextBox.Click(ev)
 }
 
-func (t *CodeEditor) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
+func (t *CodeEditor) KeyPress(ev guix.KeyboardEvent) (consume bool) {
 	switch ev.Key {
-	case gxui.KeyTab:
+	case guix.KeyTab:
 		replace := true
 		for _, sel := range t.controller.Selections() {
 			s, e := sel.Range()
@@ -172,27 +172,27 @@ func (t *CodeEditor) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 			t.controller.IndentSelection(t.tabWidth)
 		}
 		return true
-	case gxui.KeySpace:
+	case guix.KeySpace:
 		if ev.Modifier.Control() {
 			t.ShowSuggestionList()
 			return
 		}
-	case gxui.KeyUp:
+	case guix.KeyUp:
 		fallthrough
-	case gxui.KeyDown:
+	case guix.KeyDown:
 		if t.IsSuggestionListShowing() {
 			return t.suggestionList.KeyPress(ev)
 		}
-	case gxui.KeyLeft:
+	case guix.KeyLeft:
 		t.HideSuggestionList()
-	case gxui.KeyRight:
+	case guix.KeyRight:
 		t.HideSuggestionList()
-	case gxui.KeyEnter:
+	case guix.KeyEnter:
 		controller := t.controller
 		if t.IsSuggestionListShowing() {
 			text := t.suggestionAdapter.Suggestion(t.suggestionList.Selected()).Code()
 			s, e := controller.WordAt(t.controller.LastCaret())
-			controller.SetSelection(gxui.CreateTextSelection(s, e, false))
+			controller.SetSelection(guix.CreateTextSelection(s, e, false))
 			controller.ReplaceAll(text)
 			controller.Deselect(false)
 			t.HideSuggestionList()
@@ -200,7 +200,7 @@ func (t *CodeEditor) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 			t.controller.ReplaceWithNewlineKeepIndent()
 		}
 		return true
-	case gxui.KeyEscape:
+	case guix.KeyEscape:
 		if t.IsSuggestionListShowing() {
 			t.HideSuggestionList()
 			return true
@@ -209,7 +209,7 @@ func (t *CodeEditor) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 	return t.TextBox.KeyPress(ev)
 }
 
-func (t *CodeEditor) KeyStroke(ev gxui.KeyStrokeEvent) (consume bool) {
+func (t *CodeEditor) KeyStroke(ev guix.KeyStrokeEvent) (consume bool) {
 	consume = t.TextBox.KeyStroke(ev)
 	if t.IsSuggestionListShowing() {
 		t.SortSuggestionList()
@@ -218,7 +218,7 @@ func (t *CodeEditor) KeyStroke(ev gxui.KeyStrokeEvent) (consume bool) {
 }
 
 // mixins.TextBox overrides
-func (t *CodeEditor) CreateLine(theme gxui.Theme, index int) (TextBoxLine, gxui.Control) {
+func (t *CodeEditor) CreateLine(theme guix.Theme, index int) (TextBoxLine, guix.Control) {
 	lineNumber := theme.CreateLabel()
 	lineNumber.SetText(fmt.Sprintf("%.4d", index+1)) // Displayed lines start at 1
 
@@ -226,7 +226,7 @@ func (t *CodeEditor) CreateLine(theme gxui.Theme, index int) (TextBoxLine, gxui.
 	line.Init(line, theme, t, index)
 
 	layout := theme.CreateLinearLayout()
-	layout.SetDirection(gxui.LeftToRight)
+	layout.SetDirection(guix.LeftToRight)
 	layout.AddChild(lineNumber)
 	layout.AddChild(line)
 

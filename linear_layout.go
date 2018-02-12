@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package gxui
+package guix
 
 // LinearLayout is a Container that lays out its child Controls into a column or
 // row. The layout will always start by positioning the first (0'th) child, and

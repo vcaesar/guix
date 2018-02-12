@@ -13,7 +13,7 @@ import (
 	"github.com/vcaesar/guix/samples/flags"
 )
 
-func appMain(driver gxui.Driver) {
+func appMain(driver guix.Driver) {
 	theme := flags.CreateTheme(driver)
 
 	label := theme.CreateLabel()
@@ -26,7 +26,7 @@ func appMain(driver gxui.Driver) {
 	layout := theme.CreateLinearLayout()
 	layout.AddChild(label)
 	layout.AddChild(progressBar)
-	layout.SetHorizontalAlignment(gxui.AlignCenter)
+	layout.SetHorizontalAlignment(guix.AlignCenter)
 
 	window := theme.CreateWindow(800, 600, "Progress bar")
 	window.SetScale(flags.DefaultScaleFactor)

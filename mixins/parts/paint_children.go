@@ -10,7 +10,7 @@ import (
 )
 
 type PaintChildrenOuter interface {
-	gxui.Container
+	guix.Container
 	outer.PaintChilder
 	outer.Sized
 }
@@ -23,7 +23,7 @@ func (p *PaintChildren) Init(outer PaintChildrenOuter) {
 	p.outer = outer
 }
 
-func (p *PaintChildren) Paint(c gxui.Canvas) {
+func (p *PaintChildren) Paint(c guix.Canvas) {
 	for i, v := range p.outer.Children() {
 		if v.Control.IsVisible() {
 			c.Push()
@@ -34,7 +34,7 @@ func (p *PaintChildren) Paint(c gxui.Canvas) {
 	}
 }
 
-func (p *PaintChildren) PaintChild(c gxui.Canvas, child *gxui.Child, idx int) {
+func (p *PaintChildren) PaintChild(c guix.Canvas, child *guix.Child, idx int) {
 	if canvas := child.Control.Draw(); canvas != nil {
 		c.DrawCanvas(canvas, child.Offset)
 	}

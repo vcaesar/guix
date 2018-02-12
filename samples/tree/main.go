@@ -11,13 +11,13 @@ import (
 	"github.com/vcaesar/guix/samples/flags"
 )
 
-// item is used as an gxui.AdapterItem to identifiy each of the nodes.
+// item is used as an guix.AdapterItem to identifiy each of the nodes.
 // Each node's item must be equality-unique for the entire tree.
 type item int
 
 var nextUniqueItem item // the next item to used by node.add
 
-// node is an implementation of gxui.TreeNode.
+// node is an implementation of guix.TreeNode.
 type node struct {
 	name     string  // The name and item for this node.
 	item     item    // The unique item for this node.
@@ -38,18 +38,18 @@ func (n *node) add(name string) *node {
 	return child
 }
 
-// Count implements gxui.TreeNodeContainer.
+// Count implements guix.TreeNodeContainer.
 func (n *node) Count() int {
 	return len(n.children)
 }
 
-// NodeAt implements gxui.TreeNodeContainer.
-func (n *node) NodeAt(index int) gxui.TreeNode {
+// NodeAt implements guix.TreeNodeContainer.
+func (n *node) NodeAt(index int) guix.TreeNode {
 	return n.children[index]
 }
 
-// ItemIndex implements gxui.TreeNodeContainer.
-func (n *node) ItemIndex(item gxui.AdapterItem) int {
+// ItemIndex implements guix.TreeNodeContainer.
+func (n *node) ItemIndex(item guix.AdapterItem) int {
 	for i, c := range n.children {
 		if c.item == item || c.ItemIndex(item) >= 0 {
 			return i
@@ -58,15 +58,15 @@ func (n *node) ItemIndex(item gxui.AdapterItem) int {
 	return -1
 }
 
-// Item implements gxui.TreeNode.
-func (n *node) Item() gxui.AdapterItem {
+// Item implements guix.TreeNode.
+func (n *node) Item() guix.AdapterItem {
 	return n.item
 }
 
-// Create implements gxui.TreeNode.
-func (n *node) Create(theme gxui.Theme) gxui.Control {
+// Create implements guix.TreeNode.
+func (n *node) Create(theme guix.Theme) guix.Control {
 	layout := theme.CreateLinearLayout()
-	layout.SetDirection(gxui.LeftToRight)
+	layout.SetDirection(guix.LeftToRight)
 
 	label := theme.CreateLabel()
 	label.SetText(n.name)
@@ -78,13 +78,13 @@ func (n *node) Create(theme gxui.Theme) gxui.Control {
 
 	addButton := theme.CreateButton()
 	addButton.SetText("+")
-	addButton.OnClick(func(gxui.MouseEvent) { n.add("<new>") })
+	addButton.OnClick(func(guix.MouseEvent) { n.add("<new>") })
 
 	edit := func() {
 		layout.RemoveAll()
 		layout.AddChild(textbox)
 		layout.AddChild(addButton)
-		gxui.SetFocus(textbox)
+		guix.SetFocus(textbox)
 	}
 
 	commit := func() {
@@ -96,7 +96,7 @@ func (n *node) Create(theme gxui.Theme) gxui.Control {
 	}
 
 	// When the user clicks the label, replace it with an editable text-box
-	label.OnClick(func(gxui.MouseEvent) { edit() })
+	label.OnClick(func(guix.MouseEvent) { edit() })
 
 	// When the text-box loses focus, replace it with a label again.
 	textbox.OnLostFocus(commit)
@@ -106,14 +106,14 @@ func (n *node) Create(theme gxui.Theme) gxui.Control {
 	return layout
 }
 
-// adapter is an implementation of gxui.TreeAdapter.
+// adapter is an implementation of guix.TreeAdapter.
 type adapter struct {
-	gxui.AdapterBase
+	guix.AdapterBase
 	node
 }
 
-// Size implements gxui.TreeAdapter.
-func (a *adapter) Size(t gxui.Theme) math.Size {
+// Size implements guix.TreeAdapter.
+func (a *adapter) Size(t guix.Theme) math.Size {
 	return math.Size{W: math.MaxSize.W, H: 18}
 }
 
@@ -161,11 +161,11 @@ func addSpecies(animals *node) map[string]item {
 	return items
 }
 
-func appMain(driver gxui.Driver) {
+func appMain(driver guix.Driver) {
 	theme := flags.CreateTheme(driver)
 
 	layout := theme.CreateLinearLayout()
-	layout.SetDirection(gxui.TopToBottom)
+	layout.SetDirection(guix.TopToBottom)
 
 	adapter := &adapter{}
 
@@ -183,17 +183,17 @@ func appMain(driver gxui.Driver) {
 	layout.AddChild(tree)
 
 	row := theme.CreateLinearLayout()
-	row.SetDirection(gxui.LeftToRight)
+	row.SetDirection(guix.LeftToRight)
 	layout.AddChild(row)
 
 	expandAll := theme.CreateButton()
 	expandAll.SetText("Expand All")
-	expandAll.OnClick(func(gxui.MouseEvent) { tree.ExpandAll() })
+	expandAll.OnClick(func(guix.MouseEvent) { tree.ExpandAll() })
 	row.AddChild(expandAll)
 
 	collapseAll := theme.CreateButton()
 	collapseAll.SetText("Collapse All")
-	collapseAll.OnClick(func(gxui.MouseEvent) { tree.CollapseAll() })
+	collapseAll.OnClick(func(guix.MouseEvent) { tree.CollapseAll() })
 	row.AddChild(collapseAll)
 
 	window := theme.CreateWindow(800, 600, "Tree view")

@@ -18,8 +18,8 @@ import (
 )
 
 var (
-	fileColor      = gxui.Color{R: 0.7, G: 0.8, B: 1.0, A: 1}
-	directoryColor = gxui.Color{R: 0.8, G: 1.0, B: 0.7, A: 1}
+	fileColor      = guix.Color{R: 0.7, G: 0.8, B: 1.0, A: 1}
+	directoryColor = guix.Color{R: 0.8, G: 1.0, B: 0.7, A: 1}
 )
 
 // filesAt returns a list of all immediate files in the given directory path.
@@ -37,10 +37,10 @@ func filesAt(path string) []string {
 	return files
 }
 
-// filesAdapter is an implementation of the gxui.ListAdapter interface.
+// filesAdapter is an implementation of the guix.ListAdapter interface.
 // The AdapterItems returned by this adapter are absolute file path strings.
 type filesAdapter struct {
-	gxui.AdapterBase
+	guix.AdapterBase
 	files []string // The absolute file paths
 }
 
@@ -54,11 +54,11 @@ func (a *filesAdapter) Count() int {
 	return len(a.files)
 }
 
-func (a *filesAdapter) ItemAt(index int) gxui.AdapterItem {
+func (a *filesAdapter) ItemAt(index int) guix.AdapterItem {
 	return a.files[index]
 }
 
-func (a *filesAdapter) ItemIndex(item gxui.AdapterItem) int {
+func (a *filesAdapter) ItemIndex(item guix.AdapterItem) int {
 	path := item.(string)
 	for i, f := range a.files {
 		if f == path {
@@ -68,7 +68,7 @@ func (a *filesAdapter) ItemIndex(item gxui.AdapterItem) int {
 	return -1 // Not found
 }
 
-func (a *filesAdapter) Create(theme gxui.Theme, index int) gxui.Control {
+func (a *filesAdapter) Create(theme guix.Theme, index int) guix.Control {
 	path := a.files[index]
 	_, name := filepath.Split(path)
 	label := theme.CreateLabel()
@@ -81,11 +81,11 @@ func (a *filesAdapter) Create(theme gxui.Theme, index int) gxui.Control {
 	return label
 }
 
-func (a *filesAdapter) Size(gxui.Theme) math.Size {
+func (a *filesAdapter) Size(guix.Theme) math.Size {
 	return math.Size{W: math.MaxSize.W, H: 20}
 }
 
-// directory implements the gxui.TreeNode interface to represent a directory
+// directory implements the guix.TreeNode interface to represent a directory
 // node in a file-system.
 type directory struct {
 	path    string   // The absolute path of this directory.
@@ -108,18 +108,18 @@ func directoryAt(path string) directory {
 	return directory
 }
 
-// Count implements gxui.TreeNodeContainer.
+// Count implements guix.TreeNodeContainer.
 func (d directory) Count() int {
 	return len(d.subdirs)
 }
 
-// NodeAt implements gxui.TreeNodeContainer.
-func (d directory) NodeAt(index int) gxui.TreeNode {
+// NodeAt implements guix.TreeNodeContainer.
+func (d directory) NodeAt(index int) guix.TreeNode {
 	return directoryAt(d.subdirs[index])
 }
 
-// ItemIndex implements gxui.TreeNodeContainer.
-func (d directory) ItemIndex(item gxui.AdapterItem) int {
+// ItemIndex implements guix.TreeNodeContainer.
+func (d directory) ItemIndex(item guix.AdapterItem) int {
 	path := item.(string)
 	if !strings.HasSuffix(path, string(filepath.Separator)) {
 		path += string(filepath.Separator)
@@ -133,13 +133,13 @@ func (d directory) ItemIndex(item gxui.AdapterItem) int {
 	return -1
 }
 
-// Item implements gxui.TreeNode.
-func (d directory) Item() gxui.AdapterItem {
+// Item implements guix.TreeNode.
+func (d directory) Item() guix.AdapterItem {
 	return d.path
 }
 
-// Create implements gxui.TreeNode.
-func (d directory) Create(theme gxui.Theme) gxui.Control {
+// Create implements guix.TreeNode.
+func (d directory) Create(theme guix.Theme) guix.Control {
 	_, name := filepath.Split(d.path)
 	if name == "" {
 		name = d.path
@@ -150,26 +150,26 @@ func (d directory) Create(theme gxui.Theme) gxui.Control {
 	return l
 }
 
-// directoryAdapter is an implementation of the gxui.TreeAdapter interface.
+// directoryAdapter is an implementation of the guix.TreeAdapter interface.
 // The AdapterItems returned by this adapter are absolute file path strings.
 type directoryAdapter struct {
-	gxui.AdapterBase
+	guix.AdapterBase
 	directory
 }
 
-func (a directoryAdapter) Size(gxui.Theme) math.Size {
+func (a directoryAdapter) Size(guix.Theme) math.Size {
 	return math.Size{W: math.MaxSize.W, H: 20}
 }
 
 // Override directory.Create so that the full root is shown, unaltered.
-func (a directoryAdapter) Create(theme gxui.Theme, index int) gxui.Control {
+func (a directoryAdapter) Create(theme guix.Theme, index int) guix.Control {
 	l := theme.CreateLabel()
 	l.SetText(a.subdirs[index])
 	l.SetColor(directoryColor)
 	return l
 }
 
-func appMain(driver gxui.Driver) {
+func appMain(driver guix.Driver) {
 	theme := flags.CreateTheme(driver)
 
 	window := theme.CreateWindow(800, 600, "Open file...")
@@ -202,15 +202,15 @@ func appMain(driver gxui.Driver) {
 
 	open := theme.CreateButton()
 	open.SetText("Open...")
-	open.OnClick(func(gxui.MouseEvent) {
+	open.OnClick(func(guix.MouseEvent) {
 		fmt.Printf("File '%s' selected!\n", files.Selected())
 		window.Close()
 	})
 
 	// If the user hits the enter key while the fullpath control has focus,
 	// attempt to select the directory.
-	fullpath.OnKeyDown(func(ev gxui.KeyboardEvent) {
-		if ev.Key == gxui.KeyEnter || ev.Key == gxui.KeyKpEnter {
+	fullpath.OnKeyDown(func(ev guix.KeyboardEvent) {
+		if ev.Key == guix.KeyEnter || ev.Key == guix.KeyKpEnter {
 			path := fullpath.Text()
 			if directories.Select(path) {
 				directories.Show(path)
@@ -219,20 +219,20 @@ func appMain(driver gxui.Driver) {
 	})
 
 	// When the directory selection changes, update the files list
-	directories.OnSelectionChanged(func(item gxui.AdapterItem) {
+	directories.OnSelectionChanged(func(item guix.AdapterItem) {
 		dir := item.(string)
 		filesAdapter.SetFiles(filesAt(dir))
 		fullpath.SetText(dir)
 	})
 
 	// When the file selection changes, update the fullpath text
-	files.OnSelectionChanged(func(item gxui.AdapterItem) {
+	files.OnSelectionChanged(func(item guix.AdapterItem) {
 		fullpath.SetText(item.(string))
 	})
 
 	// When the user double-clicks a directory in the file list, select it in the
 	// directories tree view.
-	files.OnDoubleClick(func(gxui.MouseEvent) {
+	files.OnDoubleClick(func(guix.MouseEvent) {
 		if path, ok := files.Selected().(string); ok {
 			if fi, err := os.Stat(path); err == nil && fi.IsDir() {
 				if directories.Select(path) {
@@ -253,18 +253,18 @@ func appMain(driver gxui.Driver) {
 	}
 
 	splitter := theme.CreateSplitterLayout()
-	splitter.SetOrientation(gxui.Horizontal)
+	splitter.SetOrientation(guix.Horizontal)
 	splitter.AddChild(directories)
 	splitter.AddChild(files)
 
 	topLayout := theme.CreateLinearLayout()
-	topLayout.SetDirection(gxui.TopToBottom)
+	topLayout.SetDirection(guix.TopToBottom)
 	topLayout.AddChild(fullpath)
 	topLayout.AddChild(splitter)
 
 	btmLayout := theme.CreateLinearLayout()
-	btmLayout.SetDirection(gxui.BottomToTop)
-	btmLayout.SetHorizontalAlignment(gxui.AlignRight)
+	btmLayout.SetDirection(guix.BottomToTop)
+	btmLayout.SetHorizontalAlignment(guix.AlignRight)
 	btmLayout.AddChild(open)
 	btmLayout.AddChild(topLayout)
 

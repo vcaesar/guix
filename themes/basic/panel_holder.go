@@ -15,7 +15,7 @@ type PanelHolder struct {
 	theme *Theme
 }
 
-func CreatePanelHolder(theme *Theme) gxui.PanelHolder {
+func CreatePanelHolder(theme *Theme) guix.PanelHolder {
 	p := &PanelHolder{}
 	p.PanelHolder.Init(p, theme)
 	p.theme = theme
@@ -27,7 +27,7 @@ func (p *PanelHolder) CreatePanelTab() mixins.PanelTab {
 	return CreatePanelTab(p.theme)
 }
 
-func (p *PanelHolder) Paint(c gxui.Canvas) {
+func (p *PanelHolder) Paint(c guix.Canvas) {
 	panel := p.SelectedPanel()
 	if panel != nil {
 		bounds := p.Children().Find(panel).Bounds()

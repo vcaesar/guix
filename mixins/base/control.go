@@ -12,7 +12,7 @@ import (
 )
 
 type ControlOuter interface {
-	gxui.Control
+	guix.Control
 	outer.Painter
 	outer.Redrawer
 	outer.Relayouter
@@ -27,7 +27,7 @@ type Control struct {
 	parts.Visible
 }
 
-func (c *Control) Init(outer ControlOuter, theme gxui.Theme) {
+func (c *Control) Init(outer ControlOuter, theme guix.Theme) {
 	c.Attachable.Init(outer)
 	c.DrawPaint.Init(outer, theme)
 	c.Layoutable.Init(outer, theme)
@@ -36,7 +36,7 @@ func (c *Control) Init(outer ControlOuter, theme gxui.Theme) {
 	c.Visible.Init(outer)
 
 	// Interface compliance test
-	_ = gxui.Control(c)
+	_ = guix.Control(c)
 }
 
 func (c *Control) DesiredSize(min, max math.Size) math.Size {

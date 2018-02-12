@@ -9,7 +9,7 @@ import (
 	"github.com/vcaesar/guix/mixins"
 )
 
-func CreateImage(theme *Theme) gxui.Image {
+func CreateImage(theme *Theme) guix.Image {
 	i := &mixins.Image{}
 	i.Init(i, theme)
 	return i

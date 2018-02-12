@@ -36,28 +36,28 @@ type viewport struct {
 	sizePixels              math.Size
 	position                math.Point
 	title                   string
-	pendingMouseMoveEvent   *gxui.MouseEvent
-	pendingMouseScrollEvent *gxui.MouseEvent
+	pendingMouseMoveEvent   *guix.MouseEvent
+	pendingMouseScrollEvent *guix.MouseEvent
 	scrollAccumX            float64
 	scrollAccumY            float64
 	destroyed               bool
 	redrawCount             uint32
 
 	// Broadcasts to application thread
-	onClose       gxui.Event // ()
-	onResize      gxui.Event // ()
-	onMouseMove   gxui.Event // (gxui.MouseEvent)
-	onMouseEnter  gxui.Event // (gxui.MouseEvent)
-	onMouseExit   gxui.Event // (gxui.MouseEvent)
-	onMouseDown   gxui.Event // (gxui.MouseEvent)
-	onMouseUp     gxui.Event // (gxui.MouseEvent)
-	onMouseScroll gxui.Event // (gxui.MouseEvent)
-	onKeyDown     gxui.Event // (gxui.KeyboardEvent)
-	onKeyUp       gxui.Event // (gxui.KeyboardEvent)
-	onKeyRepeat   gxui.Event // (gxui.KeyboardEvent)
-	onKeyStroke   gxui.Event // (gxui.KeyStrokeEvent)
+	onClose       guix.Event // ()
+	onResize      guix.Event // ()
+	onMouseMove   guix.Event // (guix.MouseEvent)
+	onMouseEnter  guix.Event // (guix.MouseEvent)
+	onMouseExit   guix.Event // (guix.MouseEvent)
+	onMouseDown   guix.Event // (guix.MouseEvent)
+	onMouseUp     guix.Event // (guix.MouseEvent)
+	onMouseScroll guix.Event // (guix.MouseEvent)
+	onKeyDown     guix.Event // (guix.KeyboardEvent)
+	onKeyUp       guix.Event // (guix.KeyboardEvent)
+	onKeyRepeat   guix.Event // (guix.KeyboardEvent)
+	onKeyStroke   guix.Event // (guix.KeyStrokeEvent)
 	// Broadcasts to driver thread
-	onDestroy gxui.Event
+	onDestroy guix.Event
 }
 
 func newViewport(driver *driver, width, height int, title string, fullscreen bool) *viewport {
@@ -121,7 +121,7 @@ func newViewport(driver *driver, width, height int, title string, fullscreen boo
 		p := cursorPoint(w.GetCursorPos())
 		v.Lock()
 		if v.pendingMouseMoveEvent == nil {
-			v.pendingMouseMoveEvent = &gxui.MouseEvent{}
+			v.pendingMouseMoveEvent = &guix.MouseEvent{}
 			driver.Call(func() {
 				v.Lock()
 				ev := *v.pendingMouseMoveEvent
@@ -136,7 +136,7 @@ func newViewport(driver *driver, width, height int, title string, fullscreen boo
 	})
 	wnd.SetCursorEnterCallback(func(w *glfw.Window, entered bool) {
 		p := cursorPoint(w.GetCursorPos())
-		ev := gxui.MouseEvent{
+		ev := guix.MouseEvent{
 			Point: p,
 		}
 		ev.State = getMouseState(w)
@@ -150,7 +150,7 @@ func newViewport(driver *driver, width, height int, title string, fullscreen boo
 		p := cursorPoint(w.GetCursorPos())
 		v.Lock()
 		if v.pendingMouseScrollEvent == nil {
-			v.pendingMouseScrollEvent = &gxui.MouseEvent{}
+			v.pendingMouseScrollEvent = &guix.MouseEvent{}
 			driver.Call(func() {
 				v.Lock()
 				ev := *v.pendingMouseScrollEvent
@@ -174,7 +174,7 @@ func newViewport(driver *driver, width, height int, title string, fullscreen boo
 	})
 	wnd.SetMouseButtonCallback(func(w *glfw.Window, button glfw.MouseButton, action glfw.Action, mod glfw.ModifierKey) {
 		p := cursorPoint(w.GetCursorPos())
-		ev := gxui.MouseEvent{
+		ev := guix.MouseEvent{
 			Point:    p,
 			Modifier: translateKeyboardModifier(mod),
 		}
@@ -187,7 +187,7 @@ func newViewport(driver *driver, width, height int, title string, fullscreen boo
 		}
 	})
 	wnd.SetKeyCallback(func(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
-		ev := gxui.KeyboardEvent{
+		ev := guix.KeyboardEvent{
 			Key:      translateKeyboardKey(key),
 			Modifier: translateKeyboardModifier(mods),
 		}
@@ -212,7 +212,7 @@ func newViewport(driver *driver, width, height int, title string, fullscreen boo
 			return // Weird unicode character. Ignore
 		}
 
-		ev := gxui.KeyStrokeEvent{
+		ev := guix.KeyStrokeEvent{
 			Character: char,
 			Modifier:  translateKeyboardModifier(mods),
 		}
@@ -241,16 +241,16 @@ func newViewport(driver *driver, width, height int, title string, fullscreen boo
 	v.driver = driver
 	v.onClose = driver.createAppEvent(func() {})
 	v.onResize = driver.createAppEvent(func() {})
-	v.onMouseMove = gxui.CreateEvent(func(gxui.MouseEvent) {})
-	v.onMouseEnter = driver.createAppEvent(func(gxui.MouseEvent) {})
-	v.onMouseExit = driver.createAppEvent(func(gxui.MouseEvent) {})
-	v.onMouseDown = driver.createAppEvent(func(gxui.MouseEvent) {})
-	v.onMouseUp = driver.createAppEvent(func(gxui.MouseEvent) {})
-	v.onMouseScroll = gxui.CreateEvent(func(gxui.MouseEvent) {})
-	v.onKeyDown = driver.createAppEvent(func(gxui.KeyboardEvent) {})
-	v.onKeyUp = driver.createAppEvent(func(gxui.KeyboardEvent) {})
-	v.onKeyRepeat = driver.createAppEvent(func(gxui.KeyboardEvent) {})
-	v.onKeyStroke = driver.createAppEvent(func(gxui.KeyStrokeEvent) {})
+	v.onMouseMove = guix.CreateEvent(func(guix.MouseEvent) {})
+	v.onMouseEnter = driver.createAppEvent(func(guix.MouseEvent) {})
+	v.onMouseExit = driver.createAppEvent(func(guix.MouseEvent) {})
+	v.onMouseDown = driver.createAppEvent(func(guix.MouseEvent) {})
+	v.onMouseUp = driver.createAppEvent(func(guix.MouseEvent) {})
+	v.onMouseScroll = guix.CreateEvent(func(guix.MouseEvent) {})
+	v.onKeyDown = driver.createAppEvent(func(guix.KeyboardEvent) {})
+	v.onKeyUp = driver.createAppEvent(func(guix.KeyboardEvent) {})
+	v.onKeyRepeat = driver.createAppEvent(func(guix.KeyboardEvent) {})
+	v.onKeyStroke = driver.createAppEvent(func(guix.KeyStrokeEvent) {})
 	v.onDestroy = driver.createDriverEvent(func() {})
 	v.sizeDipsUnscaled = math.Size{W: width, H: height}
 	v.sizeDips = v.sizeDipsUnscaled.ScaleS(1 / v.scaling)
@@ -296,12 +296,12 @@ func (v *viewport) drawFrameUpdate(ctx *context) {
 	dx := (ctx.stats.frameCount * 10) & 0xFF
 	r := math.CreateRect(dx-5, 0, dx+5, 3)
 	ds := &drawState{}
-	ctx.blitter.blitRect(ctx, r, gxui.White, ds)
+	ctx.blitter.blitRect(ctx, r, guix.White, ds)
 }
 
-// gxui.viewport compliance
+// guix.viewport compliance
 // These methods are all called on the application routine
-func (v *viewport) SetCanvas(cc gxui.Canvas) {
+func (v *viewport) SetCanvas(cc guix.Canvas) {
 	cnt := atomic.AddUint32(&v.redrawCount, 1)
 	c := cc.(*canvas)
 	v.driver.asyncDriver(func() {
@@ -399,51 +399,51 @@ func (v *viewport) Close() {
 	v.Destroy()
 }
 
-func (v *viewport) OnResize(f func()) gxui.EventSubscription {
+func (v *viewport) OnResize(f func()) guix.EventSubscription {
 	return v.onResize.Listen(f)
 }
 
-func (v *viewport) OnClose(f func()) gxui.EventSubscription {
+func (v *viewport) OnClose(f func()) guix.EventSubscription {
 	return v.onClose.Listen(f)
 }
 
-func (v *viewport) OnMouseMove(f func(gxui.MouseEvent)) gxui.EventSubscription {
+func (v *viewport) OnMouseMove(f func(guix.MouseEvent)) guix.EventSubscription {
 	return v.onMouseMove.Listen(f)
 }
 
-func (v *viewport) OnMouseEnter(f func(gxui.MouseEvent)) gxui.EventSubscription {
+func (v *viewport) OnMouseEnter(f func(guix.MouseEvent)) guix.EventSubscription {
 	return v.onMouseEnter.Listen(f)
 }
 
-func (v *viewport) OnMouseExit(f func(gxui.MouseEvent)) gxui.EventSubscription {
+func (v *viewport) OnMouseExit(f func(guix.MouseEvent)) guix.EventSubscription {
 	return v.onMouseExit.Listen(f)
 }
 
-func (v *viewport) OnMouseDown(f func(gxui.MouseEvent)) gxui.EventSubscription {
+func (v *viewport) OnMouseDown(f func(guix.MouseEvent)) guix.EventSubscription {
 	return v.onMouseDown.Listen(f)
 }
 
-func (v *viewport) OnMouseUp(f func(gxui.MouseEvent)) gxui.EventSubscription {
+func (v *viewport) OnMouseUp(f func(guix.MouseEvent)) guix.EventSubscription {
 	return v.onMouseUp.Listen(f)
 }
 
-func (v *viewport) OnMouseScroll(f func(gxui.MouseEvent)) gxui.EventSubscription {
+func (v *viewport) OnMouseScroll(f func(guix.MouseEvent)) guix.EventSubscription {
 	return v.onMouseScroll.Listen(f)
 }
 
-func (v *viewport) OnKeyDown(f func(gxui.KeyboardEvent)) gxui.EventSubscription {
+func (v *viewport) OnKeyDown(f func(guix.KeyboardEvent)) guix.EventSubscription {
 	return v.onKeyDown.Listen(f)
 }
 
-func (v *viewport) OnKeyUp(f func(gxui.KeyboardEvent)) gxui.EventSubscription {
+func (v *viewport) OnKeyUp(f func(guix.KeyboardEvent)) guix.EventSubscription {
 	return v.onKeyUp.Listen(f)
 }
 
-func (v *viewport) OnKeyRepeat(f func(gxui.KeyboardEvent)) gxui.EventSubscription {
+func (v *viewport) OnKeyRepeat(f func(guix.KeyboardEvent)) guix.EventSubscription {
 	return v.onKeyRepeat.Listen(f)
 }
 
-func (v *viewport) OnKeyStroke(f func(gxui.KeyStrokeEvent)) gxui.EventSubscription {
+func (v *viewport) OnKeyStroke(f func(guix.KeyStrokeEvent)) guix.EventSubscription {
 	return v.onKeyStroke.Listen(f)
 }
 

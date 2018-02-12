@@ -25,7 +25,7 @@ func newTexture(img image.Image, pixelsPerDip float32) *texture {
 	return t
 }
 
-// gxui.Texture compliance
+// guix.Texture compliance
 func (t *texture) Image() image.Image {
 	return t.image
 }

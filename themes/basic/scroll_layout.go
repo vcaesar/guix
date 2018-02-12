@@ -9,7 +9,7 @@ import (
 	"github.com/vcaesar/guix/mixins"
 )
 
-func CreateScrollLayout(theme *Theme) gxui.ScrollLayout {
+func CreateScrollLayout(theme *Theme) guix.ScrollLayout {
 	l := &mixins.ScrollLayout{}
 	l.Init(l, theme)
 	return l

@@ -15,8 +15,8 @@ type AttachableOuter interface {
 
 type Attachable struct {
 	outer    AttachableOuter
-	onAttach gxui.Event
-	onDetach gxui.Event
+	onAttach guix.Event
+	onDetach guix.Event
 	attached bool
 }
 
@@ -48,16 +48,16 @@ func (a *Attachable) Detach() {
 	}
 }
 
-func (a *Attachable) OnAttach(f func()) gxui.EventSubscription {
+func (a *Attachable) OnAttach(f func()) guix.EventSubscription {
 	if a.onAttach == nil {
-		a.onAttach = gxui.CreateEvent(func() {})
+		a.onAttach = guix.CreateEvent(func() {})
 	}
 	return a.onAttach.Listen(f)
 }
 
-func (a *Attachable) OnDetach(f func()) gxui.EventSubscription {
+func (a *Attachable) OnDetach(f func()) guix.EventSubscription {
 	if a.onDetach == nil {
-		a.onDetach = gxui.CreateEvent(func() {})
+		a.onDetach = guix.CreateEvent(func() {})
 	}
 	return a.onDetach.Listen(f)
 }

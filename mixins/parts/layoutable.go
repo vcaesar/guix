@@ -19,14 +19,14 @@ type LayoutableOuter interface {
 
 type Layoutable struct {
 	outer             LayoutableOuter
-	driver            gxui.Driver
+	driver            guix.Driver
 	margin            math.Spacing
 	size              math.Size
 	relayoutRequested bool
 	inLayoutChildren  bool // True when calling LayoutChildren
 }
 
-func (l *Layoutable) Init(outer LayoutableOuter, theme gxui.Theme) {
+func (l *Layoutable) Init(outer LayoutableOuter, theme guix.Theme) {
 	l.outer = outer
 	l.driver = theme.Driver()
 }

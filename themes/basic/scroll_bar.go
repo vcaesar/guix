@@ -13,7 +13,7 @@ type ScrollBar struct {
 	mixins.ScrollBar
 }
 
-func CreateScrollBar(theme *Theme) gxui.ScrollBar {
+func CreateScrollBar(theme *Theme) guix.ScrollBar {
 	s := &ScrollBar{}
 	s.ScrollBar.Init(s, theme)
 	s.SetBarBrush(theme.ScrollBarBarDefaultStyle.Brush)
@@ -35,7 +35,7 @@ func CreateScrollBar(theme *Theme) gxui.ScrollBar {
 		}
 		s.Redraw()
 	}
-	s.OnMouseEnter(func(gxui.MouseEvent) { updateColors() })
-	s.OnMouseExit(func(gxui.MouseEvent) { updateColors() })
+	s.OnMouseEnter(func(guix.MouseEvent) { updateColors() })
+	s.OnMouseExit(func(guix.MouseEvent) { updateColors() })
 	return s
 }

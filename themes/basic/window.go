@@ -13,9 +13,9 @@ type Window struct {
 	mixins.Window
 }
 
-func CreateWindow(theme *Theme, width, height int, title string) gxui.Window {
+func CreateWindow(theme *Theme, width, height int, title string) guix.Window {
 	w := &Window{}
 	w.Window.Init(w, theme.Driver(), width, height, title)
-	w.SetBackgroundBrush(gxui.CreateBrush(theme.WindowBackground))
+	w.SetBackgroundBrush(guix.CreateBrush(theme.WindowBackground))
 	return w
 }

@@ -16,9 +16,9 @@ func appendVec2(arr []float32, vecs ...math.Vec2) []float32 {
 	return arr
 }
 
-func pruneDuplicates(p gxui.Polygon) gxui.Polygon {
-	pruned := make(gxui.Polygon, 0, len(p))
-	last := gxui.PolygonVertex{}
+func pruneDuplicates(p guix.Polygon) guix.Polygon {
+	pruned := make(guix.Polygon, 0, len(p))
+	last := guix.PolygonVertex{}
 	for i, v := range p {
 		if i == 0 || last.Position.Sub(v.Position).Vec2().Len() > 0.001 {
 			pruned = append(pruned, v)
@@ -141,7 +141,7 @@ func segment(penWidth, r float32, a, b, c math.Vec2, aIsLast bool, vsEdgePos []f
 	return vsEdgePos, fillEdge
 }
 
-func closedPolyToShape(p gxui.Polygon, penWidth float32) (fillShape, edgeShape *shape) {
+func closedPolyToShape(p guix.Polygon, penWidth float32) (fillShape, edgeShape *shape) {
 	p = pruneDuplicates(p)
 
 	fillEdge := []math.Vec2{}
@@ -181,7 +181,7 @@ func closedPolyToShape(p gxui.Polygon, penWidth float32) (fillShape, edgeShape *
 	return fillShape, edgeShape
 }
 
-func openPolyToShape(p gxui.Polygon, penWidth float32) *shape {
+func openPolyToShape(p guix.Polygon, penWidth float32) *shape {
 	p = pruneDuplicates(p)
 	if len(p) < 2 {
 		return nil

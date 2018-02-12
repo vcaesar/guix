@@ -12,21 +12,21 @@ import (
 	"github.com/goxjs/glfw"
 )
 
-func translateMouseButton(button glfw.MouseButton) gxui.MouseButton {
+func translateMouseButton(button glfw.MouseButton) guix.MouseButton {
 	switch button {
 	case glfw.MouseButtonLeft:
-		return gxui.MouseButtonLeft
+		return guix.MouseButtonLeft
 	case glfw.MouseButtonMiddle:
-		return gxui.MouseButtonMiddle
+		return guix.MouseButtonMiddle
 	case glfw.MouseButtonRight:
-		return gxui.MouseButtonRight
+		return guix.MouseButtonRight
 	default:
 		panic(fmt.Errorf("Unknown mouse button %v", button))
 	}
 }
 
-func getMouseState(w *glfw.Window) gxui.MouseState {
-	var s gxui.MouseState
+func getMouseState(w *glfw.Window) guix.MouseState {
+	var s guix.MouseState
 	for _, button := range []glfw.MouseButton{glfw.MouseButtonLeft, glfw.MouseButtonMiddle, glfw.MouseButtonRight} {
 		if w.GetMouseButton(button) == glfw.Press {
 			s |= 1 << uint(translateMouseButton(button))

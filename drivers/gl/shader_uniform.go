@@ -64,7 +64,7 @@ func (u *shaderUniform) bind(context *context, v interface{}) {
 		switch v := v.(type) {
 		case math.Vec4:
 			gl.Uniform4fv(u.location, []float32{v.X, v.Y, v.Z, v.W})
-		case gxui.Color:
+		case guix.Color:
 			gl.Uniform4fv(u.location, []float32{v.R, v.G, v.B, v.A})
 		case []float32:
 			if len(v)%4 != 0 {

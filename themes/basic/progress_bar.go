@@ -16,12 +16,12 @@ type ProgressBar struct {
 	mixins.ProgressBar
 	theme        *Theme
 	ticker       *time.Ticker
-	chevrons     gxui.Canvas
+	chevrons     guix.Canvas
 	chevronWidth int
 	scroll       int
 }
 
-func CreateProgressBar(theme *Theme) gxui.ProgressBar {
+func CreateProgressBar(theme *Theme) guix.ProgressBar {
 	b := &ProgressBar{}
 	b.Init(b, theme)
 	b.theme = theme
@@ -46,8 +46,8 @@ func CreateProgressBar(theme *Theme) gxui.ProgressBar {
 			b.ticker = nil
 		}
 	})
-	b.SetBackgroundBrush(gxui.CreateBrush(gxui.Gray10))
-	b.SetBorderPen(gxui.CreatePen(1, gxui.Gray40))
+	b.SetBackgroundBrush(guix.CreateBrush(guix.Gray10))
+	b.SetBorderPen(guix.CreatePen(1, guix.Gray40))
 	return b
 }
 
@@ -80,23 +80,23 @@ func (b *ProgressBar) SetSize(size math.Size) {
 			y0, y1, y2 := 0, size.H/2, size.H
 			x0, x1 := x, x+cw/2
 			x2, x3 := x0+cw, x1+cw
-			var chevron = gxui.Polygon{
-				/* A */ gxui.PolygonVertex{Position: math.Point{X: x0, Y: y0}},
-				/* B */ gxui.PolygonVertex{Position: math.Point{X: x2, Y: y0}},
-				/* C */ gxui.PolygonVertex{Position: math.Point{X: x3, Y: y1}},
-				/* D */ gxui.PolygonVertex{Position: math.Point{X: x2, Y: y2}},
-				/* E */ gxui.PolygonVertex{Position: math.Point{X: x0, Y: y2}},
-				/* F */ gxui.PolygonVertex{Position: math.Point{X: x1, Y: y1}},
+			var chevron = guix.Polygon{
+				/* A */ guix.PolygonVertex{Position: math.Point{X: x0, Y: y0}},
+				/* B */ guix.PolygonVertex{Position: math.Point{X: x2, Y: y0}},
+				/* C */ guix.PolygonVertex{Position: math.Point{X: x3, Y: y1}},
+				/* D */ guix.PolygonVertex{Position: math.Point{X: x2, Y: y2}},
+				/* E */ guix.PolygonVertex{Position: math.Point{X: x0, Y: y2}},
+				/* F */ guix.PolygonVertex{Position: math.Point{X: x1, Y: y1}},
 			}
-			b.chevrons.DrawPolygon(chevron, gxui.TransparentPen, gxui.CreateBrush(gxui.Gray30))
+			b.chevrons.DrawPolygon(chevron, guix.TransparentPen, guix.CreateBrush(guix.Gray30))
 		}
 		b.chevrons.Complete()
 	}
 }
 
-func (b *ProgressBar) PaintProgress(c gxui.Canvas, r math.Rect, frac float32) {
+func (b *ProgressBar) PaintProgress(c guix.Canvas, r math.Rect, frac float32) {
 	r.Max.X = math.Lerp(r.Min.X, r.Max.X, frac)
-	c.DrawRect(r, gxui.CreateBrush(gxui.Gray50))
+	c.DrawRect(r, guix.CreateBrush(guix.Gray50))
 	c.Push()
 	c.AddClip(r)
 	c.DrawCanvas(b.chevrons, math.Point{X: b.scroll})

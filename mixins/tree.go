@@ -12,26 +12,26 @@ import (
 
 type TreeOuter interface {
 	ListOuter
-	PaintUnexpandedSelection(c gxui.Canvas, r math.Rect)
+	PaintUnexpandedSelection(c guix.Canvas, r math.Rect)
 }
 
 type Tree struct {
 	List
 	parts.Focusable
 	outer       TreeOuter
-	treeAdapter gxui.TreeAdapter
+	treeAdapter guix.TreeAdapter
 	listAdapter *TreeToListAdapter
 	creator     TreeControlCreator
 }
 
-func (t *Tree) Init(outer TreeOuter, theme gxui.Theme) {
+func (t *Tree) Init(outer TreeOuter, theme guix.Theme) {
 	t.List.Init(outer, theme)
 	t.Focusable.Init(outer)
 	t.outer = outer
 	t.creator = defaultTreeControlCreator{}
 
 	// Interface compliance test
-	_ = gxui.Tree(t)
+	_ = guix.Tree(t)
 }
 
 func (t *Tree) SetControlCreator(c TreeControlCreator) {
@@ -42,8 +42,8 @@ func (t *Tree) SetControlCreator(c TreeControlCreator) {
 	}
 }
 
-// gxui.Tree complaince
-func (t *Tree) SetAdapter(adapter gxui.TreeAdapter) {
+// guix.Tree complaince
+func (t *Tree) SetAdapter(adapter guix.TreeAdapter) {
 	if t.treeAdapter == adapter {
 		return
 	}
@@ -58,16 +58,16 @@ func (t *Tree) SetAdapter(adapter gxui.TreeAdapter) {
 	}
 }
 
-func (t *Tree) Adapter() gxui.TreeAdapter {
+func (t *Tree) Adapter() guix.TreeAdapter {
 	return t.treeAdapter
 }
 
-func (t *Tree) Show(item gxui.AdapterItem) {
+func (t *Tree) Show(item guix.AdapterItem) {
 	t.listAdapter.ExpandItem(item)
 	t.List.ScrollTo(item)
 }
 
-func (t *Tree) ContainsItem(item gxui.AdapterItem) bool {
+func (t *Tree) ContainsItem(item guix.AdapterItem) bool {
 	return t.listAdapter != nil && t.listAdapter.Contains(item)
 }
 
@@ -79,12 +79,12 @@ func (t *Tree) CollapseAll() {
 	t.listAdapter.CollapseAll()
 }
 
-func (t *Tree) PaintUnexpandedSelection(c gxui.Canvas, r math.Rect) {
-	c.DrawRoundedRect(r, 2.0, 2.0, 2.0, 2.0, gxui.CreatePen(1, gxui.Gray50), gxui.TransparentBrush)
+func (t *Tree) PaintUnexpandedSelection(c guix.Canvas, r math.Rect) {
+	c.DrawRoundedRect(r, 2.0, 2.0, 2.0, 2.0, guix.CreatePen(1, guix.Gray50), guix.TransparentBrush)
 }
 
 // List override
-func (t *Tree) PaintChild(c gxui.Canvas, child *gxui.Child, idx int) {
+func (t *Tree) PaintChild(c guix.Canvas, child *guix.Child, idx int) {
 	t.List.PaintChild(c, child, idx)
 	if t.selectedItem != nil {
 		if deepest := t.listAdapter.DeepestNode(t.selectedItem); deepest != nil {
@@ -103,9 +103,9 @@ func (t *Tree) PaintChild(c gxui.Canvas, child *gxui.Child, idx int) {
 }
 
 // InputEventHandler override
-func (t *Tree) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
+func (t *Tree) KeyPress(ev guix.KeyboardEvent) (consume bool) {
 	switch ev.Key {
-	case gxui.KeyLeft:
+	case guix.KeyLeft:
 		if item := t.Selected(); item != nil {
 			node := t.listAdapter.DeepestNode(item)
 			if node.Collapse() {
@@ -115,7 +115,7 @@ func (t *Tree) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 				return t.Select(p.Item())
 			}
 		}
-	case gxui.KeyRight:
+	case guix.KeyRight:
 		if item := t.Selected(); item != nil {
 			node := t.listAdapter.DeepestNode(item)
 			if node.Expand() {
@@ -128,16 +128,16 @@ func (t *Tree) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 
 type defaultTreeControlCreator struct{}
 
-func (defaultTreeControlCreator) Create(theme gxui.Theme, control gxui.Control, node *TreeToListNode) gxui.Control {
+func (defaultTreeControlCreator) Create(theme guix.Theme, control guix.Control, node *TreeToListNode) guix.Control {
 	ll := theme.CreateLinearLayout()
-	ll.SetDirection(gxui.LeftToRight)
+	ll.SetDirection(guix.LeftToRight)
 
 	btn := theme.CreateButton()
-	btn.SetBackgroundBrush(gxui.TransparentBrush)
-	btn.SetBorderPen(gxui.CreatePen(1, gxui.Gray30))
+	btn.SetBackgroundBrush(guix.TransparentBrush)
+	btn.SetBorderPen(guix.CreatePen(1, guix.Gray30))
 	btn.SetMargin(math.Spacing{L: 2, R: 2, T: 1, B: 1})
-	btn.OnClick(func(ev gxui.MouseEvent) {
-		if ev.Button == gxui.MouseButtonLeft {
+	btn.OnClick(func(ev guix.MouseEvent) {
+		if ev.Button == guix.MouseButtonLeft {
 			node.ToggleExpanded()
 		}
 	})
@@ -152,7 +152,7 @@ func (defaultTreeControlCreator) Create(theme gxui.Theme, control gxui.Control, 
 	}
 	update()
 
-	gxui.WhileAttached(btn, node.OnChange, update)
+	guix.WhileAttached(btn, node.OnChange, update)
 
 	ll.AddChild(btn)
 	ll.AddChild(control)
@@ -160,6 +160,6 @@ func (defaultTreeControlCreator) Create(theme gxui.Theme, control gxui.Control, 
 	return ll
 }
 
-func (defaultTreeControlCreator) Size(theme gxui.Theme, treeControlSize math.Size) math.Size {
+func (defaultTreeControlCreator) Size(theme guix.Theme, treeControlSize math.Size) math.Size {
 	return treeControlSize
 }

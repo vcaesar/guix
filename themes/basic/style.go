@@ -9,15 +9,15 @@ import (
 )
 
 type Style struct {
-	FontColor gxui.Color
-	Brush     gxui.Brush
-	Pen       gxui.Pen
+	FontColor guix.Color
+	Brush     guix.Brush
+	Pen       guix.Pen
 }
 
-func CreateStyle(fontColor, brushColor, penColor gxui.Color, penWidth float32) Style {
+func CreateStyle(fontColor, brushColor, penColor guix.Color, penWidth float32) Style {
 	return Style{
 		FontColor: fontColor,
-		Pen:       gxui.CreatePen(penWidth, penColor),
-		Brush:     gxui.CreateBrush(brushColor),
+		Pen:       guix.CreatePen(penWidth, penColor),
+		Brush:     guix.CreateBrush(brushColor),
 	}
 }

@@ -9,5 +9,5 @@ import (
 )
 
 type Painter interface {
-	Paint(gxui.Canvas)
+	Paint(guix.Canvas)
 }

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package flags holds command line options common to all GXUI samples.
+// Package flags holds command line options common to all guix samples.
 package flags
 
 import (
@@ -26,7 +26,7 @@ func init() {
 
 // CreateTheme creates and returns the theme specified on the command line.
 // The default theme is dark.
-func CreateTheme(driver gxui.Driver) gxui.Theme {
+func CreateTheme(driver guix.Driver) guix.Theme {
 	if FlagTheme == "light" {
 		return light.CreateTheme(driver)
 	}

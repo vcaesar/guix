@@ -167,7 +167,7 @@ func (b *blitter) blit(ctx *context, tc *textureContext, srcRect, dstRect math.R
 	b.stats.drawCallCount++
 }
 
-func (b *blitter) blitGlyph(ctx *context, tc *textureContext, c gxui.Color, srcRect, dstRect math.Rect, ds *drawState) {
+func (b *blitter) blitGlyph(ctx *context, tc *textureContext, c guix.Color, srcRect, dstRect math.Rect, ds *drawState) {
 	dstRect = dstRect.Offset(ds.OriginPixels)
 
 	if b.glyphBatch.GlyphPage != tc {
@@ -213,7 +213,7 @@ func (b *blitter) blitGlyph(ctx *context, tc *textureContext, c gxui.Color, srcR
 	)
 }
 
-func (b *blitter) blitShape(ctx *context, shape shape, color gxui.Color, ds *drawState) {
+func (b *blitter) blitShape(ctx *context, shape shape, color guix.Color, ds *drawState) {
 	b.commitGlyphs(ctx)
 	dipsToPixels := ctx.resolution.dipsToPixels()
 	dw, dh := ctx.sizePixels.WH()
@@ -234,14 +234,14 @@ func (b *blitter) blitShape(ctx *context, shape shape, color gxui.Color, ds *dra
 		//gl.PolygonMode(gl.FRONT_AND_BACK, gl.LINE)
 		shape.draw(ctx, b.colorShader, uniformBindings{
 			"mPos":  mPos,
-			"Color": gxui.Blue,
+			"Color": guix.Blue,
 		})
 		//gl.PolygonMode(gl.FRONT_AND_BACK, gl.FILL)
 	}
 	b.stats.drawCallCount++
 }
 
-func (b *blitter) blitRect(ctx *context, dstRect math.Rect, color gxui.Color, ds *drawState) {
+func (b *blitter) blitRect(ctx *context, dstRect math.Rect, color guix.Color, ds *drawState) {
 	b.commitGlyphs(ctx)
 	dstRect = dstRect.Offset(ds.OriginPixels)
 	dw, dh := ctx.sizePixels.WH()

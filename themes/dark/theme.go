@@ -12,7 +12,7 @@ import (
 	"github.com/vcaesar/guix/themes/basic"
 )
 
-func CreateTheme(driver gxui.Driver) gxui.Theme {
+func CreateTheme(driver guix.Driver) guix.Theme {
 	defaultFont, err := driver.CreateFont(gxfont.Default, 12)
 	if err == nil {
 		defaultFont.LoadGlyphs(32, 126)
@@ -27,44 +27,44 @@ func CreateTheme(driver gxui.Driver) gxui.Theme {
 		fmt.Printf("Warning: Failed to load default monospace font - %v\n", err)
 	}
 
-	scrollBarRailDefaultBg := gxui.Black
+	scrollBarRailDefaultBg := guix.Black
 	scrollBarRailDefaultBg.A = 0.7
 
-	scrollBarRailOverBg := gxui.Gray20
+	scrollBarRailOverBg := guix.Gray20
 	scrollBarRailOverBg.A = 0.7
 
-	neonBlue := gxui.ColorFromHex(0xFF5C8CFF)
-	focus := gxui.ColorFromHex(0xA0C4D6FF)
+	neonBlue := guix.ColorFromHex(0xFF5C8CFF)
+	focus := guix.ColorFromHex(0xA0C4D6FF)
 
 	return &basic.Theme{
 		DriverInfo:               driver,
 		DefaultFontInfo:          defaultFont,
 		DefaultMonospaceFontInfo: defaultMonospaceFont,
-		WindowBackground:         gxui.Black,
+		WindowBackground:         guix.Black,
 
 		//                                   fontColor    brushColor   penColor
-		BubbleOverlayStyle:        basic.CreateStyle(gxui.Gray80, gxui.Gray20, gxui.Gray40, 1.0),
-		ButtonDefaultStyle:        basic.CreateStyle(gxui.Gray80, gxui.Gray10, gxui.Gray20, 1.0),
-		ButtonOverStyle:           basic.CreateStyle(gxui.Gray90, gxui.Gray15, gxui.Gray50, 1.0),
-		ButtonPressedStyle:        basic.CreateStyle(gxui.Gray20, gxui.Gray70, gxui.Gray30, 1.0),
-		CodeSuggestionListStyle:   basic.CreateStyle(gxui.Gray80, gxui.Gray20, gxui.Gray10, 1.0),
-		DropDownListDefaultStyle:  basic.CreateStyle(gxui.Gray80, gxui.Gray10, gxui.Gray20, 1.0),
-		DropDownListOverStyle:     basic.CreateStyle(gxui.Gray80, gxui.Gray15, gxui.Gray50, 1.0),
-		FocusedStyle:              basic.CreateStyle(gxui.Gray80, gxui.Transparent, focus, 1.0),
-		HighlightStyle:            basic.CreateStyle(gxui.Gray80, gxui.Transparent, neonBlue, 2.0),
-		LabelStyle:                basic.CreateStyle(gxui.Gray80, gxui.Transparent, gxui.Transparent, 0.0),
-		PanelBackgroundStyle:      basic.CreateStyle(gxui.Gray80, gxui.Gray10, gxui.Gray15, 1.0),
-		ScrollBarBarDefaultStyle:  basic.CreateStyle(gxui.Gray80, gxui.Gray30, gxui.Gray40, 1.0),
-		ScrollBarBarOverStyle:     basic.CreateStyle(gxui.Gray80, gxui.Gray50, gxui.Gray60, 1.0),
-		ScrollBarRailDefaultStyle: basic.CreateStyle(gxui.Gray80, scrollBarRailDefaultBg, gxui.Transparent, 1.0),
-		ScrollBarRailOverStyle:    basic.CreateStyle(gxui.Gray80, scrollBarRailOverBg, gxui.Gray20, 1.0),
-		SplitterBarDefaultStyle:   basic.CreateStyle(gxui.Gray80, gxui.Gray10, gxui.Gray10, 1.0),
-		SplitterBarOverStyle:      basic.CreateStyle(gxui.Gray80, gxui.Gray10, gxui.Gray50, 1.0),
-		TabActiveHighlightStyle:   basic.CreateStyle(gxui.Gray90, neonBlue, neonBlue, 0.0),
-		TabDefaultStyle:           basic.CreateStyle(gxui.Gray80, gxui.Gray30, gxui.Gray40, 1.0),
-		TabOverStyle:              basic.CreateStyle(gxui.Gray90, gxui.Gray30, gxui.Gray50, 1.0),
-		TabPressedStyle:           basic.CreateStyle(gxui.Gray20, gxui.Gray70, gxui.Gray30, 1.0),
-		TextBoxDefaultStyle:       basic.CreateStyle(gxui.Gray80, gxui.Gray10, gxui.Gray20, 1.0),
-		TextBoxOverStyle:          basic.CreateStyle(gxui.Gray80, gxui.Gray10, gxui.Gray50, 1.0),
+		BubbleOverlayStyle:        basic.CreateStyle(guix.Gray80, guix.Gray20, guix.Gray40, 1.0),
+		ButtonDefaultStyle:        basic.CreateStyle(guix.Gray80, guix.Gray10, guix.Gray20, 1.0),
+		ButtonOverStyle:           basic.CreateStyle(guix.Gray90, guix.Gray15, guix.Gray50, 1.0),
+		ButtonPressedStyle:        basic.CreateStyle(guix.Gray20, guix.Gray70, guix.Gray30, 1.0),
+		CodeSuggestionListStyle:   basic.CreateStyle(guix.Gray80, guix.Gray20, guix.Gray10, 1.0),
+		DropDownListDefaultStyle:  basic.CreateStyle(guix.Gray80, guix.Gray10, guix.Gray20, 1.0),
+		DropDownListOverStyle:     basic.CreateStyle(guix.Gray80, guix.Gray15, guix.Gray50, 1.0),
+		FocusedStyle:              basic.CreateStyle(guix.Gray80, guix.Transparent, focus, 1.0),
+		HighlightStyle:            basic.CreateStyle(guix.Gray80, guix.Transparent, neonBlue, 2.0),
+		LabelStyle:                basic.CreateStyle(guix.Gray80, guix.Transparent, guix.Transparent, 0.0),
+		PanelBackgroundStyle:      basic.CreateStyle(guix.Gray80, guix.Gray10, guix.Gray15, 1.0),
+		ScrollBarBarDefaultStyle:  basic.CreateStyle(guix.Gray80, guix.Gray30, guix.Gray40, 1.0),
+		ScrollBarBarOverStyle:     basic.CreateStyle(guix.Gray80, guix.Gray50, guix.Gray60, 1.0),
+		ScrollBarRailDefaultStyle: basic.CreateStyle(guix.Gray80, scrollBarRailDefaultBg, guix.Transparent, 1.0),
+		ScrollBarRailOverStyle:    basic.CreateStyle(guix.Gray80, scrollBarRailOverBg, guix.Gray20, 1.0),
+		SplitterBarDefaultStyle:   basic.CreateStyle(guix.Gray80, guix.Gray10, guix.Gray10, 1.0),
+		SplitterBarOverStyle:      basic.CreateStyle(guix.Gray80, guix.Gray10, guix.Gray50, 1.0),
+		TabActiveHighlightStyle:   basic.CreateStyle(guix.Gray90, neonBlue, neonBlue, 0.0),
+		TabDefaultStyle:           basic.CreateStyle(guix.Gray80, guix.Gray30, guix.Gray40, 1.0),
+		TabOverStyle:              basic.CreateStyle(guix.Gray90, guix.Gray30, guix.Gray50, 1.0),
+		TabPressedStyle:           basic.CreateStyle(guix.Gray20, guix.Gray70, guix.Gray30, 1.0),
+		TextBoxDefaultStyle:       basic.CreateStyle(guix.Gray80, guix.Gray10, guix.Gray20, 1.0),
+		TextBoxOverStyle:          basic.CreateStyle(guix.Gray80, guix.Gray10, guix.Gray50, 1.0),
 	}
 }

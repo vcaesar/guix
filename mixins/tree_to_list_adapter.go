@@ -13,26 +13,26 @@ import (
 type TreeControlCreator interface {
 	// Create returns a Control that contains control (returned by the backing
 	// TreeNode) and visualizes the expanded state of node.
-	Create(theme gxui.Theme, control gxui.Control, node *TreeToListNode) gxui.Control
+	Create(theme guix.Theme, control guix.Control, node *TreeToListNode) guix.Control
 
 	// Size returns the size that each of the controls returned by Create will
 	// be displayed at for the given theme.
 	// treeControlSize is the size returned the backing TreeNode.
-	Size(theme gxui.Theme, treeControlSize math.Size) math.Size
+	Size(theme guix.Theme, treeControlSize math.Size) math.Size
 }
 
 // TreeToListAdapter converts a TreeAdapter to a ListAdapter so that the
 // tree can be visualized with a List.
 type TreeToListAdapter struct {
-	gxui.AdapterBase
+	guix.AdapterBase
 	node    TreeToListNode
-	adapter gxui.TreeAdapter
+	adapter guix.TreeAdapter
 	creator TreeControlCreator
 }
 
 // CreateTreeToListAdapter wraps the provided TreeAdapter with an adapter
 // conforming to the ListAdapter interface.
-func CreateTreeToListAdapter(treeAdapter gxui.TreeAdapter, creator TreeControlCreator) *TreeToListAdapter {
+func CreateTreeToListAdapter(treeAdapter guix.TreeAdapter, creator TreeControlCreator) *TreeToListAdapter {
 	listAdapter := &TreeToListAdapter{}
 	listAdapter.node.depth = -1 // The node is just a container.
 	listAdapter.node.container = treeAdapter
@@ -76,21 +76,21 @@ func (a *TreeToListAdapter) Count() int {
 
 // Create returns a Control visualizing the item at the specified index in the
 // list of all the expanded nodes treated as as a flattened list.
-func (a *TreeToListAdapter) Create(theme gxui.Theme, index int) gxui.Control {
+func (a *TreeToListAdapter) Create(theme guix.Theme, index int) guix.Control {
 	n := a.node.NodeAt(index)
-	c := n.container.(gxui.TreeNode).Create(theme)
+	c := n.container.(guix.TreeNode).Create(theme)
 	return a.creator.Create(theme, c, n)
 }
 
 // Size returns the size that each of the item's controls will be displayed
 // at for the given theme.
-func (a *TreeToListAdapter) Size(theme gxui.Theme) math.Size {
+func (a *TreeToListAdapter) Size(theme guix.Theme) math.Size {
 	return a.creator.Size(theme, a.adapter.Size(theme))
 }
 
 // DeepestNode returns the deepest expanded node to represent item.
 // If the item is not found in the adapter, then nil is returned.
-func (a *TreeToListAdapter) DeepestNode(item gxui.AdapterItem) *TreeToListNode {
+func (a *TreeToListAdapter) DeepestNode(item guix.AdapterItem) *TreeToListNode {
 	n := &a.node
 	for {
 		if i := n.DirectItemIndex(item); i >= 0 {
@@ -108,7 +108,7 @@ func (a *TreeToListAdapter) DeepestNode(item gxui.AdapterItem) *TreeToListNode {
 // flattened list.
 // Index 0 represents the first root node, index 1 may represent the the second
 // root node or the first child of the first root node, and so on.
-func (a *TreeToListAdapter) ItemAt(idx int) gxui.AdapterItem {
+func (a *TreeToListAdapter) ItemAt(idx int) guix.AdapterItem {
 	return a.node.ItemAt(idx)
 }
 
@@ -116,12 +116,12 @@ func (a *TreeToListAdapter) ItemAt(idx int) gxui.AdapterItem {
 // treated as a flattened list.
 // Index 0 represents the first root node, index 1 may represent the the second
 // root node or the first child of the first root node, and so on.
-func (a *TreeToListAdapter) ItemIndex(item gxui.AdapterItem) int {
+func (a *TreeToListAdapter) ItemIndex(item guix.AdapterItem) int {
 	return a.node.ItemIndex(item)
 }
 
 // ExpandItem expands the tree to show item.
-func (a *TreeToListAdapter) ExpandItem(item gxui.AdapterItem) {
+func (a *TreeToListAdapter) ExpandItem(item guix.AdapterItem) {
 	node := &a.node
 	for {
 		idx := node.DirectItemIndex(item)
@@ -149,6 +149,6 @@ func (a *TreeToListAdapter) CollapseAll() {
 
 // Contains returns true if item is part of the tree (regardless of whether it
 // is part of the expanded tree or not).
-func (a *TreeToListAdapter) Contains(item gxui.AdapterItem) bool {
+func (a *TreeToListAdapter) Contains(item guix.AdapterItem) bool {
 	return a.node.DirectItemIndex(item) >= 0
 }

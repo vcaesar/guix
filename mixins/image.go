@@ -20,10 +20,10 @@ type Image struct {
 	parts.BackgroundBorderPainter
 
 	outer        ImageOuter
-	texture      gxui.Texture
-	canvas       gxui.Canvas
-	scalingMode  gxui.ScalingMode
-	aspectMode   gxui.AspectMode
+	texture      guix.Texture
+	canvas       guix.Canvas
+	scalingMode  guix.ScalingMode
+	aspectMode   guix.AspectMode
 	explicitSize math.Size
 }
 
@@ -33,8 +33,8 @@ func (i *Image) calculateDrawRect() math.Rect {
 	aspectSrc := float32(texH) / float32(texW)
 	aspectDst := float32(r.H()) / float32(r.W())
 	switch i.aspectMode {
-	case gxui.AspectCorrectLetterbox, gxui.AspectCorrectCrop:
-		if (aspectDst < aspectSrc) != (i.aspectMode == gxui.AspectCorrectLetterbox) {
+	case guix.AspectCorrectLetterbox, guix.AspectCorrectCrop:
+		if (aspectDst < aspectSrc) != (i.aspectMode == guix.AspectCorrectLetterbox) {
 			contract := r.H() - int(float32(r.W())*aspectSrc)
 			r = r.Contract(math.Spacing{T: contract / 2, B: contract / 2})
 		} else {
@@ -45,22 +45,22 @@ func (i *Image) calculateDrawRect() math.Rect {
 	return r
 }
 
-func (i *Image) Init(outer ImageOuter, theme gxui.Theme) {
+func (i *Image) Init(outer ImageOuter, theme guix.Theme) {
 	i.outer = outer
 	i.Control.Init(outer, theme)
 	i.BackgroundBorderPainter.Init(outer)
-	i.SetBorderPen(gxui.TransparentPen)
-	i.SetBackgroundBrush(gxui.TransparentBrush)
+	i.SetBorderPen(guix.TransparentPen)
+	i.SetBackgroundBrush(guix.TransparentBrush)
 
 	// Interface compliance test
-	_ = gxui.Image(i)
+	_ = guix.Image(i)
 }
 
-func (i *Image) Texture() gxui.Texture {
+func (i *Image) Texture() guix.Texture {
 	return i.texture
 }
 
-func (i *Image) SetTexture(tex gxui.Texture) {
+func (i *Image) SetTexture(tex guix.Texture) {
 	if i.texture != tex {
 		i.texture = tex
 		i.canvas = nil
@@ -68,11 +68,11 @@ func (i *Image) SetTexture(tex gxui.Texture) {
 	}
 }
 
-func (i *Image) Canvas() gxui.Canvas {
+func (i *Image) Canvas() guix.Canvas {
 	return i.canvas
 }
 
-func (i *Image) SetCanvas(canvas gxui.Canvas) {
+func (i *Image) SetCanvas(canvas guix.Canvas) {
 	if !canvas.IsComplete() {
 		panic("SetCanvas() called with an incomplete canvas")
 	}
@@ -84,22 +84,22 @@ func (i *Image) SetCanvas(canvas gxui.Canvas) {
 	}
 }
 
-func (i *Image) ScalingMode() gxui.ScalingMode {
+func (i *Image) ScalingMode() guix.ScalingMode {
 	return i.scalingMode
 }
 
-func (i *Image) SetScalingMode(mode gxui.ScalingMode) {
+func (i *Image) SetScalingMode(mode guix.ScalingMode) {
 	if i.scalingMode != mode {
 		i.scalingMode = mode
 		i.outer.Relayout()
 	}
 }
 
-func (i *Image) AspectMode() gxui.AspectMode {
+func (i *Image) AspectMode() guix.AspectMode {
 	return i.aspectMode
 }
 
-func (i *Image) SetAspectMode(mode gxui.AspectMode) {
+func (i *Image) SetAspectMode(mode guix.AspectMode) {
 	if i.aspectMode != mode {
 		i.aspectMode = mode
 		i.outer.Redraw()
@@ -111,7 +111,7 @@ func (i *Image) SetExplicitSize(explicitSize math.Size) {
 		i.explicitSize = explicitSize
 		i.outer.Relayout()
 	}
-	i.SetScalingMode(gxui.ScalingExplicitSize)
+	i.SetScalingMode(guix.ScalingExplicitSize)
 }
 
 func (i *Image) PixelAt(p math.Point) (math.Point, bool) {
@@ -131,9 +131,9 @@ func (i *Image) PixelAt(p math.Point) (math.Point, bool) {
 func (i *Image) DesiredSize(min, max math.Size) math.Size {
 	s := max
 	switch i.scalingMode {
-	case gxui.ScalingExplicitSize:
+	case guix.ScalingExplicitSize:
 		s = i.explicitSize
-	case gxui.Scaling1to1:
+	case guix.Scaling1to1:
 		switch {
 		case i.texture != nil:
 			s = i.texture.Size()
@@ -144,7 +144,7 @@ func (i *Image) DesiredSize(min, max math.Size) math.Size {
 	return s.Expand(math.CreateSpacing(int(i.BorderPen().Width))).Clamp(min, max)
 }
 
-func (i *Image) Paint(c gxui.Canvas) {
+func (i *Image) Paint(c guix.Canvas) {
 	r := i.outer.Size().Rect()
 	i.PaintBackground(c, r)
 	switch {

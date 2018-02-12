@@ -11,8 +11,8 @@ import (
 )
 
 // Create a PanelHolder with a 3 panels
-func panelHolder(name string, theme gxui.Theme) gxui.PanelHolder {
-	label := func(text string) gxui.Label {
+func panelHolder(name string, theme guix.Theme) guix.PanelHolder {
+	label := func(text string) guix.Label {
 		label := theme.CreateLabel()
 		label.SetText(text)
 		return label
@@ -25,7 +25,7 @@ func panelHolder(name string, theme gxui.Theme) gxui.PanelHolder {
 	return holder
 }
 
-func appMain(driver gxui.Driver) {
+func appMain(driver guix.Driver) {
 	theme := flags.CreateTheme(driver)
 
 	// ┌───────┐║┌───────┐
@@ -41,17 +41,17 @@ func appMain(driver gxui.Driver) {
 	// └───────┘║└───────┘
 
 	splitterAB := theme.CreateSplitterLayout()
-	splitterAB.SetOrientation(gxui.Horizontal)
+	splitterAB.SetOrientation(guix.Horizontal)
 	splitterAB.AddChild(panelHolder("A", theme))
 	splitterAB.AddChild(panelHolder("B", theme))
 
 	splitterCD := theme.CreateSplitterLayout()
-	splitterCD.SetOrientation(gxui.Horizontal)
+	splitterCD.SetOrientation(guix.Horizontal)
 	splitterCD.AddChild(panelHolder("C", theme))
 	splitterCD.AddChild(panelHolder("D", theme))
 
 	vSplitter := theme.CreateSplitterLayout()
-	vSplitter.SetOrientation(gxui.Vertical)
+	vSplitter.SetOrientation(guix.Vertical)
 	vSplitter.AddChild(splitterAB)
 	vSplitter.AddChild(splitterCD)
 

@@ -1,13 +1,13 @@
-GXUI - A Go cross platform UI library.
+guix - A Go cross platform UI library.
 =======
 
-[![Join the chat at https://gitter.im/google/gxui](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/google/gxui?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/google/gxui.svg?branch=master)](https://travis-ci.org/google/gxui) [![GoDoc](https://godoc.org/github.com/vcaesar/guix?status.svg)](https://godoc.org/github.com/vcaesar/guix)
+[![Join the chat at https://gitter.im/google/guix](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/google/guix?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/google/guix.svg?branch=master)](https://travis-ci.org/google/guix) [![GoDoc](https://godoc.org/github.com/vcaesar/guix?status.svg)](https://godoc.org/github.com/vcaesar/guix)
 
 
 Notice:
 ---
 
-Unfortunately due to a shortage of hours in a day, GXUI is no longer maintained.
+Unfortunately due to a shortage of hours in a day, guix is no longer maintained.
 
 If you're looking for a GUI library for your next Go project, [check out these alternatives](https://github.com/avelino/awesome-go#gui).
 
@@ -23,19 +23,19 @@ Dependencies
 
 ### Linux:
 
-In order to build GXUI on linux, you will need the following packages installed:
+In order to build guix on linux, you will need the following packages installed:
 
     sudo apt-get install libxi-dev libxcursor-dev libxrandr-dev libxinerama-dev mesa-common-dev libgl1-mesa-dev libxxf86vm-dev
 
 ### Common:
 
-After setting up ```GOPATH``` (see [Go documentation](https://golang.org/doc/code.html)), you can then fetch the GXUI library and its dependencies:
+After setting up ```GOPATH``` (see [Go documentation](https://golang.org/doc/code.html)), you can then fetch the guix library and its dependencies:
 
     go get -u github.com/vcaesar/guix/...
 
 Samples
 ---
-Samples can be found in [`gxui/samples`](https://github.com/vcaesar/guix/tree/master/samples).
+Samples can be found in [`guix/samples`](https://github.com/vcaesar/guix/tree/master/samples).
 
 To build all samples run:
 
@@ -48,7 +48,7 @@ If you add ```GOPATH/bin``` to your PATH, you can simply type the name of a samp
 Web
 ---
 
-gxui code is cross platform and can be compiled using GopherJS to JavaScript, allowing it to run in browsers with WebGL support. To do so, you'll need the [GopherJS compiler](https://github.com/gopherjs/gopherjs) and some additional dependencies:
+guix code is cross platform and can be compiled using GopherJS to JavaScript, allowing it to run in browsers with WebGL support. To do so, you'll need the [GopherJS compiler](https://github.com/gopherjs/gopherjs) and some additional dependencies:
 
     go get -u github.com/gopherjs/gopherjs
     go get -u -d -tags=js github.com/vcaesar/guix/...
@@ -64,7 +64,7 @@ Make sure to mention this font in any notices file distributed with your applica
 
 Contributing
 ---
-GXUI was written by a couple of Googlers as an experiment and is now unmaintained.
+guix was written by a couple of Googlers as an experiment and is now unmaintained.
 
 Contributions, however small, will require the author to have signed the [Google Individual Contributor License Agreement](https://developers.google.com/open-source/cla/individual?csw=1).
 

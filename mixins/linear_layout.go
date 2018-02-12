@@ -20,19 +20,19 @@ type LinearLayout struct {
 	parts.BackgroundBorderPainter
 }
 
-func (l *LinearLayout) Init(outer LinearLayoutOuter, theme gxui.Theme) {
+func (l *LinearLayout) Init(outer LinearLayoutOuter, theme guix.Theme) {
 	l.Container.Init(outer, theme)
 	l.LinearLayout.Init(outer)
 	l.BackgroundBorderPainter.Init(outer)
 	l.SetMouseEventTarget(true)
-	l.SetBackgroundBrush(gxui.TransparentBrush)
-	l.SetBorderPen(gxui.TransparentPen)
+	l.SetBackgroundBrush(guix.TransparentBrush)
+	l.SetBorderPen(guix.TransparentPen)
 
 	// Interface compliance test
-	_ = gxui.LinearLayout(l)
+	_ = guix.LinearLayout(l)
 }
 
-func (l *LinearLayout) Paint(c gxui.Canvas) {
+func (l *LinearLayout) Paint(c guix.Canvas) {
 	r := l.Size().Rect()
 	l.BackgroundBorderPainter.PaintBackground(c, r)
 	l.PaintChildren.Paint(c)

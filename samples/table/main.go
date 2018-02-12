@@ -6,34 +6,34 @@ import (
 	"github.com/vcaesar/guix/samples/flags"
 )
 
-func appMain(driver gxui.Driver) {
+func appMain(driver guix.Driver) {
 	theme := flags.CreateTheme(driver)
 
 	label1 := theme.CreateLabel()
-	label1.SetColor(gxui.White)
+	label1.SetColor(guix.White)
 	label1.SetText("1x1")
 
 	cell1x1 := theme.CreateLinearLayout()
-	cell1x1.SetBackgroundBrush(gxui.CreateBrush(gxui.Blue40))
-	cell1x1.SetHorizontalAlignment(gxui.AlignCenter)
+	cell1x1.SetBackgroundBrush(guix.CreateBrush(guix.Blue40))
+	cell1x1.SetHorizontalAlignment(guix.AlignCenter)
 	cell1x1.AddChild(label1)
 
 	label2 := theme.CreateLabel()
-	label2.SetColor(gxui.White)
+	label2.SetColor(guix.White)
 	label2.SetText("2x1")
 
 	cell2x1 := theme.CreateLinearLayout()
-	cell2x1.SetBackgroundBrush(gxui.CreateBrush(gxui.Green40))
-	cell2x1.SetHorizontalAlignment(gxui.AlignCenter)
+	cell2x1.SetBackgroundBrush(guix.CreateBrush(guix.Green40))
+	cell2x1.SetHorizontalAlignment(guix.AlignCenter)
 	cell2x1.AddChild(label2)
 
 	label3 := theme.CreateLabel()
-	label3.SetColor(gxui.White)
+	label3.SetColor(guix.White)
 	label3.SetText("1x2")
 
 	cell1x2 := theme.CreateLinearLayout()
-	cell1x2.SetBackgroundBrush(gxui.CreateBrush(gxui.Red40))
-	cell1x2.SetHorizontalAlignment(gxui.AlignCenter)
+	cell1x2.SetBackgroundBrush(guix.CreateBrush(guix.Red40))
+	cell1x2.SetHorizontalAlignment(guix.AlignCenter)
 	cell1x2.AddChild(label3)
 
 	table := theme.CreateTableLayout()

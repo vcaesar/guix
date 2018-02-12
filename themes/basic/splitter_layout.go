@@ -15,7 +15,7 @@ type SplitterLayout struct {
 	theme *Theme
 }
 
-func CreateSplitterLayout(theme *Theme) gxui.SplitterLayout {
+func CreateSplitterLayout(theme *Theme) guix.SplitterLayout {
 	l := &SplitterLayout{}
 	l.theme = theme
 	l.Init(l, theme)
@@ -23,7 +23,7 @@ func CreateSplitterLayout(theme *Theme) gxui.SplitterLayout {
 }
 
 // mixins.SplitterLayout overrides
-func (l *SplitterLayout) CreateSplitterBar() gxui.Control {
+func (l *SplitterLayout) CreateSplitterBar() guix.Control {
 	b := &mixins.SplitterBar{}
 	b.Init(b, l.theme)
 	b.SetBackgroundColor(l.theme.SplitterBarDefaultStyle.Brush.Color)
@@ -40,10 +40,10 @@ func (l *SplitterLayout) CreateSplitterBar() gxui.Control {
 		}
 		b.Redraw()
 	}
-	b.OnDragStart(func(gxui.MouseEvent) { updateForegroundColor() })
-	b.OnDragEnd(func(gxui.MouseEvent) { updateForegroundColor() })
-	b.OnDragStart(func(gxui.MouseEvent) { updateForegroundColor() })
-	b.OnMouseEnter(func(gxui.MouseEvent) { updateForegroundColor() })
-	b.OnMouseExit(func(gxui.MouseEvent) { updateForegroundColor() })
+	b.OnDragStart(func(guix.MouseEvent) { updateForegroundColor() })
+	b.OnDragEnd(func(guix.MouseEvent) { updateForegroundColor() })
+	b.OnDragStart(func(guix.MouseEvent) { updateForegroundColor() })
+	b.OnMouseEnter(func(guix.MouseEvent) { updateForegroundColor() })
+	b.OnMouseExit(func(guix.MouseEvent) { updateForegroundColor() })
 	return b
 }

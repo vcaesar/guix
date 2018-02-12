@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package gxui
+package guix
 
 import (
 	"github.com/vcaesar/guix/math"
 )
 
-// A Font represents a TrueType font loaded by the GXUI driver.
+// A Font represents a TrueType font loaded by the guix driver.
 type Font interface {
 	LoadGlyphs(first, last rune)
 	Size() int

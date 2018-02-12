@@ -13,47 +13,47 @@ import (
 )
 
 type TextBoxLine interface {
-	gxui.Control
+	guix.Control
 	RuneIndexAt(math.Point) int
 	PositionAt(int) math.Point
 }
 
 type TextBoxOuter interface {
 	ListOuter
-	CreateLine(theme gxui.Theme, index int) (line TextBoxLine, container gxui.Control)
+	CreateLine(theme guix.Theme, index int) (line TextBoxLine, container guix.Control)
 }
 
 type TextBox struct {
 	List
-	gxui.AdapterBase
+	guix.AdapterBase
 	parts.Focusable
 
 	outer             TextBoxOuter
-	driver            gxui.Driver
-	font              gxui.Font
-	textColor         gxui.Color
-	onRedrawLines     gxui.Event
+	driver            guix.Driver
+	font              guix.Font
+	textColor         guix.Color
+	onRedrawLines     guix.Event
 	multiline         bool
-	controller        *gxui.TextBoxController
+	controller        *guix.TextBoxController
 	adapter           *TextBoxAdapter
 	selectionDragging bool
-	selectionDrag     gxui.TextSelection
+	selectionDrag     guix.TextSelection
 	desiredWidth      int
 }
 
-func (t *TextBox) lineMouseDown(line TextBoxLine, ev gxui.MouseEvent) {
-	if ev.Button == gxui.MouseButtonLeft {
+func (t *TextBox) lineMouseDown(line TextBoxLine, ev guix.MouseEvent) {
+	if ev.Button == guix.MouseButtonLeft {
 		p := line.RuneIndexAt(ev.Point)
 		t.selectionDragging = true
-		t.selectionDrag = gxui.CreateTextSelection(p, p, false)
+		t.selectionDrag = guix.CreateTextSelection(p, p, false)
 		if !ev.Modifier.Control() {
 			t.controller.SetCaret(p)
 		}
 	}
 }
 
-func (t *TextBox) lineMouseUp(line TextBoxLine, ev gxui.MouseEvent) {
-	if ev.Button == gxui.MouseButtonLeft {
+func (t *TextBox) lineMouseUp(line TextBoxLine, ev guix.MouseEvent) {
+	if ev.Button == guix.MouseButtonLeft {
 		t.selectionDragging = false
 		if !ev.Modifier.Control() {
 			t.controller.SetSelection(t.selectionDrag)
@@ -63,20 +63,20 @@ func (t *TextBox) lineMouseUp(line TextBoxLine, ev gxui.MouseEvent) {
 	}
 }
 
-func (t *TextBox) Init(outer TextBoxOuter, driver gxui.Driver, theme gxui.Theme, font gxui.Font) {
+func (t *TextBox) Init(outer TextBoxOuter, driver guix.Driver, theme guix.Theme, font guix.Font) {
 	t.List.Init(outer, theme)
 	t.Focusable.Init(outer)
 	t.outer = outer
 	t.driver = driver
 	t.font = font
-	t.onRedrawLines = gxui.CreateEvent(func() {})
-	t.controller = gxui.CreateTextBoxController()
+	t.onRedrawLines = guix.CreateEvent(func() {})
+	t.controller = guix.CreateTextBoxController()
 	t.adapter = &TextBoxAdapter{TextBox: t}
 	t.desiredWidth = 100
 	t.SetScrollBarEnabled(false) // Defaults to single line
 	t.OnGainedFocus(func() { t.onRedrawLines.Fire() })
 	t.OnLostFocus(func() { t.onRedrawLines.Fire() })
-	t.controller.OnTextChanged(func([]gxui.TextBoxEdit) {
+	t.controller.OnTextChanged(func([]guix.TextBoxEdit) {
 		t.onRedrawLines.Fire()
 		t.List.DataChanged(false)
 	})
@@ -87,7 +87,7 @@ func (t *TextBox) Init(outer TextBoxOuter, driver gxui.Driver, theme gxui.Theme,
 	t.List.SetAdapter(t.adapter)
 
 	// Interface compliance test
-	_ = gxui.TextBox(t)
+	_ = guix.TextBox(t)
 }
 
 func (t *TextBox) textRect() math.Rect {
@@ -98,15 +98,15 @@ func (t *TextBox) pageLines() int {
 	return (t.outer.Size().H - t.outer.Padding().H()) / t.MajorAxisItemSize()
 }
 
-func (t *TextBox) OnRedrawLines(f func()) gxui.EventSubscription {
+func (t *TextBox) OnRedrawLines(f func()) guix.EventSubscription {
 	return t.onRedrawLines.Listen(f)
 }
 
-func (t *TextBox) OnSelectionChanged(f func()) gxui.EventSubscription {
+func (t *TextBox) OnSelectionChanged(f func()) guix.EventSubscription {
 	return t.controller.OnSelectionChanged(f)
 }
 
-func (t *TextBox) OnTextChanged(f func([]gxui.TextBoxEdit)) gxui.EventSubscription {
+func (t *TextBox) OnTextChanged(f func([]guix.TextBoxEdit)) guix.EventSubscription {
 	return t.controller.OnTextChanged(f)
 }
 
@@ -123,20 +123,20 @@ func (t *TextBox) SetText(text string) {
 	t.outer.Relayout()
 }
 
-func (t *TextBox) TextColor() gxui.Color {
+func (t *TextBox) TextColor() guix.Color {
 	return t.textColor
 }
 
-func (t *TextBox) SetTextColor(color gxui.Color) {
+func (t *TextBox) SetTextColor(color guix.Color) {
 	t.textColor = color
 	t.Relayout()
 }
 
-func (t *TextBox) Font() gxui.Font {
+func (t *TextBox) Font() guix.Font {
 	return t.font
 }
 
-func (t *TextBox) SetFont(font gxui.Font) {
+func (t *TextBox) SetFont(font guix.Font) {
 	if t.font != font {
 		t.font = font
 		t.Relayout()
@@ -166,7 +166,7 @@ func (t *TextBox) SetDesiredWidth(desiredWidth int) {
 	}
 }
 
-func (t *TextBox) Select(sel gxui.TextSelectionList) {
+func (t *TextBox) Select(sel guix.TextSelectionList) {
 	t.controller.StoreCaretLocations()
 	t.controller.SetSelections(sel)
 	// Use two scroll tos to try and display all selections (if it fits on screen)
@@ -185,13 +185,13 @@ func (t *TextBox) Carets() []int {
 }
 
 func (t *TextBox) RuneIndexAt(pnt math.Point) (index int, found bool) {
-	for _, child := range gxui.ControlsUnder(pnt, t) {
+	for _, child := range guix.ControlsUnder(pnt, t) {
 		line, _ := child.C.(TextBoxLine)
 		if line == nil {
 			continue
 		}
 
-		pnt = gxui.ParentToChild(pnt, t.outer, line)
+		pnt = guix.ParentToChild(pnt, t.outer, line)
 		return line.RuneIndexAt(pnt), true
 	}
 	return -1, false
@@ -226,9 +226,9 @@ func (t *TextBox) ScrollToRune(i int) {
 	t.ScrollToLine(t.controller.LineIndex(i))
 }
 
-func (t *TextBox) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
+func (t *TextBox) KeyPress(ev guix.KeyboardEvent) (consume bool) {
 	switch ev.Key {
-	case gxui.KeyLeft:
+	case guix.KeyLeft:
 		switch {
 		case ev.Modifier.Shift() && ev.Modifier.Control():
 			t.controller.SelectLeftByWord()
@@ -245,7 +245,7 @@ func (t *TextBox) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 		}
 		t.ScrollToRune(t.controller.FirstCaret())
 		return true
-	case gxui.KeyRight:
+	case guix.KeyRight:
 		switch {
 		case ev.Modifier.Shift() && ev.Modifier.Control():
 			t.controller.SelectRightByWord()
@@ -262,7 +262,7 @@ func (t *TextBox) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 		}
 		t.ScrollToRune(t.controller.LastCaret())
 		return true
-	case gxui.KeyUp:
+	case guix.KeyUp:
 		switch {
 		case ev.Modifier.Shift() && ev.Modifier.Alt():
 			t.controller.AddCaretsUp()
@@ -274,7 +274,7 @@ func (t *TextBox) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 		}
 		t.ScrollToRune(t.controller.FirstCaret())
 		return true
-	case gxui.KeyDown:
+	case guix.KeyDown:
 		switch {
 		case ev.Modifier.Shift() && ev.Modifier.Alt():
 			t.controller.AddCaretsDown()
@@ -286,7 +286,7 @@ func (t *TextBox) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 		}
 		t.ScrollToRune(t.controller.LastCaret())
 		return true
-	case gxui.KeyHome:
+	case guix.KeyHome:
 		switch {
 		case ev.Modifier.Shift() && ev.Modifier.Control():
 			t.controller.SelectFirst()
@@ -300,7 +300,7 @@ func (t *TextBox) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 		}
 		t.ScrollToRune(t.controller.FirstCaret())
 		return true
-	case gxui.KeyEnd:
+	case guix.KeyEnd:
 		switch {
 		case ev.Modifier.Shift() && ev.Modifier.Control():
 			t.controller.SelectLast()
@@ -314,7 +314,7 @@ func (t *TextBox) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 		}
 		t.ScrollToRune(t.controller.LastCaret())
 		return true
-	case gxui.KeyPageUp:
+	case guix.KeyPageUp:
 		switch {
 		case ev.Modifier.Shift():
 			for i, c := 0, t.pageLines(); i < c; i++ {
@@ -328,7 +328,7 @@ func (t *TextBox) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 		}
 		t.ScrollToRune(t.controller.FirstCaret())
 		return true
-	case gxui.KeyPageDown:
+	case guix.KeyPageDown:
 		switch {
 		case ev.Modifier.Shift():
 			for i, c := 0, t.pageLines(); i < c; i++ {
@@ -342,25 +342,25 @@ func (t *TextBox) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 		}
 		t.ScrollToRune(t.controller.LastCaret())
 		return true
-	case gxui.KeyBackspace:
+	case guix.KeyBackspace:
 		t.controller.Backspace()
 		return true
-	case gxui.KeyDelete:
+	case guix.KeyDelete:
 		t.controller.Delete()
 		return true
-	case gxui.KeyEnter:
+	case guix.KeyEnter:
 		if t.multiline {
 			t.controller.ReplaceWithNewline()
 			return true
 		}
-	case gxui.KeyA:
+	case guix.KeyA:
 		if ev.Modifier.Control() {
 			t.controller.SelectAll()
 			return true
 		}
-	case gxui.KeyX:
+	case guix.KeyX:
 		fallthrough
-	case gxui.KeyC:
+	case guix.KeyC:
 		if ev.Modifier.Control() {
 			parts := make([]string, t.controller.SelectionCount())
 			for i := range parts {
@@ -373,26 +373,26 @@ func (t *TextBox) KeyPress(ev gxui.KeyboardEvent) (consume bool) {
 			str := strings.Join(parts, "\n")
 			t.driver.SetClipboard(str)
 
-			if ev.Key == gxui.KeyX {
+			if ev.Key == guix.KeyX {
 				t.controller.ReplaceAll("")
 			}
 			return true
 		}
-	case gxui.KeyV:
+	case guix.KeyV:
 		if ev.Modifier.Control() {
 			str, _ := t.driver.GetClipboard()
 			t.controller.ReplaceAll(str)
 			t.controller.Deselect(false)
 			return true
 		}
-	case gxui.KeyEscape:
+	case guix.KeyEscape:
 		t.controller.ClearSelections()
 	}
 
 	return t.List.KeyPress(ev)
 }
 
-func (t *TextBox) KeyStroke(ev gxui.KeyStrokeEvent) (consume bool) {
+func (t *TextBox) KeyStroke(ev guix.KeyStrokeEvent) (consume bool) {
 	if !ev.Modifier.Control() && !ev.Modifier.Alt() {
 		t.controller.ReplaceAllRunes([]rune{ev.Character})
 		t.controller.Deselect(false)
@@ -401,49 +401,49 @@ func (t *TextBox) KeyStroke(ev gxui.KeyStrokeEvent) (consume bool) {
 	return true
 }
 
-func (t *TextBox) Click(ev gxui.MouseEvent) (consume bool) {
+func (t *TextBox) Click(ev guix.MouseEvent) (consume bool) {
 	t.InputEventHandler.Click(ev)
 	return true
 }
 
-func (t *TextBox) DoubleClick(ev gxui.MouseEvent) (consume bool) {
+func (t *TextBox) DoubleClick(ev guix.MouseEvent) (consume bool) {
 	if p, ok := t.RuneIndexAt(ev.Point); ok {
 		s, e := t.controller.WordAt(p)
-		if ev.Modifier&gxui.ModControl != 0 {
-			t.controller.AddSelection(gxui.CreateTextSelection(s, e, false))
+		if ev.Modifier&guix.ModControl != 0 {
+			t.controller.AddSelection(guix.CreateTextSelection(s, e, false))
 		} else {
-			t.controller.SetSelection(gxui.CreateTextSelection(s, e, false))
+			t.controller.SetSelection(guix.CreateTextSelection(s, e, false))
 		}
 	}
 	t.InputEventHandler.DoubleClick(ev)
 	return true
 }
 
-func (t *TextBox) MouseMove(ev gxui.MouseEvent) {
+func (t *TextBox) MouseMove(ev guix.MouseEvent) {
 	t.List.MouseMove(ev)
 	if t.selectionDragging {
 		if p, ok := t.RuneIndexAt(ev.Point); ok {
-			t.selectionDrag = gxui.CreateTextSelection(t.selectionDrag.From(), p, false)
+			t.selectionDrag = guix.CreateTextSelection(t.selectionDrag.From(), p, false)
 			t.selectionDragging = true
 			t.onRedrawLines.Fire()
 		}
 	}
 }
 
-func (t *TextBox) CreateLine(theme gxui.Theme, index int) (line TextBoxLine, container gxui.Control) {
+func (t *TextBox) CreateLine(theme guix.Theme, index int) (line TextBoxLine, container guix.Control) {
 	l := &DefaultTextBoxLine{}
 	l.Init(l, theme, t, index)
 	return l, l
 }
 
 // mixins.List overrides
-func (t *TextBox) PaintSelection(c gxui.Canvas, r math.Rect) {}
+func (t *TextBox) PaintSelection(c guix.Canvas, r math.Rect) {}
 
-func (t *TextBox) PaintMouseOverBackground(c gxui.Canvas, r math.Rect) {}
+func (t *TextBox) PaintMouseOverBackground(c guix.Canvas, r math.Rect) {}
 
-// gxui.AdapterCompliance
+// guix.AdapterCompliance
 type TextBoxAdapter struct {
-	gxui.DefaultAdapter
+	guix.DefaultAdapter
 	TextBox *TextBox
 }
 
@@ -451,25 +451,25 @@ func (t *TextBoxAdapter) Count() int {
 	return math.Max(t.TextBox.controller.LineCount(), 1)
 }
 
-func (t *TextBoxAdapter) ItemAt(index int) gxui.AdapterItem {
+func (t *TextBoxAdapter) ItemAt(index int) guix.AdapterItem {
 	return index
 }
 
-func (t *TextBoxAdapter) ItemIndex(item gxui.AdapterItem) int {
+func (t *TextBoxAdapter) ItemIndex(item guix.AdapterItem) int {
 	return item.(int)
 }
 
-func (t *TextBoxAdapter) Size(theme gxui.Theme) math.Size {
+func (t *TextBoxAdapter) Size(theme guix.Theme) math.Size {
 	tb := t.TextBox
 	return math.Size{W: tb.desiredWidth, H: tb.font.GlyphMaxSize().H}
 }
 
-func (t *TextBoxAdapter) Create(theme gxui.Theme, index int) gxui.Control {
+func (t *TextBoxAdapter) Create(theme guix.Theme, index int) guix.Control {
 	line, container := t.TextBox.outer.CreateLine(theme, index)
-	line.OnMouseDown(func(ev gxui.MouseEvent) {
+	line.OnMouseDown(func(ev guix.MouseEvent) {
 		t.TextBox.lineMouseDown(line, ev)
 	})
-	line.OnMouseUp(func(ev gxui.MouseEvent) {
+	line.OnMouseUp(func(ev guix.MouseEvent) {
 		t.TextBox.lineMouseUp(line, ev)
 	})
 	return container

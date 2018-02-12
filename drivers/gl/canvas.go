@@ -65,7 +65,7 @@ func (c *canvas) appendOp(name string, op canvasOp) {
 	c.ops = append(c.ops, op)
 }
 
-// gxui.Canvas compliance
+// guix.Canvas compliance
 func (c *canvas) Size() math.Size {
 	return c.sizeDips
 }
@@ -109,7 +109,7 @@ func (c *canvas) AddClip(r math.Rect) {
 	})
 }
 
-func (c *canvas) Clear(color gxui.Color) {
+func (c *canvas) Clear(color guix.Color) {
 	c.appendOp("Clear", func(ctx *context, dss *drawStateStack) {
 		gl.ClearColor(
 			color.R,
@@ -121,7 +121,7 @@ func (c *canvas) Clear(color gxui.Color) {
 	})
 }
 
-func (c *canvas) DrawCanvas(cc gxui.Canvas, offsetDips math.Point) {
+func (c *canvas) DrawCanvas(cc guix.Canvas, offsetDips math.Point) {
 	if cc == nil {
 		panic("Canvas cannot be nil")
 	}
@@ -137,7 +137,7 @@ func (c *canvas) DrawCanvas(cc gxui.Canvas, offsetDips math.Point) {
 	})
 }
 
-func (c *canvas) DrawRunes(f gxui.Font, r []rune, p []math.Point, col gxui.Color) {
+func (c *canvas) DrawRunes(f guix.Font, r []rune, p []math.Point, col guix.Color) {
 	if f == nil {
 		panic("Font cannot be nil")
 	}
@@ -148,7 +148,7 @@ func (c *canvas) DrawRunes(f gxui.Font, r []rune, p []math.Point, col gxui.Color
 	})
 }
 
-func (c *canvas) DrawLines(lines gxui.Polygon, pen gxui.Pen) {
+func (c *canvas) DrawLines(lines guix.Polygon, pen guix.Pen) {
 	edge := openPolyToShape(lines, pen.Width)
 	c.appendOp("DrawLines", func(ctx *context, dss *drawStateStack) {
 		ds := dss.head()
@@ -158,7 +158,7 @@ func (c *canvas) DrawLines(lines gxui.Polygon, pen gxui.Pen) {
 	})
 }
 
-func (c *canvas) DrawPolygon(poly gxui.Polygon, pen gxui.Pen, brush gxui.Brush) {
+func (c *canvas) DrawPolygon(poly guix.Polygon, pen guix.Pen, brush guix.Brush) {
 	fill, edge := closedPolyToShape(poly, pen.Width)
 	c.appendOp("DrawPolygon", func(ctx *context, dss *drawStateStack) {
 		ds := dss.head()
@@ -171,27 +171,27 @@ func (c *canvas) DrawPolygon(poly gxui.Polygon, pen gxui.Pen, brush gxui.Brush) 
 	})
 }
 
-func (c *canvas) DrawRect(r math.Rect, brush gxui.Brush) {
+func (c *canvas) DrawRect(r math.Rect, brush guix.Brush) {
 	c.appendOp("DrawRect", func(ctx *context, dss *drawStateStack) {
 		ctx.blitter.blitRect(ctx, ctx.resolution.rectDipsToPixels(r), brush.Color, dss.head())
 	})
 }
 
-func (c *canvas) DrawRoundedRect(r math.Rect, tl, tr, bl, br float32, pen gxui.Pen, brush gxui.Brush) {
+func (c *canvas) DrawRoundedRect(r math.Rect, tl, tr, bl, br float32, pen guix.Pen, brush guix.Brush) {
 	if tl == 0 && tr == 0 && bl == 0 && br == 0 && pen.Color.A == 0 {
 		c.DrawRect(r, brush)
 		return
 	}
-	p := gxui.Polygon{
-		gxui.PolygonVertex{Position: r.TL(), RoundedRadius: tl},
-		gxui.PolygonVertex{Position: r.TR(), RoundedRadius: tr},
-		gxui.PolygonVertex{Position: r.BR(), RoundedRadius: br},
-		gxui.PolygonVertex{Position: r.BL(), RoundedRadius: bl},
+	p := guix.Polygon{
+		guix.PolygonVertex{Position: r.TL(), RoundedRadius: tl},
+		guix.PolygonVertex{Position: r.TR(), RoundedRadius: tr},
+		guix.PolygonVertex{Position: r.BR(), RoundedRadius: br},
+		guix.PolygonVertex{Position: r.BL(), RoundedRadius: bl},
 	}
 	c.DrawPolygon(p, pen, brush)
 }
 
-func (c *canvas) DrawTexture(t gxui.Texture, r math.Rect) {
+func (c *canvas) DrawTexture(t guix.Texture, r math.Rect) {
 	if t == nil {
 		panic("Texture cannot be nil")
 	}

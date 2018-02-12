@@ -14,8 +14,8 @@ type Focusable struct {
 	outer         FocusableOuter
 	focusable     bool
 	hasFocus      bool
-	onGainedFocus gxui.Event
-	onLostFocus   gxui.Event
+	onGainedFocus guix.Event
+	onLostFocus   guix.Event
 }
 
 func (f *Focusable) Init(outer FocusableOuter) {
@@ -23,7 +23,7 @@ func (f *Focusable) Init(outer FocusableOuter) {
 	f.focusable = true
 }
 
-// gxui.Control compliance
+// guix.Control compliance
 func (f *Focusable) IsFocusable() bool {
 	return f.focusable
 }
@@ -36,16 +36,16 @@ func (f *Focusable) SetFocusable(bool) {
 	f.focusable = true
 }
 
-func (f *Focusable) OnGainedFocus(l func()) gxui.EventSubscription {
+func (f *Focusable) OnGainedFocus(l func()) guix.EventSubscription {
 	if f.onGainedFocus == nil {
-		f.onGainedFocus = gxui.CreateEvent(f.GainedFocus)
+		f.onGainedFocus = guix.CreateEvent(f.GainedFocus)
 	}
 	return f.onGainedFocus.Listen(l)
 }
 
-func (f *Focusable) OnLostFocus(l func()) gxui.EventSubscription {
+func (f *Focusable) OnLostFocus(l func()) guix.EventSubscription {
 	if f.onLostFocus == nil {
-		f.onLostFocus = gxui.CreateEvent(f.LostFocus)
+		f.onLostFocus = guix.CreateEvent(f.LostFocus)
 	}
 	return f.onLostFocus.Listen(l)
 }

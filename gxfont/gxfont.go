@@ -6,8 +6,8 @@
 //
 // Note that the Roboto and Droid Sans Mono fonts are owned by
 // Google Inc. (one of the Go Authors) and released under the Apache 2
-// license. Any notices distributed with applications build with GXUI
-// and using this package should include both the GXUI license and the
+// license. Any notices distributed with applications build with guix
+// and using this package should include both the guix license and the
 // fonts license.
 package gxfont
 
@@ -20,10 +20,10 @@ import (
 )
 
 var (
-	// Default is the standard GXUI sans-serif font.
+	// Default is the standard guix sans-serif font.
 	Default []byte = inflate(roboto_regular)
 
-	// Monospace is the standard GXUI fixed-width font.
+	// Monospace is the standard guix fixed-width font.
 	Monospace []byte = inflate(droid_sans_mono)
 )
 

@@ -11,13 +11,13 @@ import (
 	"github.com/vcaesar/guix/samples/flags"
 )
 
-func drawStar(canvas gxui.Canvas, center math.Point, radius, rotation float32, points int) {
-	p := make(gxui.Polygon, points*2)
+func drawStar(canvas guix.Canvas, center math.Point, radius, rotation float32, points int) {
+	p := make(guix.Polygon, points*2)
 	for i := 0; i < points*2; i++ {
 		frac := float32(i) / float32(points*2)
 		α := frac*math.TwoPi + rotation
 		r := []float32{radius, radius / 2}[i&1]
-		p[i] = gxui.PolygonVertex{
+		p[i] = guix.PolygonVertex{
 			Position: math.Point{
 				X: center.X + int(r*math.Cosf(α)),
 				Y: center.Y + int(r*math.Sinf(α)),
@@ -25,16 +25,16 @@ func drawStar(canvas gxui.Canvas, center math.Point, radius, rotation float32, p
 			RoundedRadius: []float32{0, 50}[i&1],
 		}
 	}
-	canvas.DrawPolygon(p, gxui.CreatePen(3, gxui.Red), gxui.CreateBrush(gxui.Yellow))
+	canvas.DrawPolygon(p, guix.CreatePen(3, guix.Red), guix.CreateBrush(guix.Yellow))
 }
 
-func drawMoon(canvas gxui.Canvas, center math.Point, radius float32) {
+func drawMoon(canvas guix.Canvas, center math.Point, radius float32) {
 	c := 40
-	p := make(gxui.Polygon, c*2)
+	p := make(guix.Polygon, c*2)
 	for i := 0; i < c; i++ {
 		frac := float32(i) / float32(c)
 		α := math.Lerpf(math.Pi*1.2, math.Pi*-0.2, frac)
-		p[i] = gxui.PolygonVertex{
+		p[i] = guix.PolygonVertex{
 			Position: math.Point{
 				X: center.X + int(radius*math.Sinf(α)),
 				Y: center.Y + int(radius*math.Cosf(α)),
@@ -46,7 +46,7 @@ func drawMoon(canvas gxui.Canvas, center math.Point, radius float32) {
 		frac := float32(i) / float32(c)
 		α := math.Lerpf(math.Pi*-0.2, math.Pi*1.2, frac)
 		r := math.Lerpf(radius, radius*0.5, math.Sinf(frac*math.Pi))
-		p[i+c] = gxui.PolygonVertex{
+		p[i+c] = guix.PolygonVertex{
 			Position: math.Point{
 				X: center.X + int(r*math.Sinf(α)),
 				Y: center.Y + int(r*math.Cosf(α)),
@@ -54,10 +54,10 @@ func drawMoon(canvas gxui.Canvas, center math.Point, radius float32) {
 			RoundedRadius: 0,
 		}
 	}
-	canvas.DrawPolygon(p, gxui.CreatePen(3, gxui.Gray80), gxui.CreateBrush(gxui.Gray40))
+	canvas.DrawPolygon(p, guix.CreatePen(3, guix.Gray80), guix.CreateBrush(guix.Gray40))
 }
 
-func appMain(driver gxui.Driver) {
+func appMain(driver guix.Driver) {
 	theme := flags.CreateTheme(driver)
 	window := theme.CreateWindow(800, 600, "Polygon")
 	window.SetScale(flags.DefaultScaleFactor)

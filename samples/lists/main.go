@@ -13,8 +13,8 @@ import (
 	"github.com/vcaesar/guix/samples/flags"
 )
 
-// Number picker uses the gxui.DefaultAdapter for driving a list
-func numberPicker(theme gxui.Theme, overlay gxui.BubbleOverlay) gxui.Control {
+// Number picker uses the guix.DefaultAdapter for driving a list
+func numberPicker(theme guix.Theme, overlay guix.BubbleOverlay) guix.Control {
 	items := []string{
 		"zero", "one", "two", "three", "four", "five",
 		"six", "seven", "eight", "nine", "ten",
@@ -22,11 +22,11 @@ func numberPicker(theme gxui.Theme, overlay gxui.BubbleOverlay) gxui.Control {
 		"sixteen", "seventeen", "eighteen", "nineteen", "twenty",
 	}
 
-	adapter := gxui.CreateDefaultAdapter()
+	adapter := guix.CreateDefaultAdapter()
 	adapter.SetItems(items)
 
 	layout := theme.CreateLinearLayout()
-	layout.SetDirection(gxui.TopToBottom)
+	layout.SetDirection(guix.TopToBottom)
 
 	label0 := theme.CreateLabel()
 	label0.SetText("Numbers:")
@@ -39,7 +39,7 @@ func numberPicker(theme gxui.Theme, overlay gxui.BubbleOverlay) gxui.Control {
 
 	list := theme.CreateList()
 	list.SetAdapter(adapter)
-	list.SetOrientation(gxui.Vertical)
+	list.SetOrientation(guix.Vertical)
 	layout.AddChild(list)
 
 	label1 := theme.CreateLabel()
@@ -50,13 +50,13 @@ func numberPicker(theme gxui.Theme, overlay gxui.BubbleOverlay) gxui.Control {
 	selected := theme.CreateLabel()
 	layout.AddChild(selected)
 
-	dropList.OnSelectionChanged(func(item gxui.AdapterItem) {
+	dropList.OnSelectionChanged(func(item guix.AdapterItem) {
 		if list.Selected() != item {
 			list.Select(item)
 		}
 	})
 
-	list.OnSelectionChanged(func(item gxui.AdapterItem) {
+	list.OnSelectionChanged(func(item guix.AdapterItem) {
 		if dropList.Selected() != item {
 			dropList.Select(item)
 		}
@@ -67,55 +67,55 @@ func numberPicker(theme gxui.Theme, overlay gxui.BubbleOverlay) gxui.Control {
 }
 
 type customAdapter struct {
-	gxui.AdapterBase
+	guix.AdapterBase
 }
 
 func (a *customAdapter) Count() int {
 	return 1000
 }
 
-func (a *customAdapter) ItemAt(index int) gxui.AdapterItem {
+func (a *customAdapter) ItemAt(index int) guix.AdapterItem {
 	return index // This adapter uses integer indices as AdapterItems
 }
 
-func (a *customAdapter) ItemIndex(item gxui.AdapterItem) int {
+func (a *customAdapter) ItemIndex(item guix.AdapterItem) int {
 	return item.(int) // Inverse of ItemAt()
 }
 
-func (a *customAdapter) Size(theme gxui.Theme) math.Size {
+func (a *customAdapter) Size(theme guix.Theme) math.Size {
 	return math.Size{W: 100, H: 100}
 }
 
-func (a *customAdapter) Create(theme gxui.Theme, index int) gxui.Control {
+func (a *customAdapter) Create(theme guix.Theme, index int) guix.Control {
 	phase := float32(index) / 1000
-	c := gxui.Color{
+	c := guix.Color{
 		R: 0.5 + 0.5*math.Sinf(math.TwoPi*(phase+0.000)),
 		G: 0.5 + 0.5*math.Sinf(math.TwoPi*(phase+0.333)),
 		B: 0.5 + 0.5*math.Sinf(math.TwoPi*(phase+0.666)),
 		A: 1.0,
 	}
 	i := theme.CreateImage()
-	i.SetBackgroundBrush(gxui.CreateBrush(c))
+	i.SetBackgroundBrush(guix.CreateBrush(c))
 	i.SetMargin(math.Spacing{L: 3, T: 3, R: 3, B: 3})
-	i.OnMouseEnter(func(ev gxui.MouseEvent) {
-		i.SetBorderPen(gxui.CreatePen(2, gxui.Gray80))
+	i.OnMouseEnter(func(ev guix.MouseEvent) {
+		i.SetBorderPen(guix.CreatePen(2, guix.Gray80))
 	})
-	i.OnMouseExit(func(ev gxui.MouseEvent) {
-		i.SetBorderPen(gxui.TransparentPen)
+	i.OnMouseExit(func(ev guix.MouseEvent) {
+		i.SetBorderPen(guix.TransparentPen)
 	})
-	i.OnMouseDown(func(ev gxui.MouseEvent) {
-		i.SetBackgroundBrush(gxui.CreateBrush(c.MulRGB(0.7)))
+	i.OnMouseDown(func(ev guix.MouseEvent) {
+		i.SetBackgroundBrush(guix.CreateBrush(c.MulRGB(0.7)))
 	})
-	i.OnMouseUp(func(ev gxui.MouseEvent) {
-		i.SetBackgroundBrush(gxui.CreateBrush(c))
+	i.OnMouseUp(func(ev guix.MouseEvent) {
+		i.SetBackgroundBrush(guix.CreateBrush(c))
 	})
 	return i
 }
 
 // Color picker uses the customAdapter for driving a list
-func colorPicker(theme gxui.Theme) gxui.Control {
+func colorPicker(theme guix.Theme) guix.Control {
 	layout := theme.CreateLinearLayout()
-	layout.SetDirection(gxui.TopToBottom)
+	layout.SetDirection(guix.TopToBottom)
 
 	label0 := theme.CreateLabel()
 	label0.SetText("Color palette:")
@@ -125,7 +125,7 @@ func colorPicker(theme gxui.Theme) gxui.Control {
 
 	list := theme.CreateList()
 	list.SetAdapter(adapter)
-	list.SetOrientation(gxui.Horizontal)
+	list.SetOrientation(guix.Horizontal)
 	layout.AddChild(list)
 
 	label1 := theme.CreateLabel()
@@ -137,17 +137,17 @@ func colorPicker(theme gxui.Theme) gxui.Control {
 	selected.SetExplicitSize(math.Size{W: 32, H: 32})
 	layout.AddChild(selected)
 
-	list.OnSelectionChanged(func(item gxui.AdapterItem) {
+	list.OnSelectionChanged(func(item guix.AdapterItem) {
 		if item != nil {
 			control := list.ItemControl(item)
-			selected.SetBackgroundBrush(control.(gxui.Image).BackgroundBrush())
+			selected.SetBackgroundBrush(control.(guix.Image).BackgroundBrush())
 		}
 	})
 
 	return layout
 }
 
-func appMain(driver gxui.Driver) {
+func appMain(driver guix.Driver) {
 	theme := flags.CreateTheme(driver)
 
 	overlay := theme.CreateBubbleOverlay()

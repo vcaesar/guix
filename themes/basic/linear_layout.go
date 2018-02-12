@@ -9,7 +9,7 @@ import (
 	"github.com/vcaesar/guix/mixins"
 )
 
-func CreateLinearLayout(theme *Theme) gxui.LinearLayout {
+func CreateLinearLayout(theme *Theme) guix.LinearLayout {
 	l := &mixins.LinearLayout{}
 	l.Init(l, theme)
 	return l

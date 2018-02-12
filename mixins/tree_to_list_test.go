@@ -12,16 +12,16 @@ import (
 )
 
 type testTreeNode struct {
-	item     gxui.AdapterItem
+	item     guix.AdapterItem
 	children []*testTreeNode
 }
 
 func (n *testTreeNode) Count() int                           { return len(n.children) }
-func (n *testTreeNode) NodeAt(index int) gxui.TreeNode       { return n.children[index] }
-func (n *testTreeNode) Item() gxui.AdapterItem               { return n.item }
-func (n *testTreeNode) Create(theme gxui.Theme) gxui.Control { return nil }
+func (n *testTreeNode) NodeAt(index int) guix.TreeNode       { return n.children[index] }
+func (n *testTreeNode) Item() guix.AdapterItem               { return n.item }
+func (n *testTreeNode) Create(theme guix.Theme) guix.Control { return nil }
 
-func (n *testTreeNode) ItemIndex(item gxui.AdapterItem) int {
+func (n *testTreeNode) ItemIndex(item guix.AdapterItem) int {
 	for i, c := range n.children {
 		if item == c.item {
 			return i
@@ -34,14 +34,14 @@ func (n *testTreeNode) ItemIndex(item gxui.AdapterItem) int {
 }
 
 type testTreeAdapter struct {
-	gxui.AdapterBase
+	guix.AdapterBase
 	testTreeNode
 }
 
-func (n *testTreeNode) Size(theme gxui.Theme) math.Size { return math.ZeroSize }
+func (n *testTreeNode) Size(theme guix.Theme) math.Size { return math.ZeroSize }
 
 // n creates and returns a testTreeNode with the item i and children c.
-func n(i gxui.AdapterItem, c ...*testTreeNode) *testTreeNode {
+func n(i guix.AdapterItem, c ...*testTreeNode) *testTreeNode {
 	return &testTreeNode{item: i, children: c}
 }
 
@@ -52,7 +52,7 @@ func a(c ...*testTreeNode) (list_adapter *TreeToListAdapter, tree_adapter *testT
 	return CreateTreeToListAdapter(adapter, nil), adapter
 }
 
-func test(t *testing.T, name string, adapter *TreeToListAdapter, expected ...gxui.AdapterItem) {
+func test(t *testing.T, name string, adapter *TreeToListAdapter, expected ...guix.AdapterItem) {
 	if len(expected) != adapter.Count() {
 		t.Errorf("%s: Count was not as expected.\nExpected: %v\nGot:      %v",
 			name, len(expected), adapter.Count())
@@ -74,9 +74,9 @@ func test(t *testing.T, name string, adapter *TreeToListAdapter, expected ...gxu
 func TestTreeToListNodeFlat(t *testing.T) {
 	list_adapter, _ := a(n(10), n(20), n(30))
 	test(t, "flat", list_adapter,
-		gxui.AdapterItem(10),
-		gxui.AdapterItem(20),
-		gxui.AdapterItem(30),
+		guix.AdapterItem(10),
+		guix.AdapterItem(20),
+		guix.AdapterItem(30),
 	)
 }
 
@@ -95,63 +95,63 @@ func TestTreeToListNodeDeep(t *testing.T) {
 				n(142))))
 
 	test(t, "unexpanded", list_adapter,
-		gxui.AdapterItem(100),
+		guix.AdapterItem(100),
 	)
 
 	list_adapter.node.children[0].Expand()
 	test(t, "single expanded", list_adapter,
-		gxui.AdapterItem(100), // (0) 100
-		gxui.AdapterItem(110), // (1)  ╠══ 110
-		gxui.AdapterItem(120), // (2)  ╠══ 120
-		gxui.AdapterItem(130), // (3)  ╠══ 130
-		gxui.AdapterItem(140), // (4)  ╚══ 140
+		guix.AdapterItem(100), // (0) 100
+		guix.AdapterItem(110), // (1)  ╠══ 110
+		guix.AdapterItem(120), // (2)  ╠══ 120
+		guix.AdapterItem(130), // (3)  ╠══ 130
+		guix.AdapterItem(140), // (4)  ╚══ 140
 	)
 
 	list_adapter.ExpandAll()
 	test(t, "fully expanded", list_adapter,
-		gxui.AdapterItem(100), // (0) 100
-		gxui.AdapterItem(110), // (1)  ╠══ 110
-		gxui.AdapterItem(120), // (2)  ╠══ 120
-		gxui.AdapterItem(121), // (3)  ║    ╠══ 121
-		gxui.AdapterItem(122), // (4)  ║    ╠══ 122
-		gxui.AdapterItem(123), // (5)  ║    ╚══ 123
-		gxui.AdapterItem(130), // (6)  ╠══ 130
-		gxui.AdapterItem(140), // (7)  ╚══ 140
-		gxui.AdapterItem(141), // (8)       ╠══ 141
-		gxui.AdapterItem(142), // (9)       ╚══ 142
+		guix.AdapterItem(100), // (0) 100
+		guix.AdapterItem(110), // (1)  ╠══ 110
+		guix.AdapterItem(120), // (2)  ╠══ 120
+		guix.AdapterItem(121), // (3)  ║    ╠══ 121
+		guix.AdapterItem(122), // (4)  ║    ╠══ 122
+		guix.AdapterItem(123), // (5)  ║    ╚══ 123
+		guix.AdapterItem(130), // (6)  ╠══ 130
+		guix.AdapterItem(140), // (7)  ╚══ 140
+		guix.AdapterItem(141), // (8)       ╠══ 141
+		guix.AdapterItem(142), // (9)       ╚══ 142
 	)
 
 	list_adapter.node.NodeAt(2).Collapse()
 	test(t, "one collapsed", list_adapter,
-		gxui.AdapterItem(100), // (0) 100
-		gxui.AdapterItem(110), // (1)  ╠══ 110
-		gxui.AdapterItem(120), // (2)  ╠══ 120
-		gxui.AdapterItem(130), // (3)  ╠══ 130
-		gxui.AdapterItem(140), // (4)  ╚══ 140
-		gxui.AdapterItem(141), // (5)       ╠══ 141
-		gxui.AdapterItem(142), // (6)       ╚══ 142
+		guix.AdapterItem(100), // (0) 100
+		guix.AdapterItem(110), // (1)  ╠══ 110
+		guix.AdapterItem(120), // (2)  ╠══ 120
+		guix.AdapterItem(130), // (3)  ╠══ 130
+		guix.AdapterItem(140), // (4)  ╚══ 140
+		guix.AdapterItem(141), // (5)       ╠══ 141
+		guix.AdapterItem(142), // (6)       ╚══ 142
 	)
 
 	tree_adapter.children[0].children = append(tree_adapter.children[0].children, n(150))
 	test(t, "mutate, no data-changed", list_adapter,
-		gxui.AdapterItem(100), // (0) 100
-		gxui.AdapterItem(110), // (1)  ╠══ 110
-		gxui.AdapterItem(120), // (2)  ╠══ 120
-		gxui.AdapterItem(130), // (3)  ╠══ 130
-		gxui.AdapterItem(140), // (4)  ╚══ 140
-		gxui.AdapterItem(141), // (5)       ╠══ 141
-		gxui.AdapterItem(142), // (6)       ╚══ 142
+		guix.AdapterItem(100), // (0) 100
+		guix.AdapterItem(110), // (1)  ╠══ 110
+		guix.AdapterItem(120), // (2)  ╠══ 120
+		guix.AdapterItem(130), // (3)  ╠══ 130
+		guix.AdapterItem(140), // (4)  ╚══ 140
+		guix.AdapterItem(141), // (5)       ╠══ 141
+		guix.AdapterItem(142), // (6)       ╚══ 142
 	)
 
 	tree_adapter.DataChanged(false)
 	test(t, "data-changed", list_adapter,
-		gxui.AdapterItem(100), // (0) 100
-		gxui.AdapterItem(110), // (1)  ╠══ 110
-		gxui.AdapterItem(120), // (2)  ╠══ 120
-		gxui.AdapterItem(130), // (3)  ╠══ 130
-		gxui.AdapterItem(140), // (4)  ╠══ 140
-		gxui.AdapterItem(141), // (5)  ║    ╠══ 141
-		gxui.AdapterItem(142), // (6)  ║    ╚══ 142
-		gxui.AdapterItem(150), // (7)  ╚══ 150
+		guix.AdapterItem(100), // (0) 100
+		guix.AdapterItem(110), // (1)  ╠══ 110
+		guix.AdapterItem(120), // (2)  ╠══ 120
+		guix.AdapterItem(130), // (3)  ╠══ 130
+		guix.AdapterItem(140), // (4)  ╠══ 140
+		guix.AdapterItem(141), // (5)  ║    ╠══ 141
+		guix.AdapterItem(142), // (6)  ║    ╚══ 142
+		guix.AdapterItem(150), // (7)  ╚══ 150
 	)
 }

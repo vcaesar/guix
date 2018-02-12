@@ -11,7 +11,7 @@ import (
 	"github.com/vcaesar/guix/samples/flags"
 )
 
-func appMain(driver gxui.Driver) {
+func appMain(driver guix.Driver) {
 	theme := flags.CreateTheme(driver)
 
 	window := theme.CreateWindow(200, 150, "Window")
@@ -19,8 +19,8 @@ func appMain(driver gxui.Driver) {
 	window.SetScale(flags.DefaultScaleFactor)
 	window.SetPadding(math.Spacing{L: 10, R: 10, T: 10, B: 10})
 	button := theme.CreateButton()
-	button.SetHorizontalAlignment(gxui.AlignCenter)
-	button.SetSizeMode(gxui.Fill)
+	button.SetHorizontalAlignment(guix.AlignCenter)
+	button.SetSizeMode(guix.Fill)
 	toggle := func() {
 		fullscreen := !window.Fullscreen()
 		window.SetFullscreen(fullscreen)
@@ -31,7 +31,7 @@ func appMain(driver gxui.Driver) {
 		}
 	}
 	button.SetText("Make fullscreen")
-	button.OnClick(func(gxui.MouseEvent) { toggle() })
+	button.OnClick(func(guix.MouseEvent) { toggle() })
 	window.AddChild(button)
 }
 

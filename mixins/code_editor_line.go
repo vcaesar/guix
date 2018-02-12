@@ -16,14 +16,14 @@ type CodeEditorLinePaintInfo struct {
 	GlyphOffsets []math.Point
 	GlyphWidth   int
 	LineHeight   int
-	Font         gxui.Font
+	Font         guix.Font
 }
 
 type CodeEditorLineOuter interface {
 	DefaultTextBoxLineOuter
-	PaintBackgroundSpans(c gxui.Canvas, info CodeEditorLinePaintInfo)
-	PaintGlyphs(c gxui.Canvas, info CodeEditorLinePaintInfo)
-	PaintBorders(c gxui.Canvas, info CodeEditorLinePaintInfo)
+	PaintBackgroundSpans(c guix.Canvas, info CodeEditorLinePaintInfo)
+	PaintGlyphs(c guix.Canvas, info CodeEditorLinePaintInfo)
+	PaintBorders(c guix.Canvas, info CodeEditorLinePaintInfo)
 }
 
 // CodeEditorLine
@@ -33,7 +33,7 @@ type CodeEditorLine struct {
 	ce    *CodeEditor
 }
 
-func (l *CodeEditorLine) Init(outer CodeEditorLineOuter, theme gxui.Theme, ce *CodeEditor, lineIndex int) {
+func (l *CodeEditorLine) Init(outer CodeEditorLineOuter, theme guix.Theme, ce *CodeEditor, lineIndex int) {
 	l.DefaultTextBoxLine.Init(outer, theme, &ce.TextBox, lineIndex)
 	l.outer = outer
 	l.ce = ce
@@ -41,7 +41,7 @@ func (l *CodeEditorLine) Init(outer CodeEditorLineOuter, theme gxui.Theme, ce *C
 	_ = TextBoxLine(l)
 }
 
-func (t *CodeEditorLine) PaintBackgroundSpans(c gxui.Canvas, info CodeEditorLinePaintInfo) {
+func (t *CodeEditorLine) PaintBackgroundSpans(c guix.Canvas, info CodeEditorLinePaintInfo) {
 	start, _ := info.LineSpan.Span()
 	offsets := info.GlyphOffsets
 	remaining := interval.IntDataList{info.LineSpan}
@@ -52,7 +52,7 @@ func (t *CodeEditorLine) PaintBackgroundSpans(c gxui.Canvas, info CodeEditorLine
 				interval.Visit(&remaining, span, func(vs, ve uint64, _ int) {
 					s, e := vs-start, ve-start
 					r := math.CreateRect(offsets[s].X, 0, offsets[e-1].X+info.GlyphWidth, info.LineHeight)
-					c.DrawRoundedRect(r, 3, 3, 3, 3, gxui.TransparentPen, gxui.Brush{Color: color})
+					c.DrawRoundedRect(r, 3, 3, 3, 3, guix.TransparentPen, guix.Brush{Color: color})
 				})
 				interval.Remove(&remaining, span)
 			}
@@ -60,7 +60,7 @@ func (t *CodeEditorLine) PaintBackgroundSpans(c gxui.Canvas, info CodeEditorLine
 	}
 }
 
-func (t *CodeEditorLine) PaintGlyphs(c gxui.Canvas, info CodeEditorLinePaintInfo) {
+func (t *CodeEditorLine) PaintGlyphs(c guix.Canvas, info CodeEditorLinePaintInfo) {
 	start, _ := info.LineSpan.Span()
 	runes, offsets, font := info.Runes, info.GlyphOffsets, info.Font
 	remaining := interval.IntDataList{info.LineSpan}
@@ -83,7 +83,7 @@ func (t *CodeEditorLine) PaintGlyphs(c gxui.Canvas, info CodeEditorLinePaintInfo
 	}
 }
 
-func (t *CodeEditorLine) PaintBorders(c gxui.Canvas, info CodeEditorLinePaintInfo) {
+func (t *CodeEditorLine) PaintBorders(c guix.Canvas, info CodeEditorLinePaintInfo) {
 	start, _ := info.LineSpan.Span()
 	offsets := info.GlyphOffsets
 	for _, l := range t.ce.layers {
@@ -92,14 +92,14 @@ func (t *CodeEditorLine) PaintBorders(c gxui.Canvas, info CodeEditorLinePaintInf
 			interval.Visit(l.Spans(), info.LineSpan, func(vs, ve uint64, _ int) {
 				s, e := vs-start, ve-start
 				r := math.CreateRect(offsets[s].X, 0, offsets[e-1].X+info.GlyphWidth, info.LineHeight)
-				c.DrawRoundedRect(r, 3, 3, 3, 3, gxui.CreatePen(0.5, color), gxui.TransparentBrush)
+				c.DrawRoundedRect(r, 3, 3, 3, 3, guix.CreatePen(0.5, color), guix.TransparentBrush)
 			})
 		}
 	}
 }
 
 // DefaultTextBoxLine overrides
-func (t *CodeEditorLine) Paint(c gxui.Canvas) {
+func (t *CodeEditorLine) Paint(c guix.Canvas) {
 	font := t.ce.font
 	rect := t.Size().Rect().OffsetX(t.caretWidth)
 	controller := t.ce.controller
@@ -112,16 +112,16 @@ func (t *CodeEditorLine) Paint(c gxui.Canvas) {
 
 		lineHeight := t.Size().H
 		glyphWidth := font.GlyphMaxSize().W
-		offsets := font.Layout(&gxui.TextBlock{
+		offsets := font.Layout(&guix.TextBlock{
 			Runes:     runes,
 			AlignRect: rect,
-			H:         gxui.AlignLeft,
-			V:         gxui.AlignMiddle,
+			H:         guix.AlignLeft,
+			V:         guix.AlignMiddle,
 		})
 
 		info := CodeEditorLinePaintInfo{
 			LineSpan:     lineSpan,
-			Runes:        runes, // TODO gxui.TextBlock?
+			Runes:        runes, // TODO guix.TextBlock?
 			GlyphOffsets: offsets,
 			GlyphWidth:   glyphWidth,
 			LineHeight:   lineHeight,

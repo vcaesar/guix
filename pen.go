@@ -2,11 +2,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package gxui
+package guix
 
-var DefaultPen Pen = CreatePen(1.0, Black)
-var TransparentPen Pen = CreatePen(0.0, Transparent)
-var WhitePen Pen = CreatePen(1.0, White)
+var (
+	DefaultPen     Pen = CreatePen(1.0, Black)
+	TransparentPen Pen = CreatePen(0.0, Transparent)
+	WhitePen       Pen = CreatePen(1.0, White)
+)
 
 type Pen struct {
 	Width float32

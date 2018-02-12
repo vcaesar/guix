@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package gl contains an OpenGL implementation of the gxui.Driver interface.
+// Package gl contains an OpenGL implementation of the guix.Driver interface.
 package gl
 
 import (
@@ -36,7 +36,7 @@ type driver struct {
 }
 
 // StartDriver starts the gl driver with the given appRoutine.
-func StartDriver(appRoutine func(driver gxui.Driver)) {
+func StartDriver(appRoutine func(driver guix.Driver)) {
 	if runtime.GOMAXPROCS(-1) < 2 {
 		runtime.GOMAXPROCS(2)
 	}
@@ -70,12 +70,12 @@ func (d *driver) syncDriver(f func()) {
 	<-c
 }
 
-func (d *driver) createDriverEvent(signature interface{}) gxui.Event {
-	return gxui.CreateChanneledEvent(signature, d.pendingDriver)
+func (d *driver) createDriverEvent(signature interface{}) guix.Event {
+	return guix.CreateChanneledEvent(signature, d.pendingDriver)
 }
 
-func (d *driver) createAppEvent(signature interface{}) gxui.Event {
-	return gxui.CreateChanneledEvent(signature, d.pendingApp)
+func (d *driver) createAppEvent(signature interface{}) guix.Event {
+	return guix.CreateChanneledEvent(signature, d.pendingApp)
 }
 
 // driverLoop pulls and executes funcs from the pendingDriver chan until chan
@@ -109,7 +109,7 @@ func (d *driver) applicationLoop() {
 	}
 }
 
-// gxui.Driver compliance
+// guix.Driver compliance
 func (d *driver) Call(f func()) bool {
 	if f == nil {
 		panic("Function must not be nil")
@@ -193,11 +193,11 @@ func (d *driver) GetClipboard() (str string, err error) {
 	return
 }
 
-func (d *driver) CreateFont(data []byte, size int) (gxui.Font, error) {
+func (d *driver) CreateFont(data []byte, size int) (guix.Font, error) {
 	return newFont(data, size)
 }
 
-func (d *driver) CreateWindowedViewport(width, height int, name string) gxui.Viewport {
+func (d *driver) CreateWindowedViewport(width, height int, name string) guix.Viewport {
 	var v *viewport
 	d.syncDriver(func() {
 		v = newViewport(d, width, height, name, false)
@@ -209,7 +209,7 @@ func (d *driver) CreateWindowedViewport(width, height int, name string) gxui.Vie
 	return v
 }
 
-func (d *driver) CreateFullscreenViewport(width, height int, name string) gxui.Viewport {
+func (d *driver) CreateFullscreenViewport(width, height int, name string) guix.Viewport {
 	var v *viewport
 	d.syncDriver(func() {
 		v = newViewport(d, width, height, name, true)
@@ -221,10 +221,10 @@ func (d *driver) CreateFullscreenViewport(width, height int, name string) gxui.V
 	return v
 }
 
-func (d *driver) CreateCanvas(s math.Size) gxui.Canvas {
+func (d *driver) CreateCanvas(s math.Size) guix.Canvas {
 	return newCanvas(s)
 }
 
-func (d *driver) CreateTexture(img image.Image, pixelsPerDip float32) gxui.Texture {
+func (d *driver) CreateTexture(img image.Image, pixelsPerDip float32) guix.Texture {
 	return newTexture(img, pixelsPerDip)
 }

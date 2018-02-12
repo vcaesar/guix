@@ -11,67 +11,67 @@ import (
 	"github.com/vcaesar/guix/samples/flags"
 )
 
-func appMain(driver gxui.Driver) {
+func appMain(driver guix.Driver) {
 	theme := flags.CreateTheme(driver)
 	layout := theme.CreateLinearLayout()
-	layout.SetSizeMode(gxui.Fill)
+	layout.SetSizeMode(guix.Fill)
 
-	buttonState := map[gxui.Button]func() bool{}
+	buttonState := map[guix.Button]func() bool{}
 	update := func() {
 		for button, f := range buttonState {
 			button.SetChecked(f())
 		}
 	}
 
-	button := func(name string, action func(), isSelected func() bool) gxui.Button {
+	button := func(name string, action func(), isSelected func() bool) guix.Button {
 		b := theme.CreateButton()
 		b.SetText(name)
-		b.OnClick(func(gxui.MouseEvent) { action(); update() })
+		b.OnClick(func(guix.MouseEvent) { action(); update() })
 		layout.AddChild(b)
 		buttonState[b] = isSelected
 		return b
 	}
 
 	button("TopToBottom",
-		func() { layout.SetDirection(gxui.TopToBottom) },
+		func() { layout.SetDirection(guix.TopToBottom) },
 		func() bool { return layout.Direction().TopToBottom() },
 	)
 	button("LeftToRight",
-		func() { layout.SetDirection(gxui.LeftToRight) },
+		func() { layout.SetDirection(guix.LeftToRight) },
 		func() bool { return layout.Direction().LeftToRight() },
 	)
 	button("BottomToTop",
-		func() { layout.SetDirection(gxui.BottomToTop) },
+		func() { layout.SetDirection(guix.BottomToTop) },
 		func() bool { return layout.Direction().BottomToTop() },
 	)
 	button("RightToLeft",
-		func() { layout.SetDirection(gxui.RightToLeft) },
+		func() { layout.SetDirection(guix.RightToLeft) },
 		func() bool { return layout.Direction().RightToLeft() },
 	)
 
 	button("AlignLeft",
-		func() { layout.SetHorizontalAlignment(gxui.AlignLeft) },
+		func() { layout.SetHorizontalAlignment(guix.AlignLeft) },
 		func() bool { return layout.HorizontalAlignment().AlignLeft() },
 	)
 	button("AlignCenter",
-		func() { layout.SetHorizontalAlignment(gxui.AlignCenter) },
+		func() { layout.SetHorizontalAlignment(guix.AlignCenter) },
 		func() bool { return layout.HorizontalAlignment().AlignCenter() },
 	)
 	button("AlignRight",
-		func() { layout.SetHorizontalAlignment(gxui.AlignRight) },
+		func() { layout.SetHorizontalAlignment(guix.AlignRight) },
 		func() bool { return layout.HorizontalAlignment().AlignRight() },
 	)
 
 	button("AlignTop",
-		func() { layout.SetVerticalAlignment(gxui.AlignTop) },
+		func() { layout.SetVerticalAlignment(guix.AlignTop) },
 		func() bool { return layout.VerticalAlignment().AlignTop() },
 	)
 	button("AlignMiddle",
-		func() { layout.SetVerticalAlignment(gxui.AlignMiddle) },
+		func() { layout.SetVerticalAlignment(guix.AlignMiddle) },
 		func() bool { return layout.VerticalAlignment().AlignMiddle() },
 	)
 	button("AlignBottom",
-		func() { layout.SetVerticalAlignment(gxui.AlignBottom) },
+		func() { layout.SetVerticalAlignment(guix.AlignBottom) },
 		func() bool { return layout.VerticalAlignment().AlignBottom() },
 	)
 

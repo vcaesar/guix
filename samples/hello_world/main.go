@@ -14,7 +14,7 @@ import (
 	"github.com/vcaesar/guix/samples/flags"
 )
 
-func appMain(driver gxui.Driver) {
+func appMain(driver guix.Driver) {
 	theme := flags.CreateTheme(driver)
 
 	font, err := driver.CreateFont(gxfont.Default, 75)
@@ -23,7 +23,7 @@ func appMain(driver gxui.Driver) {
 	}
 
 	window := theme.CreateWindow(380, 100, "Hi")
-	window.SetBackgroundBrush(gxui.CreateBrush(gxui.Gray50))
+	window.SetBackgroundBrush(guix.CreateBrush(guix.Gray50))
 
 	label := theme.CreateLabel()
 	label.SetFont(font)
@@ -35,7 +35,7 @@ func appMain(driver gxui.Driver) {
 	go func() {
 		phase := float32(0)
 		for range ticker.C {
-			c := gxui.Color{
+			c := guix.Color{
 				R: 0.75 + 0.25*math.Cosf((phase+0.000)*math.TwoPi),
 				G: 0.75 + 0.25*math.Cosf((phase+0.333)*math.TwoPi),
 				B: 0.75 + 0.25*math.Cosf((phase+0.666)*math.TwoPi),

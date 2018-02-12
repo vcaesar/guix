@@ -15,7 +15,7 @@ type TextBox struct {
 	theme *Theme
 }
 
-func CreateTextBox(theme *Theme) gxui.TextBox {
+func CreateTextBox(theme *Theme) guix.TextBox {
 	t := &TextBox{}
 	t.Init(t, theme.Driver(), theme, theme.DefaultFont())
 	t.SetTextColor(theme.TextBoxDefaultStyle.FontColor)
@@ -23,11 +23,11 @@ func CreateTextBox(theme *Theme) gxui.TextBox {
 	t.SetPadding(math.Spacing{L: 3, T: 3, R: 3, B: 3})
 	t.SetBackgroundBrush(theme.TextBoxDefaultStyle.Brush)
 	t.SetBorderPen(theme.TextBoxDefaultStyle.Pen)
-	t.OnMouseEnter(func(gxui.MouseEvent) {
+	t.OnMouseEnter(func(guix.MouseEvent) {
 		t.SetBackgroundBrush(theme.TextBoxOverStyle.Brush)
 		t.SetBorderPen(theme.TextBoxOverStyle.Pen)
 	})
-	t.OnMouseExit(func(gxui.MouseEvent) {
+	t.OnMouseExit(func(guix.MouseEvent) {
 		t.SetBackgroundBrush(theme.TextBoxDefaultStyle.Brush)
 		t.SetBorderPen(theme.TextBoxDefaultStyle.Pen)
 	})
@@ -38,7 +38,7 @@ func CreateTextBox(theme *Theme) gxui.TextBox {
 }
 
 // mixins.TextBox overrides
-func (t *TextBox) Paint(c gxui.Canvas) {
+func (t *TextBox) Paint(c guix.Canvas) {
 	t.TextBox.Paint(c)
 
 	if t.HasFocus() {

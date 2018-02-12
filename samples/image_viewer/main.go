@@ -18,7 +18,7 @@ import (
 	"github.com/vcaesar/guix/samples/flags"
 )
 
-func appMain(driver gxui.Driver) {
+func appMain(driver guix.Driver) {
 	args := flag.Args()
 	if len(args) != 1 {
 		fmt.Print("usage: image_viewer image-path\n")
@@ -46,7 +46,7 @@ func appMain(driver gxui.Driver) {
 	window.SetScale(flags.DefaultScaleFactor)
 	window.AddChild(img)
 
-	// Copy the image to a RGBA format before handing to a gxui.Texture
+	// Copy the image to a RGBA format before handing to a guix.Texture
 	rgba := image.NewRGBA(source.Bounds())
 	draw.Draw(rgba, source.Bounds(), source, image.ZP, draw.Src)
 	texture := driver.CreateTexture(rgba, 1)

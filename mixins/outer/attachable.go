@@ -12,6 +12,6 @@ type Attachable interface {
 	Attached() bool
 	Attach()
 	Detach()
-	OnAttach(func()) gxui.EventSubscription
-	OnDetach(func()) gxui.EventSubscription
+	OnAttach(func()) guix.EventSubscription
+	OnDetach(func()) guix.EventSubscription
 }
